@@ -25,11 +25,15 @@ namespace sge
         
     
     private:
-        GLFWwindow* m_pWindow = NULL;
-        std::string m_title = "";
-        int m_width = 0;
-        int m_height = 0;
-       
+        struct WindowData
+        {
+            std::string m_title = "";
+            int m_width = 0;
+            int m_height = 0;
+        }
+
+        GLFWwindow* m_pWindow = nullptr;
+        WindowData m_data;
         bool m_initialized = false;
         static inline int m_glfwInitNum = 0;
         static void errorCallback(int code, const char* err_str);

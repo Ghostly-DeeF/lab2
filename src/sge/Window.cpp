@@ -4,13 +4,11 @@
 #include <iostream>
 
 
-namespace sge
-{
+namespace sge {
 
-Window::Window(std::string title, size_t width, size_t height) : m_title(title), m_width(width), m_height(height)
+Window::Window(std::string title, size_t width, size_t height) : m_title(std::move(title)), m_width(width), m_height(height)
 {
     std::cout << "Window constructor\n";
-
     glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
     if (glfwGetError(&error_msg))
         throw std::runtime_error(error_msg);
@@ -21,6 +19,8 @@ Window::Window(std::string title, size_t width, size_t height) : m_title(title),
     ++m_glfwInitNum;
 
     m_pWindow = glfwCreateWindow(m_width, m_height, m_title.c_str(), NULL, NULL);
+    glfwSetWindowUserPointer(m_pWindow, )
+
     glfwMakeContextCurrent(m_pWindow);
     
     if (!glfwGetError(&error_msg))
@@ -32,23 +32,35 @@ Window::Window(std::string title, size_t width, size_t height) : m_title(title),
 
 Window::Window(Window &&moved) noexcept
 {
-    m_pWindow = std::move(moved.m_pWindow);
+    glfwDestroyWindow(m_pWindow);
+
+    m_pWindow = moved.m_pWindow;
     m_title = std::move(moved.m_title);
-    m_width = std::move(moved.m_width);
-    m_height = std::move(moved.m_height);
-    bool m_initialized = std::move(moved.m_initialized);
+    m_width = moved.m_width;
+    m_height = moved.m_height;
+    bool m_initialized = moved.m_initialized;
+
+    ++m_glfwInitNum;
+
+    moved.m_pWindow = nullptr;
 }
 
 Window &Window::operator=(Window &&moved) noexcept
 {
-    if (&moved != this)
-    {
-        m_pWindow = std::move(moved.m_pWindow);
-        m_title = std::move(moved.m_title);
-        m_width = std::move(moved.m_width);
-        m_height = std::move(moved.m_height);
-        bool m_initialized = std::move(moved.m_initialized);
-    }
+    if (&moved == this)
+        return *this;
+
+    glfwDestroyWindow(m_pWindow);
+
+    m_pWindow = moved.m_pWindow;
+    m_title = std::move(moved.m_title);
+    m_width = moved.m_width;
+    m_height = moved.m_height;
+    bool m_initialized = moved.m_initialized;
+
+    ++m_glfwInitNum;
+
+    moved.m_pWindow = nullptr;
     return *this;
 }
 
@@ -91,14 +103,11 @@ void Window::destroy()
 Window::~Window()
 {
     std::cout << "Window destructor\n";
-
     if (--m_glfwInitNum <= 0)
     {
         std::cout << "GLFW Terminate\n";
         glfwTerminate();
     }
-}
-
 }
 
 
