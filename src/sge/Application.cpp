@@ -12,6 +12,13 @@ Application::Application(const char* title)
     : m_window(title, 1000, 1000)
 {
     std::cout << "Application Constructor\n";
+
+    m_window.setResizeCallback(
+        [](const windowSizeData& size_data)
+        {
+            std::cout << "Window size: " << size_data.width << 'x' << size_data.height << '\n';
+        }
+    );
 }
 
 Application::Application(Application &&moved) noexcept
@@ -30,11 +37,12 @@ Application &Application::operator=(Application &&moved) noexcept
 
 void Application::start()
 {
-
+    std::cout << "App start\n";
     while(m_window.is_active())
     {
+        std::cout << "App update\n";
         m_window.update();
-        std::cout << m_window.getWidth() << '\n';
+        //std::cout << m_window.getWidth() << '\n';
         onUpdate();
     }
     m_window.destroy();
@@ -43,7 +51,7 @@ void Application::start()
 
 Application::~Application()
 {
-    std::cout << "Application Destructor\n";
+    std::cout << "Application Destructor\n"; 
 }
 
 }

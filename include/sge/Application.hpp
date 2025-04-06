@@ -1,4 +1,6 @@
-#pragma once
+#ifndef SGE_INCLUDE_APPLICATION_HPP_
+#define SGE_INCLUDE_APPLICATION_HPP_
+
 #include "../../src/sge/Window.hpp"
 #include <iostream>
 
@@ -23,3 +25,5 @@ namespace sge {
         
     };
 }
+
+#endif

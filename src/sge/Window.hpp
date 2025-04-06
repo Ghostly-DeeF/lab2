@@ -2,8 +2,8 @@
 #define SGE_WINDOW_HPP_
 
 #include "GLFW/glfw3.h"
+#include "events.hpp"
 #include <string>
-#include <memory>
 
 namespace sge
 {
@@ -19,25 +19,29 @@ namespace sge
 
         void update();
         bool is_active() const noexcept;
-        int getWidth(); 
-        int getHeight();
+        int getWidth() const noexcept; 
+        int getHeight() const noexcept;
         void destroy();
+
+        void setResizeCallback(const resizeCallback& resize_function);
         
     
     private:
         struct WindowData
         {
-            std::string m_title = "";
-            int m_width = 0;
-            int m_height = 0;
-        }
+            std::string title = "";
+            size_t width = 0;
+            size_t height = 0;
+            resizeCallback custom_resize_function;
+        };
 
         GLFWwindow* m_pWindow = nullptr;
         WindowData m_data;
         bool m_initialized = false;
-        static inline int m_glfwInitNum = 0;
-        static void errorCallback(int code, const char* err_str);
         const char* error_msg = NULL;
+
+        static inline int m_glfwInitNum = 0;
+
     }; 
 }
 
