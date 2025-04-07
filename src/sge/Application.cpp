@@ -1,22 +1,25 @@
 #include "sge/Application.hpp"
 
+#include "sge/Logger.hpp"
+
 namespace sge {
 
 Application::Application()
     : m_window("Sge app", 1000, 1000)
 {
-    std::cout << "Application Constructor\n";
+    log::info("Application Constructor");
 }
 
 Application::Application(const char* title)
     : m_window(title, 1000, 1000)
 {
-    std::cout << "Application Constructor\n";
+    log::info("Application Constructor");
 
+  
     m_window.setResizeCallback(
         [&](const windowSizeData& size_data)
         {
-            std::cout << "Window size: " << size_data.width << 'x' << size_data.height << '\n';
+            log::data("Window size: %dx%d", size_data.width, size_data.height);
         }
     );
 }
@@ -37,12 +40,11 @@ Application &Application::operator=(Application &&moved) noexcept
 
 void Application::start()
 {
-    std::cout << "App start\n";
+    log::info("App start");
     while(m_window.is_active())
     {
-        std::cout << "App update\n";
+        log::data("App update");
         m_window.update();
-        //std::cout << m_window.getWidth() << '\n';
         onUpdate();
     }
     m_window.shutdown();
@@ -51,7 +53,7 @@ void Application::start()
 
 Application::~Application()
 {
-    std::cout << "Application Destructor\n"; 
+    log::info("Application Destructor"); 
 }
 
 }

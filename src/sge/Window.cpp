@@ -1,19 +1,18 @@
 #include "Window.hpp"
+#include "sge/Logger.hpp"
+
 #include <stdexcept>
-
-#include <iostream>
-
 
 namespace sge
 {
 
 Window::Window(std::string title, size_t width, size_t height) : m_data( {std::move(title), width, height} )
 {
-    std::cout << "Window constructor: " << m_data.title << '\n';
+    log::info("Window constructor: %s", m_data.title.c_str());
 
     glfwSetErrorCallback(
         [](int code, const char* err_str) {
-            std::cout << "Callbeck error\n";
+            log::error("Callbeck error");
             throw std::runtime_error(err_str);
         }
     );
@@ -36,7 +35,7 @@ Window::Window(std::string title, size_t width, size_t height) : m_data( {std::m
     {
         if (--m_glfwInitNum <= 0)
         {
-            std::cout << "GLFW Terminate\n";
+            log::info("GLFW Terminate");
             glfwTerminate();
         }
         throw;
@@ -148,11 +147,11 @@ void Window::setResizeCallback(const resizeCallback& resizeFunction)
 
 Window::~Window()
 {
-    std::cout << "Window destructor: " << m_data.title << '\n';
+    log::info("Window destructor: %s", m_data.title.c_str());
     shutdown();
     if (--m_glfwInitNum <= 0)
     {
-        std::cout << "GLFW Terminate\n";
+        log::info("GLFW Terminate");
         glfwTerminate();
     }
 }
