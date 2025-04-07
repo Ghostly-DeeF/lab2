@@ -21,7 +21,8 @@ namespace sge
         bool is_active() const noexcept;
         int getWidth() const noexcept; 
         int getHeight() const noexcept;
-        void destroy();
+        void shutdown();
+        bool is_shutdown() const noexcept;
 
         void setResizeCallback(const resizeCallback& resize_function);
         
@@ -37,11 +38,11 @@ namespace sge
 
         GLFWwindow* m_pWindow = nullptr;
         WindowData m_data;
-        bool m_initialized = false;
-        const char* error_msg = NULL;
+        bool m_isDestroy = false;
 
         static inline int m_glfwInitNum = 0;
-
+        
+        void setCallbacks();
     }; 
 }
 

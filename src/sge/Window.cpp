@@ -9,32 +9,88 @@ namespace sge
 
 Window::Window(std::string title, size_t width, size_t height) : m_data( {std::move(title), width, height} )
 {
-    std::cout << "Window constructor\n";
-    glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
-    if (glfwGetError(&error_msg))
-        throw std::runtime_error(error_msg);
+    std::cout << "Window constructor: " << m_data.title << '\n';
 
-    glfwInit();
-    if (glfwGetError(&error_msg))
-        throw std::runtime_error(error_msg);
-    ++m_glfwInitNum;
-
-    m_pWindow = glfwCreateWindow(m_data.width, m_data.height, m_data.title.c_str(), NULL, NULL);
-
-    glfwSetWindowUserPointer(m_pWindow, &m_data);
-
-    glfwMakeContextCurrent(m_pWindow);
-    
-    if (!glfwGetError(&error_msg))
-    { 
-        m_initialized = true; 
-    }
     glfwSetErrorCallback(
         [](int code, const char* err_str) {
             std::cout << "Callbeck error\n";
             throw std::runtime_error(err_str);
         }
     );
+
+    glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
+
+    glfwInit();
+    ++m_glfwInitNum;
+
+    try
+    {
+        m_pWindow = glfwCreateWindow(m_data.width, m_data.height, m_data.title.c_str(), NULL, NULL);
+        
+        glfwMakeContextCurrent(m_pWindow);
+
+        setCallbacks();
+
+    }
+    catch(std::runtime_error& err)
+    {
+        if (--m_glfwInitNum <= 0)
+        {
+            std::cout << "GLFW Terminate\n";
+            glfwTerminate();
+        }
+        throw;
+    }
+    
+            
+}
+
+Window::Window(Window &&moved) noexcept
+{
+    glfwDestroyWindow(m_pWindow);
+
+    m_pWindow = moved.m_pWindow;
+    m_data.title = std::move(moved.m_data.title);
+    m_data.width = moved.m_data.width;
+    m_data.height = moved.m_data.height;
+    m_data.custom_resize_function = moved.m_data.custom_resize_function;
+
+    ++m_glfwInitNum;
+
+    moved.m_pWindow = nullptr;
+}
+
+Window &Window::operator=(Window &&moved) noexcept
+{
+    if (&moved == this)
+        return *this;
+
+    glfwDestroyWindow(m_pWindow);
+
+    m_pWindow = moved.m_pWindow;
+    m_data.title = std::move(moved.m_data.title);
+    m_data.width = moved.m_data.width;
+    m_data.height = moved.m_data.height;
+    m_data.custom_resize_function = moved.m_data.custom_resize_function;
+ 
+    ++m_glfwInitNum;
+
+    moved.m_pWindow = nullptr;
+    return *this;
+}
+
+void Window::update()
+{
+    if (m_isDestroy)
+        throw std::runtime_error("Window update failure. Window is shutdown");
+
+    glfwSwapBuffers(m_pWindow);
+    glfwPollEvents();
+}
+
+void Window::setCallbacks()
+{
+    glfwSetWindowUserPointer(m_pWindow, &m_data);
 
     glfwSetWindowSizeCallback(m_pWindow,
         [](GLFWwindow* pWindow, int width, int height)
@@ -54,53 +110,9 @@ Window::Window(std::string title, size_t width, size_t height) : m_data( {std::m
             
         }
     );
+
 }
 
-Window::Window(Window &&moved) noexcept
-{
-    glfwDestroyWindow(m_pWindow);
-
-    m_pWindow = moved.m_pWindow;
-    m_data.title = std::move(moved.m_data.title);
-    m_data.width = moved.m_data.width;
-    m_data.height = moved.m_data.height;
-    m_data.custom_resize_function = moved.m_data.custom_resize_function;
-    m_initialized = moved.m_initialized;
-    error_msg = moved.error_msg;
-
-    ++m_glfwInitNum;
-
-    moved.m_pWindow = nullptr;
-}
-
-Window &Window::operator=(Window &&moved) noexcept
-{
-    if (&moved == this)
-        return *this;
-
-    glfwDestroyWindow(m_pWindow);
-
-    m_pWindow = moved.m_pWindow;
-    m_data.title = std::move(moved.m_data.title);
-    m_data.width = moved.m_data.width;
-    m_data.height = moved.m_data.height;
-    m_data.custom_resize_function = moved.m_data.custom_resize_function;
-    m_initialized = moved.m_initialized;
-    error_msg = moved.error_msg;
-
-    ++m_glfwInitNum;
-
-    moved.m_pWindow = nullptr;
-    return *this;
-}
-
-void Window::update()
-{
-    if (!m_initialized)
-        throw std::runtime_error(error_msg);
-    glfwSwapBuffers(m_pWindow);
-    glfwPollEvents();
-}
 
 bool Window::is_active() const noexcept
 {
@@ -117,9 +129,16 @@ int Window::getHeight() const noexcept
     return m_data.height;
 }
 
-void Window::destroy()
+void Window::shutdown()
 {
-    glfwDestroyWindow(m_pWindow);
+    if(!m_isDestroy)
+        glfwDestroyWindow(m_pWindow);
+    m_isDestroy = true;
+}
+
+bool Window::is_shutdown() const noexcept
+{
+    return m_isDestroy;
 }
 
 void Window::setResizeCallback(const resizeCallback& resizeFunction)
@@ -129,7 +148,8 @@ void Window::setResizeCallback(const resizeCallback& resizeFunction)
 
 Window::~Window()
 {
-    std::cout << "Window destructor\n";
+    std::cout << "Window destructor: " << m_data.title << '\n';
+    shutdown();
     if (--m_glfwInitNum <= 0)
     {
         std::cout << "GLFW Terminate\n";

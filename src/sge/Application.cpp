@@ -14,7 +14,7 @@ Application::Application(const char* title)
     std::cout << "Application Constructor\n";
 
     m_window.setResizeCallback(
-        [](const windowSizeData& size_data)
+        [&](const windowSizeData& size_data)
         {
             std::cout << "Window size: " << size_data.width << 'x' << size_data.height << '\n';
         }
@@ -45,7 +45,7 @@ void Application::start()
         //std::cout << m_window.getWidth() << '\n';
         onUpdate();
     }
-    m_window.destroy();
+    m_window.shutdown();
 }
 
 
