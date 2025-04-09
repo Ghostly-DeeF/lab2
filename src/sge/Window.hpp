@@ -44,7 +44,8 @@ namespace sge
 
         static inline int m_glfwInitNum = 0;
         
-        void setCallbacks();
+        void setResizeCallback();
+        void setCursorCallback();
     }; 
 }
 

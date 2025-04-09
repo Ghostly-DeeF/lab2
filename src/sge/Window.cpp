@@ -29,7 +29,9 @@ Window::Window(std::string title, size_t width, size_t height) : m_data( {std::m
         
         glfwMakeContextCurrent(m_pWindow);
 
-        setCallbacks();
+        glfwSetWindowUserPointer(m_pWindow, &m_data);
+        setResizeCallback();
+        setCursorCallback();
 
     }
     catch(std::runtime_error& err)
@@ -88,13 +90,14 @@ void Window::update()
     glfwPollEvents();
 }
 
-void Window::setCallbacks()
+void Window::setResizeCallback()
 {
-    glfwSetWindowUserPointer(m_pWindow, &m_data);
-
     glfwSetWindowSizeCallback(m_pWindow,
         [](GLFWwindow* pWindow, int width, int height)
         {
+            if (glfwGetWindowUserPointer(pWindow) == NULL)
+                return;
+
             WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(pWindow));
             data.width = width;
             data.height = height;
@@ -110,10 +113,16 @@ void Window::setCallbacks()
             
         }
     );
+}
 
+void Window::setCursorCallback()
+{ 
     glfwSetCursorPosCallback(m_pWindow,
         [](GLFWwindow* pWindow, double xpos, double ypos)
         {
+            if (glfwGetWindowUserPointer(pWindow) == NULL)
+                return;
+            
             WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(pWindow));
             if (data.custom_cursor_function)
             {
@@ -122,11 +131,7 @@ void Window::setCallbacks()
             }
         }
     );
-
-
-
 }
-
 
 bool Window::is_active() const noexcept
 {
