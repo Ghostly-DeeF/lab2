@@ -9,6 +9,13 @@ struct windowSizeData
     size_t height = 0;
 };
 
+struct cursorPos
+{
+    double x = 0;
+    double y = 0;
+};
+
 using resizeCallback = std::function<void(const windowSizeData&)>; 
+using cursorCallback = std::function<void(const cursorPos&)>; 
 
 #endif

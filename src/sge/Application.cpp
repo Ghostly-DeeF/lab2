@@ -22,6 +22,12 @@ Application::Application(const char* title)
             log::data("Window size: %dx%d", size_data.width, size_data.height);
         }
     );
+    m_window.setCursorCallback(
+        [&](const cursorPos& cursor_pos)
+        {
+            log::data("Cursor: %f %f", cursor_pos.x, cursor_pos.y);
+        }
+    );
 }
 
 Application::Application(Application &&moved) noexcept

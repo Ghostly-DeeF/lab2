@@ -3,6 +3,7 @@
 
 #include <stdexcept>
 
+#include <iostream>
 namespace sge
 {
 
@@ -110,6 +111,20 @@ void Window::setCallbacks()
         }
     );
 
+    glfwSetCursorPosCallback(m_pWindow,
+        [](GLFWwindow* pWindow, double xpos, double ypos)
+        {
+            WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(pWindow));
+            if (data.custom_cursor_function)
+            {
+                cursorPos cursor_data{xpos, ypos};
+                data.custom_cursor_function(cursor_data);
+            }
+        }
+    );
+
+
+
 }
 
 
@@ -143,6 +158,11 @@ bool Window::is_shutdown() const noexcept
 void Window::setResizeCallback(const resizeCallback& resizeFunction)
 {
     m_data.custom_resize_function = resizeFunction;
+}
+
+void Window::setCursorCallback(const cursorCallback& cursorFunction)
+{
+    m_data.custom_cursor_function = cursorFunction;
 }
 
 Window::~Window()

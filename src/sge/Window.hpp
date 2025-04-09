@@ -25,7 +25,8 @@ namespace sge
         bool is_shutdown() const noexcept;
 
         void setResizeCallback(const resizeCallback& resize_function);
-        
+        void setCursorCallback(const cursorCallback& cursor_function);
+
     
     private:
         struct WindowData
@@ -34,6 +35,7 @@ namespace sge
             size_t width = 0;
             size_t height = 0;
             resizeCallback custom_resize_function;
+            cursorCallback custom_cursor_function;
         };
 
         GLFWwindow* m_pWindow = nullptr;
