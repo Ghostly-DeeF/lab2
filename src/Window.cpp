@@ -3,7 +3,6 @@
 
 #include <stdexcept>
 
-#include <iostream>
 namespace sge
 {
 

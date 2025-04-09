@@ -2,7 +2,7 @@
 #define SGE_WINDOW_HPP_
 
 #include "GLFW/glfw3.h"
-#include "events.hpp"
+#include "Events.hpp"
 #include <string>
 
 namespace sge
