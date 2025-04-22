@@ -11,7 +11,19 @@ file(GLOB_RECURSE PRIVATE_HEADERS
 ".src/*hpp")
 
 
-add_library(${PROJECT_NAME} ${CPP_SOURCES} ${PRIVATE_HEADERS})
+add_library(${PROJECT_NAME} ${CPP_SOURCES} ${PRIVATE_HEADERS} "src/Rendering/ShaderProgram")
+
+add_custom_target(
+    res
+    COMMAND ${CMAKE_COMMAND} -E make_directory
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/res
+    COMMAND ${CMAKE_COMMAND} -E rm -R
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/res
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_CURRENT_SOURCE_DIR}/res
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/res
+)
+add_dependencies(${PROJECT_NAME} res)
 
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 

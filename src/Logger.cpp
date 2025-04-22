@@ -5,20 +5,21 @@
 namespace sge::log {
 
     void print(MsgTypeColor color, const char* type, const char* format, std::va_list args) noexcept
-    {
-        printf("[\033[1;%dm%s\033[0m]: ", (int)color, type);
-        
-        std::vprintf(format, args);
-        std::printf("\n");
+    {  
+        char buff[1024] = {0};
+        std::snprintf(buff, sizeof(buff), "[\033[1;%dm%s\033[0m]: %s\n",(int)color, type, format);
+        std::vprintf(buff, args);
     }
 
     void data(const char* format, ...) noexcept
     {
         std::va_list args;
         va_start(args, format);
-
+        
+        char buff[1024] = {0};
+        std::snprintf(buff, sizeof(buff), "%s\n",format);
+        
         std::vprintf(format, args);
-        std::printf("\n");
 
         va_end(args);
     }

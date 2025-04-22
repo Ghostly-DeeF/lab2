@@ -1,4 +1,6 @@
+#include "Rendering/ShaderProgram.hpp"
 #include "sge/Application.hpp"
+#include "OpenGLInitializer.hpp"
 
 #include "sge/Logger.hpp"
 
@@ -16,7 +18,10 @@ namespace sge
         : m_window(title, 1024, 1024)
     {
         log::info("Application Constructor");
+        OpenGLInitializer glinit;
+        rendering::ShaderProgram s("/home/jumbo/Projects/C_projects/Test_OpeGL_Engine/external/sge/res/shaders/2d/basic.vert", "/home/jumbo/Projects/C_projects/Test_OpeGL_Engine/external/sge/res/shaders/2d/basic.frag");
         setAllCallbacks();
+    
     }
     
     Application::Application(const char* title, size_t width, size_t height)

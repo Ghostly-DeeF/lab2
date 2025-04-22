@@ -1,7 +1,7 @@
 #include "Window.hpp"
 #include "sge/Logger.hpp"
 
-#include <stdexcept>
+#include "sge/SGEexception.hpp"
 
 namespace sge
 {
@@ -13,7 +13,7 @@ Window::Window(std::string title, size_t width, size_t height) : m_data( {std::m
     glfwSetErrorCallback(
         [](int code, const char* err_str) {
             log::error("Callbeck error");
-            throw std::runtime_error(err_str);
+            throw sge::sge_error(err_str);
         }
     );
 
@@ -21,6 +21,10 @@ Window::Window(std::string title, size_t width, size_t height) : m_data( {std::m
 
     glfwInit();
     ++m_glfwInitNum;
+
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     try
     {
@@ -33,7 +37,7 @@ Window::Window(std::string title, size_t width, size_t height) : m_data( {std::m
         setCursorCallback();
 
     }
-    catch(std::runtime_error& err)
+    catch(sge::sge_error& err)
     {
         if (--m_glfwInitNum <= 0)
         {
@@ -83,7 +87,7 @@ Window &Window::operator=(Window &&moved) noexcept
 void Window::update()
 {
     if (m_isDestroy)
-        throw std::runtime_error("Window update failure. Window is shutdown");
+        throw sge::sge_error("Window update failure. Window is shutdown");
 
     glfwSwapBuffers(m_pWindow);
     glfwPollEvents();
