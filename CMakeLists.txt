@@ -4,7 +4,7 @@ project(sge)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-add_definitions("-g -Wall")
+add_definitions("-g -Wall -Wextra")
 
 file(GLOB_RECURSE CPP_SOURCES
 "./src/*.cpp")
@@ -39,3 +39,6 @@ target_link_libraries(${PROJECT_NAME} glm)
 
 add_subdirectory(external/assimp)
 target_link_libraries(${PROJECT_NAME} assimp)
+target_compile_options(assimp PRIVATE -Wno-error=implicit-fallthrough
+                                      -Wno-error=ignored-qualifiers
+                                      -Wno-error=calloc-transposed-args)
