@@ -4,6 +4,7 @@ project(sge)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+add_definitions("-g -Wall")
 
 file(GLOB_RECURSE CPP_SOURCES
 "./src/*.cpp")

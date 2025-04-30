@@ -1,5 +1,5 @@
-#ifndef SGE_SGEEXCEPTION_HPP_
-#define SGE_SGEEXCEPTION_HPP_
+#ifndef SGE_INCLUDE_SGEEXCEPTION_HPP_
+#define SGE_INCLUDE_SGEEXCEPTION_HPP_
 
 #include <stdexcept>
 

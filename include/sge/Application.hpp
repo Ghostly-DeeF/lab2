@@ -2,6 +2,7 @@
 #define SGE_INCLUDE_APPLICATION_HPP_
 
 #include "../../src/Window.hpp"
+#include "../../src/DrawableManager.hpp"
 
 namespace sge
 {
@@ -19,6 +20,8 @@ namespace sge
         virtual ~Application();
     
         void start();
+
+       DrawableManager drawableObjects; 
         
     private:
         Window m_window;

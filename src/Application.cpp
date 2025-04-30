@@ -2,6 +2,8 @@
 #include "sge/Application.hpp"
 #include "OpenGLInitializer.hpp"
 
+#include "sge/2dprimitives.hpp"
+
 #include "sge/Logger.hpp"
 
 namespace sge
@@ -54,6 +56,7 @@ namespace sge
         {
             m_window.update();
             onUpdate();
+            drawableObjects.rendering(); 
         }
         m_window.shutdown();
     }
