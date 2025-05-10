@@ -21,7 +21,7 @@ namespace sge
     {
         log::info("Application Constructor");
         OpenGLInitializer glinit;
-        rendering::ShaderProgram s("/home/jumbo/Projects/C_projects/Test_OpeGL_Engine/external/sge/res/shaders/2d/basic.vert", "/home/jumbo/Projects/C_projects/Test_OpeGL_Engine/external/sge/res/shaders/2d/basic.frag");
+        
         setAllCallbacks();
     
     }
@@ -52,10 +52,13 @@ namespace sge
     void Application::start()
     {
         log::info("App start");
+
+        rendering::ShaderProgram s("/home/jumbo/Projects/C_projects/Test_OpeGL_Engine/external/sge/res/shaders/2d/basic.vert", "/home/jumbo/Projects/C_projects/Test_OpeGL_Engine/external/sge/res/shaders/2d/basic.frag");
         while(m_window.is_active())
         {
             m_window.update();
             onUpdate();
+            s.use();
             drawableObjects.rendering(); 
         }
         m_window.shutdown();

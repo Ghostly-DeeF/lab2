@@ -2,51 +2,46 @@
 #define SGE_DRAWABLE_HPP_
 
 #include <memory>
-#include "sge/2dprimitives.hpp"
+#include "Rendering/RenderingFunctions.hpp"
 #include "sge/Logger.hpp"
 
 namespace sge
 {
 
-    void draw(const object::Line&);
-    void draw(const object::Vertex&);
-
     class Drawable
     {
     public:
         template<typename T>
-        explicit Drawable(T& object) : m_self(std::make_unique<DrawableObject<T>>(object)) {}
-        Drawable(const Drawable& x) : m_self(x.m_self->copy_()) {}
+        explicit Drawable(T& object) : m_self(std::make_unique<DrawableObject<T>>(object)) {log::info("Drawable"); }
+        Drawable(const Drawable& x);
         Drawable(Drawable&&) noexcept = default;
-        Drawable &operator=(Drawable x) noexcept
-        {
-            m_self = std::move(x.m_self);
-            return *this;
-        }
+        Drawable &operator=(Drawable x) noexcept;
+        ~Drawable();
 
-        friend void draw(const Drawable &x)
-        {
-            x.m_self->draw_();
-        }
+        friend unsigned int setup_(const Drawable&);
+        friend void draw_(const Drawable&, unsigned int);
 
     private:
         struct IDrawable
         {
             virtual ~IDrawable() = default;
             virtual std::unique_ptr<IDrawable> copy_() const = 0;
-            virtual void draw_() const = 0;
+            virtual unsigned int setup_() const = 0;
+            virtual void draw_(unsigned int) const = 0;
         };
 
         template<class T>
         class DrawableObject final : public IDrawable
         {
         public:
-            explicit DrawableObject(T& x) : m_data(x) {}
+            explicit DrawableObject(T& x) : m_data(x) { log::info("DrawableObject"); }
+            ~DrawableObject() override { log::info("~DrawableObject"); }
             std::unique_ptr<IDrawable> copy_() const override
             {
                 return std::make_unique<DrawableObject>(*this);
             }
-            void draw_() const override;
+            unsigned int setup_() const override;
+            void draw_(unsigned int) const override;
             
         private:
             T& m_data;
@@ -56,10 +51,17 @@ namespace sge
     };
 
     template<typename T>
-    void Drawable::DrawableObject<T>::draw_() const
+    unsigned int Drawable::DrawableObject<T>::setup_() const
     {
-        ::sge::draw(m_data); 
+        return ::sge::rendering::setup(m_data); 
     }
+
+    template<typename T>
+    void Drawable::DrawableObject<T>::draw_(unsigned int id) const
+    {
+        ::sge::rendering::draw(m_data, id); 
+    }
+
 }
 
 #endif

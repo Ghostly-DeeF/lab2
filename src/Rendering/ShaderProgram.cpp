@@ -71,6 +71,11 @@ namespace sge::rendering
         return shader_id;
     }
 
+    void ShaderProgram::use() const
+    {
+        glUseProgram(m_program_id);
+    }
+
     
 
 

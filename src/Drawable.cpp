@@ -6,15 +6,27 @@
 
 namespace sge
 {
-
-    void draw(const object::Line& line)
+    Drawable::Drawable(const Drawable& x) :
+        m_self(x.m_self->copy_()) {}  
+    
+    Drawable &Drawable::operator=(Drawable x) noexcept
     {
-        log::debug("%f", line.point1.x);
+        m_self = std::move(x.m_self);
+        return *this;
+    }
+    Drawable::~Drawable()
+    {
+        log::info("~Drawable");
     }
 
-    void draw(const object::Vertex& vert)
+
+    unsigned int setup_(const Drawable &x)
     {
-        log::debug("Vertex %f", vert.x);
+        return x.m_self->setup_();
     }
-  
+
+    void draw_(const Drawable &x, unsigned int id)
+    {
+        x.m_self->draw_(id);
+    }
 }

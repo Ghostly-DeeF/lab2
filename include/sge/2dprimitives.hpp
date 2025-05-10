@@ -3,29 +3,45 @@
 
 #include <glm/glm.hpp>
 
-namespace sge::object
+#include "../../src/Data.hpp"
+
+namespace sge::objects
 {
+
+    enum class ItemType
+    {
+        VERTEX = 3,
+        RGBA = 4
+    };
 
     struct Vertex
     {
-        float x = 0.0f;
-        float y = 0.0f;
-        float z = 0.0f;
+        float x = .0f;
+        float y = .0f;
+        float z = .0f; 
     };
 
-    class Line
+    struct Point
     {
-    public:
-        Vertex point1{0.0f, 0.0f, 0.0f};
-        Vertex point2{.0f, .0f, .0f};
-        float m_thickness = 0;
-
-        glm::vec3 color{.0f, .0f, .0f};
+        Vertex vertex;
+        glm::vec4 color{.0f, .0f, .0f, .0f};
 
         glm::vec3 move(glm::vec3);
-        void rotate(float);
 
-    private:
+        ElementData<Vertex, 1> getVerteces() const;
+        ElementData<glm::vec4, 1> getColor() const;
+    };
+
+    struct Line
+    {
+        Point start;
+        Point end;
+
+        float m_thickness = .0f;
+
+        glm::vec3 move(glm::vec3);
+        void setPos(glm::vec3);
+
     };
 
 }

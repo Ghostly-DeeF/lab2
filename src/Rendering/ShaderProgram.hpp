@@ -18,6 +18,8 @@ namespace sge::rendering
         ShaderProgram &operator=(const ShaderProgram &) = default;
     
         ~ShaderProgram() = default;
+
+        void use() const;
     
     private:
 
