@@ -7,9 +7,6 @@
 
 #include "sge/Logger.hpp"
 
-//#define unsigned long long size_t;
-
-
 namespace sge
 {
 
@@ -24,13 +21,11 @@ namespace sge
         virtual ~IData() = default;
     };
 
-
-
     template<typename T, size_t N>
     class ElementData : public IData
     {
     public:
-        ElementData(std::initializer_list<T>, int);
+        ElementData(std::array<T, N>, int);
         ElementData(ElementData &&) = default;
         ElementData(const ElementData &) = default;
         ElementData &operator=(ElementData &&) = default;
@@ -48,20 +43,9 @@ namespace sge
 
 
     template<typename T, size_t N>
-    ElementData<T, N>::ElementData(std::initializer_list<T> data, int count_data_item) : m_dataItem(count_data_item)
+    ElementData<T, N>::ElementData(std::array<T, N> data, int count_data_item) : m_data(data), m_dataItem(count_data_item)
     {
         log::debug("ElementData");
-        if (data.size() != N)
-        {
-             
-        }
-        size_t i = 0;
-        for (auto element : data)
-        {
-            m_data[i] = element;
-            ++i;
-        }
-
     }
 
     template<typename T, size_t N>

@@ -5,6 +5,8 @@
 
 #include <fstream>
 
+#include <stdexcept>
+
 namespace sge::rendering
 {
 
@@ -65,7 +67,7 @@ namespace sge::rendering
             GLchar log[1024];
             glGetShaderInfoLog(shader_id, 1024, NULL, log);
             glDeleteShader(shader_id);
-            throw sge::sge_error("Create Shader Fail", log);
+            throw sge::sge_error(log);
         }
         
         return shader_id;

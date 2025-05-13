@@ -5,6 +5,7 @@
 #include "sge/2dprimitives.hpp"
 
 #include "sge/Logger.hpp"
+#include "sge/SGEexception.hpp"
 
 namespace sge
 {
