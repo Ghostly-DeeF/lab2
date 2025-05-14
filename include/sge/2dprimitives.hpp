@@ -3,15 +3,15 @@
 
 #include <glm/glm.hpp>
 
-#include "../../src/Data.hpp"
-
 namespace sge::objects
 {
 
     enum class ItemType
     {
         VERTEX = 3,
-        RGBA = 4
+        NORMAL = 3,
+        RGBA = 4,
+        RGB = 3
     };
 
     struct Vertex
@@ -28,8 +28,6 @@ namespace sge::objects
 
         glm::vec3 move(glm::vec3);
 
-        ElementData<Vertex, 1> getVerteces() const;
-        ElementData<glm::vec4, 1> getColor() const;
     };
 
     struct Line

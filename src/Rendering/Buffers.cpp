@@ -1,5 +1,6 @@
 #include <glad/glad.h>
 #include "Buffers.hpp"
+#include "sge/SGEexception.hpp"
 
 #include "sge/Logger.hpp"
 
@@ -17,9 +18,7 @@ namespace sge::rendering
     void VertexBuffer::push(const IData& data)
     {
         if ((m_dataOffset + data.size()) > m_size)
-        {
-            
-        }
+            throw errors::overflow_error("There is not enough space in the vertex buffer to add a new object", (m_dataOffset + data.size()) - m_size);
 
         glBufferSubData(GL_ARRAY_BUFFER, m_dataOffset, data.size(), data.data());
         glEnableVertexAttribArray(m_numAttrib);

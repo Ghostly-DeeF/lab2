@@ -18,10 +18,14 @@ namespace sge::rendering
 	    //glGenBuffers(1, &VBO);
         
 	    glBindVertexArray(VAO);
+        
+        ElementData<objects::Vertex, 1> vert_data({point.vertex}, static_cast<unsigned char>(objects::ItemType::VERTEX));
+        ElementData<glm::vec4, 1> color_data({point.color}, static_cast<unsigned char>(objects::ItemType::RGBA));
 
-        VertexBuffer buffer(point.getVerteces().size() + point.getColor().size());
-        buffer.push(point.getVerteces());
-        buffer.push(point.getColor());
+        VertexBuffer buffer(vert_data.size() + color_data.size());
+        buffer.push(vert_data);
+        buffer.push(color_data);
+        
 	    //glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	    //glBufferData(GL_ARRAY_BUFFER, sizeof(objects::Point), &point, GL_STATIC_DRAW);
 

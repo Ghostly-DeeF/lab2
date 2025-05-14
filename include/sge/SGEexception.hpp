@@ -3,20 +3,78 @@
 
 #include <stdexcept>
 
-namespace sge
+namespace sge::errors
 {
 
-    class sge_error : public std::runtime_error
+    class exception : public std::runtime_error
     {
     public:
-        sge_error(const std::string&);
-        sge_error(const char*);
-        sge_error(const sge_error&) noexcept;
-        sge_error& operator=(const sge_error&) noexcept;
-        virtual ~sge_error() = default;
+        exception(const std::string& msg);
+        exception(const char *msg);
+        exception(const exception&) noexcept;
+        exception& operator=(const exception&) = default;
+        ~exception() override = default;
     };
 
-    
+
+
+    class overflow_error : public exception
+    {
+    public:
+        overflow_error(const std::string& msg, size_t);
+        overflow_error(const char *msg, size_t);
+        
+        size_t size() const noexcept;
+
+    private:
+        size_t m_overflowSize = 0;
+    };
+
+
+
+    class glsl_error : public exception {
+    public:
+        glsl_error(const std::string& msg);
+        glsl_error(const char *msg);
+        
+        virtual const char* log() const noexcept;
+
+    protected:
+        char m_log[1024] = {0};
+    };
+
+    class glsl_compile_error : public glsl_error
+    {
+    public:
+        glsl_compile_error(const std::string& msg, unsigned id);
+        glsl_compile_error(const char *msg, unsigned id);
+    };
+
+    class glsl_link_error : public glsl_error
+    {
+    public:
+        glsl_link_error(const std::string& msg, unsigned id);
+        glsl_link_error(const char *msg, unsigned id);
+    };
+
+
+
+    class glfw_error : public exception
+    {
+    public:
+        glfw_error(const std::string& msg);
+        glfw_error(const char *msg);
+    };
+
+
+
+    class gl_error : public exception
+    {
+    public:
+        gl_error(const std::string& msg);
+        gl_error(const char *msg);
+    };
+
 
 }
 

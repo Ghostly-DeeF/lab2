@@ -7,15 +7,7 @@ namespace sge
 {
     class OpenGLInitializer {
     public:
-        OpenGLInitializer();
-        OpenGLInitializer(OpenGLInitializer &&) = default;
-        OpenGLInitializer(const OpenGLInitializer &) = default;
-        OpenGLInitializer &operator=(OpenGLInitializer &&) = default;
-        OpenGLInitializer &operator=(const OpenGLInitializer &) = default;
-        ~OpenGLInitializer() = default;
-
-    private:
-        
+        OpenGLInitializer();  
     };
 }
 

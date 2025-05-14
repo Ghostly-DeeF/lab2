@@ -25,7 +25,7 @@ namespace sge
     class ElementData : public IData
     {
     public:
-        ElementData(std::array<T, N>, int);
+        ElementData(std::array<T, N>, unsigned char);
         ElementData(ElementData &&) = default;
         ElementData(const ElementData &) = default;
         ElementData &operator=(ElementData &&) = default;
@@ -43,7 +43,7 @@ namespace sge
 
 
     template<typename T, size_t N>
-    ElementData<T, N>::ElementData(std::array<T, N> data, int count_data_item) : m_data(data), m_dataItem(count_data_item)
+    ElementData<T, N>::ElementData(std::array<T, N> data, unsigned char count_data_item) : m_data(data), m_dataItem(count_data_item)
     {
         log::debug("ElementData");
     }

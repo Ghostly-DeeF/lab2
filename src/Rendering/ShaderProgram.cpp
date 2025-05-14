@@ -14,7 +14,7 @@ namespace sge::rendering
     {
         std::string vert_source = "";
         std::string frag_source = "";
-                
+
         vert_source = getStrFromFile("/home/jumbo/Projects/C_projects/Test_OpeGL_Engine/external/sge/res/shaders/2d/basic.vert");
         frag_source = getStrFromFile("/home/jumbo/Projects/C_projects/Test_OpeGL_Engine/external/sge/res/shaders/2d/basic.frag");
 
@@ -28,6 +28,13 @@ namespace sge::rendering
         glAttachShader(m_program_id, m_vertex_id);
         glAttachShader(m_program_id, m_fragment_id);
         glLinkProgram(m_program_id);
+        GLint success = GL_FALSE;
+        glGetProgramiv(m_program_id, GL_LINK_STATUS, &success);
+        if (!success)
+        {
+            throw errors::glsl_link_error("Failed to link shader", m_program_id);
+        }    
+
 
         glDeleteShader(m_vertex_id);
         glDeleteShader(m_fragment_id);
@@ -62,12 +69,9 @@ namespace sge::rendering
         
         GLint success = GL_FALSE;
         glGetShaderiv(shader_id, GL_COMPILE_STATUS, &success);
-        if (success == GL_FALSE)
+        if (!success)
         {
-            GLchar log[1024];
-            glGetShaderInfoLog(shader_id, 1024, NULL, log);
-            glDeleteShader(shader_id);
-            throw sge::sge_error(log);
+            throw errors::glsl_compile_error("Failed to compile shader", shader_id);
         }
         
         return shader_id;

@@ -12,8 +12,7 @@ Window::Window(std::string title, size_t width, size_t height) : m_data( {std::m
 
     glfwSetErrorCallback(
         [](int code, const char* err_str) {
-            log::error("Callbeck error");
-            throw sge::sge_error(err_str);
+            throw errors::glfw_error(err_str);
         }
     );
 
@@ -37,7 +36,7 @@ Window::Window(std::string title, size_t width, size_t height) : m_data( {std::m
         setCursorCallback();
 
     }
-    catch(sge::sge_error& err)
+    catch(...)
     {
         if (--m_glfwInitNum <= 0)
         {
@@ -87,7 +86,7 @@ Window &Window::operator=(Window &&moved) noexcept
 void Window::update()
 {
     if (m_isDestroy)
-        throw sge::sge_error("Window update failure. Window is shutdown");
+        throw errors::glfw_error("Window update failure. Window is shutdown");
 
     glfwSwapBuffers(m_pWindow);
     glfwPollEvents();
