@@ -1,6 +1,5 @@
 #include "Rendering/ShaderProgram.hpp"
 #include "sge/Application.hpp"
-#include "OpenGLInitializer.hpp"
 
 #include "sge/2dprimitives.hpp"
 
@@ -11,24 +10,22 @@ namespace sge
 {
 
     Application::Application()
-        : m_window("Sge app", 1024, 1024)
+        : m_window("Sge app", 1024, 1024), m_render(m_window.getGlAddressFunc())
     {
         log::info("Application Constructor");
         setAllCallbacks();
     }
     
     Application::Application(const char* title)
-        : m_window(title, 1024, 1024)
+        : m_window(title, 1024, 1024), m_render(m_window.getGlAddressFunc())
     {
-        log::info("Application Constructor");
-        OpenGLInitializer glinit;
-        
+        log::info("Application Constructor"); 
         setAllCallbacks();
     
     }
     
     Application::Application(const char* title, size_t width, size_t height)
-        : m_window(title, width, height)
+        : m_window(title, width, height), m_render(m_window.getGlAddressFunc())
     {
         log::info("Application Constructor");
         setAllCallbacks();
@@ -36,7 +33,7 @@ namespace sge
 
 
     Application::Application(Application &&moved) noexcept
-        : m_window(std::move(moved.m_window))
+        : m_window(std::move(moved.m_window)), m_render(m_window.getGlAddressFunc())
     {}
     
     Application &Application::operator=(Application &&moved) noexcept
@@ -58,6 +55,7 @@ namespace sge
         while(m_window.is_active())
         {
             m_window.update();
+            m_render.update();
             onUpdate();
             s.use();
             drawableObjects.rendering(); 
@@ -70,6 +68,7 @@ namespace sge
         m_window.setResizeCallback(
             [&](const windowSizeData& size_data)
             {
+                m_render.setWindowSize(size_data.width, size_data.height);
                 userResizeCallback(size_data.width, size_data.height);
             }
         );

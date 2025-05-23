@@ -71,8 +71,20 @@ namespace sge::errors
     class gl_error : public exception
     {
     public:
-        gl_error(const std::string& msg);
-        gl_error(const char *msg);
+        gl_error(unsigned severity, unsigned id, unsigned type, unsigned source, const char *msg);
+
+        const char* severity() const noexcept;
+        unsigned id() const noexcept;
+        const char* type() const noexcept;
+        const char* source() const noexcept;
+
+    private:
+
+        unsigned m_severity = 0;
+        unsigned m_id = 0;
+        unsigned m_type = 0;
+        unsigned m_source = 0;
+
     };
 
 

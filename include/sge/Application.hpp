@@ -3,6 +3,7 @@
 
 #include "../../src/Window.hpp"
 #include "../../src/Renderer.hpp"
+#include "../../src/GlRender.hpp"
 
 namespace sge
 {
@@ -25,10 +26,11 @@ namespace sge
         
     private:
         Window m_window;
+        GlRender m_render;
         virtual void onUpdate() = 0;
 
-        virtual void userResizeCallback(size_t width, size_t height){};
-        virtual void userCursorCallback(double xpos, double ypos){};
+        virtual void userResizeCallback(size_t width, size_t height) {};
+        virtual void userCursorCallback(double xpos, double ypos) {};
 
         void setAllCallbacks();
         

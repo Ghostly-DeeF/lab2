@@ -1,9 +1,11 @@
 #ifndef SGE_WINDOW_HPP_
 #define SGE_WINDOW_HPP_
 
-#include "GLFW/glfw3.h"
 #include "Events.hpp"
 #include <string>
+
+struct GLFWwindow;
+typedef void* (* GLaddr)(const char *name);
 
 namespace sge
 {
@@ -22,7 +24,8 @@ namespace sge
         int getWidth() const noexcept; 
         int getHeight() const noexcept;
         void shutdown();
-        bool is_shutdown() const noexcept;
+        bool is_shutdown() const noexcept; 
+        GLaddr getGlAddressFunc();
 
         void setResizeCallback(const resizeCallback& resize_function);
         void setCursorCallback(const cursorCallback& cursor_function);
