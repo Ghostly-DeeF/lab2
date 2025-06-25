@@ -12,6 +12,7 @@ namespace sge::rendering
 
     ShaderProgram::ShaderProgram(const char* path_vert, const char* path_frag)
     {
+        log::constructor("ShaderProgram");
         std::string vert_source = "";
         std::string frag_source = "";
 
@@ -82,7 +83,10 @@ namespace sge::rendering
         glUseProgram(m_program_id);
     }
 
-    
+    ShaderProgram::~ShaderProgram()
+    {
+        log::destructor("ShaderProgram");
+    }
 
 
 

@@ -12,7 +12,7 @@ namespace sge
     {
     public:
         template<typename T>
-        explicit Drawable(T& object) : m_self(std::make_unique<DrawableObject<T>>(object)) {log::info("Drawable"); }
+        explicit Drawable(T& object) : m_self(std::make_unique<DrawableObject<T>>(object)) {log::constructor("Drawable"); }
         Drawable(const Drawable& x);
         Drawable(Drawable&&) noexcept = default;
         Drawable &operator=(Drawable x) noexcept;
@@ -34,8 +34,8 @@ namespace sge
         class DrawableObject final : public IDrawable
         {
         public:
-            explicit DrawableObject(T& x) : m_data(x) { log::info("DrawableObject"); }
-            ~DrawableObject() override { log::info("~DrawableObject"); }
+            explicit DrawableObject(T& x) : m_data(x) { log::constructor("DrawableObject"); }
+            ~DrawableObject() override { log::destructor("DrawableObject"); }
             std::unique_ptr<IDrawable> copy_() const override
             {
                 return std::make_unique<DrawableObject>(*this);

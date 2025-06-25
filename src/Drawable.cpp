@@ -16,7 +16,7 @@ namespace sge
     }
     Drawable::~Drawable()
     {
-        log::info("~Drawable");
+        log::destructor("Drawable");
     }
 
 

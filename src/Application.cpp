@@ -12,14 +12,14 @@ namespace sge
     Application::Application()
         : m_window("Sge app", 1024, 1024), m_render(m_window.getGlAddressFunc())
     {
-        log::info("Application Constructor");
+        log::constructor("Application");
         setAllCallbacks();
     }
     
     Application::Application(const char* title)
         : m_window(title, 1024, 1024), m_render(m_window.getGlAddressFunc())
     {
-        log::info("Application Constructor"); 
+        log::constructor("Application"); 
         setAllCallbacks();
     
     }
@@ -27,7 +27,7 @@ namespace sge
     Application::Application(const char* title, size_t width, size_t height)
         : m_window(title, width, height), m_render(m_window.getGlAddressFunc())
     {
-        log::info("Application Constructor");
+        log::constructor("Application");
         setAllCallbacks();
     }
 
@@ -49,9 +49,10 @@ namespace sge
 
     void Application::start()
     {
-        log::info("App start");
+        log::lifeTime log("APP", "main loop");
 
         rendering::ShaderProgram s("/home/jumbo/Projects/C_projects/Test_OpeGL_Engine/external/sge/res/shaders/2d/basic.vert", "/home/jumbo/Projects/C_projects/Test_OpeGL_Engine/external/sge/res/shaders/2d/basic.frag");
+
         while(m_window.is_active())
         {
             m_window.update();
@@ -84,7 +85,7 @@ namespace sge
 
     Application::~Application()
     {
-        log::info("Application Destructor"); 
+        log::destructor("Application Destructor"); 
     }
 
 }

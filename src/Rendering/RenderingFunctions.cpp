@@ -10,7 +10,7 @@ namespace sge::rendering
    
     unsigned int setup(const objects::Point &point)
     {
-        log::debug("ObjectSetup");
+        log::lifeTime log("OBJECT", "Setup");
 
         GLuint VAO = 0;
         glGenVertexArrays(1, &VAO);
@@ -44,6 +44,7 @@ namespace sge::rendering
 
     void draw(const objects::Point &point, unsigned int VAO)
     {
+        log::lifeTime log("OBJECT", "Draw");
         log::debug("%f", point.vertex.x);
         glBindVertexArray(VAO);
         glDrawArrays(GL_POINTS, 0, 1);

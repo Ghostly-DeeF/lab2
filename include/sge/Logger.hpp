@@ -12,6 +12,7 @@ namespace sge::log {
         INFO = 36,
         DEBUG = 32,
         TRACE = 35,
+        CLASS = 34
         
     };
     
@@ -25,6 +26,29 @@ namespace sge::log {
     void info(const char* format, ...) noexcept;
     void debug(const char* format, ...) noexcept;
     void trace(const char* format, ...) noexcept;
+
+    void constructor(const char* class_name, const char* format, ...) noexcept;
+    void constructor(const char* class_name) noexcept;
+
+    void destructor(const char* class_name, const char* format, ...) noexcept;
+    void destructor(const char* class_name) noexcept;
+     
+    
+    class lifeTime {
+    public:
+        lifeTime(const char* type, const char* name);
+        lifeTime(lifeTime &&) = delete;
+        lifeTime(const lifeTime &) = delete;
+        lifeTime &operator=(lifeTime &&) = delete;
+        lifeTime &operator=(const lifeTime &) = delete;
+        ~lifeTime();
+
+        static int getCount();
+    private:
+        const char* m_type;
+        const char* m_name;
+        inline static int count = 0;
+    };
 
 }
 
