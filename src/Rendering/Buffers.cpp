@@ -6,6 +6,25 @@
 
 namespace sge::rendering
 {
+
+    void IBuffer::bind()
+    {
+        log::debug("bind VBO %d", m_id);
+        glBindBuffer(GL_ARRAY_BUFFER, m_id);
+    }
+    
+    void IBuffer::unbind()
+    {
+        log::debug("unbind VBO %d", m_id);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+
+    IBuffer::Layout IBuffer::getAttributes(size_t it)
+    {
+        return m_attributes.at(it);
+    }
+
+
     VertexBuffer::VertexBuffer(size_t size) : m_size(size)
     {
         log::constructor("VertexBuffer");
@@ -24,24 +43,14 @@ namespace sge::rendering
         
         bind();
         glBufferSubData(GL_ARRAY_BUFFER, m_dataOffset, data.size(), data.data());
-        glEnableVertexAttribArray(m_numAttrib);
-        glVertexAttribPointer(m_numAttrib, data.countElements(), GL_FLOAT, GL_FALSE, 3 * sizeof(float), reinterpret_cast<void*>(m_dataOffset));
-        m_dataOffset += data.size();
-        ++m_numAttrib;
-        unbind();
-    }
+        //glEnableVertexAttribArray(m_numAttrib);
+        //glVertexAttribPointer(m_numAttrib, data.countElements(), GL_FLOAT, GL_FALSE, 3 * sizeof(float), reinterpret_cast<void*>(m_dataOffset));
 
-    void VertexBuffer::bind()
-    {
-        log::debug("bind VBO %d", m_id);
-        glBindBuffer(GL_ARRAY_BUFFER, m_id);
-    }
-    
-    void VertexBuffer::unbind()
-    {
-        log::debug("unbind VBO %d", m_id);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-    }
+        m_attributes.push_back({data.countElements(), m_dataOffset});
+
+        m_dataOffset += data.size();
+        unbind();
+    } 
 
     VertexBuffer::~VertexBuffer()
     {
