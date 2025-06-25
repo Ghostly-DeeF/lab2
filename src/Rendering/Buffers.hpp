@@ -30,6 +30,9 @@ namespace sge::rendering
         size_t m_size = 0;
         size_t m_dataOffset = 0;
         unsigned char m_numAttrib = 0;
+
+        void bind();
+        void unbind();
     };
  
     

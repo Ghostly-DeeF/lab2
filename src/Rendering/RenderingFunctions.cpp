@@ -14,7 +14,7 @@ namespace sge::rendering
 
         GLuint VAO = 0;
         glGenVertexArrays(1, &VAO);
-        log::debug("VAO id: %d", VAO);
+        log::info("VAO id: %d", VAO);
 	    //glGenBuffers(1, &VBO);
         
 	    glBindVertexArray(VAO);

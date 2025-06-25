@@ -76,7 +76,7 @@ namespace sge
     template<typename T, size_t N>
     ElementData<T, N>::~ElementData()
     {
-        log::destructor("~ElementData");
+        log::destructor("ElementData");
     }
 
 }
