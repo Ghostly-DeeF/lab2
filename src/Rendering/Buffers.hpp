@@ -24,10 +24,10 @@ namespace sge::rendering
             size_t offset = 0;
         };
 
-        void bind();
-        void unbind();
+        void bind() const;
+        void unbind() const;
 
-        Layout getAttributes(size_t it);
+        Layout getAttributes(size_t it) const;
         
     protected:
         std::vector<Layout> m_attributes;

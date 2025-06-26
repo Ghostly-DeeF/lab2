@@ -5,6 +5,8 @@
 
 #include <vector>
 
+#include "sge/Logger.hpp"
+
 namespace sge
 {
 
@@ -29,7 +31,8 @@ namespace sge
 
     template<typename T>
     void Renderer::add(T& object)
-    { 
+    {
+        log::lifeTime log("OBJECT", "Add");
         m_objects.emplace_back(object); 
         setup_(m_objects.back());
     }

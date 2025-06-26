@@ -10,7 +10,7 @@ namespace sge
 
     Window::Window(std::string title, size_t width, size_t height) : m_data( {std::move(title), width, height} )
     {
-        log::constructor("Window: %s", m_data.title.c_str());
+        log::constructor("Window:", m_data.title.c_str());
  
         glfwSetErrorCallback(
             [](int code, const char* err_str) {
@@ -181,7 +181,7 @@ namespace sge
 
     Window::~Window()
     {
-        log::destructor("Window: %s", m_data.title.c_str());
+        log::destructor("Window:", m_data.title.c_str());
         shutdown();
         if (--m_glfwInitNum <= 0)
         {

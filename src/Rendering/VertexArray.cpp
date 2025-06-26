@@ -13,13 +13,26 @@ namespace sge::rendering
         log::info("VAO id: %d", m_id);
     }
 
-    void VertexArray::bind()
+    VertexArray &VertexArray::operator=(VertexArray &&moved) noexcept
+    {
+        log::lifeTime log("Move", "VertexArray");
+        log::info("Move %d to %d", m_id, moved.m_id);
+        if (&moved == this)
+            return *this;
+
+        std::swap(m_id, moved.m_id);
+        std::swap(m_buffers, moved.m_buffers);
+        
+        return *this;
+    }
+
+    void VertexArray::bind() const
     {
         log::debug("bind VAO %d", m_id);
         glBindVertexArray(m_id);
     }
 
-    void VertexArray::unbind()
+    void VertexArray::unbind() const
     {
         log::debug("unbind VAO %d", m_id);
         glBindVertexArray(0);
@@ -36,7 +49,7 @@ namespace sge::rendering
         m_buffers.push_back(std::move(buffer));
     }
 
-    void VertexArray::setAttributes(IBuffer::Layout layout, unsigned id)
+    void VertexArray::setAttributes(IBuffer::Layout layout, unsigned id) const
     {
         log::debug("SetAttrib");
         bind();
@@ -49,7 +62,8 @@ namespace sge::rendering
 
     VertexArray::~VertexArray()
     {
-        log::destructor("VertexArray");
+        log::destructor("VertexArray", "%d", m_id);
+        glDeleteVertexArrays(1, &m_id);
     }
 
 }

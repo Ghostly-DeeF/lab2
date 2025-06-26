@@ -20,13 +20,14 @@ namespace sge
     }
 
 
-    unsigned int setup_(const Drawable &x)
+    void setup_(Drawable &x)
     {
-        return x.m_self->setup_();
+        log::lifeTime log("DRAWABLE", "Setup_");
+        x.m_VAO = std::move(x.m_self->setup_());
     }
 
-    void draw_(const Drawable &x, unsigned int id)
+    void draw_(const Drawable &x)
     {
-        x.m_self->draw_(id);
+        x.m_self->draw_(x.m_VAO);
     }
 }

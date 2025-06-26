@@ -7,19 +7,19 @@
 namespace sge::rendering
 {
 
-    void IBuffer::bind()
+    void IBuffer::bind() const
     {
         log::debug("bind VBO %d", m_id);
         glBindBuffer(GL_ARRAY_BUFFER, m_id);
     }
     
-    void IBuffer::unbind()
+    void IBuffer::unbind() const
     {
         log::debug("unbind VBO %d", m_id);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
-    IBuffer::Layout IBuffer::getAttributes(size_t it)
+    IBuffer::Layout IBuffer::getAttributes(size_t it) const
     {
         return m_attributes.at(it);
     }

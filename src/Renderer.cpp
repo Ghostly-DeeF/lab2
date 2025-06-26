@@ -16,9 +16,11 @@ namespace sge
 
     void Renderer::rendering()
     {
+        log::lifeTime log("SCENE", "Render");
+
         for(const auto &object : m_objects)
-        {
-            draw_(object, 1);    
+        { 
+            draw_(object);    
         }
     }
 

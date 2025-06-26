@@ -2,14 +2,14 @@
 
 #include <glad/glad.h>
 #include "Buffers.hpp"
-#include "VertexArray.hpp"
+
 
 #include "sge/Logger.hpp"
 
 namespace sge::rendering
 {
    
-    unsigned int setup(const objects::Point &point)
+    VertexArray setup(const objects::Point &point)
     {
         log::lifeTime log("OBJECT", "Setup");
 
@@ -21,7 +21,7 @@ namespace sge::rendering
         buffer->push(color_data);
 
         VertexArray vao;
-        GLuint VAO = 0;
+        //GLuint VAO = 0;
         //glGenVertexArrays(1, &VAO);
         //log::info("VAO id: %d", VAO);
 	    //glGenBuffers(1, &VBO);
@@ -52,16 +52,16 @@ namespace sge::rendering
         //glBindBuffer(GL_ARRAY_BUFFER, 0);
         //glBindVertexArray(0);
         //vao.unbind();
-        return VAO;
+        return vao;
     }
 
-    void draw(const objects::Point &point, unsigned int VAO)
+    void draw(const objects::Point &point, const VertexArray &VAO)
     {
         log::lifeTime log("OBJECT", "Draw");
         log::debug("%f", point.vertex.x);
-        glBindVertexArray(VAO);
+        VAO.bind();
         glDrawArrays(GL_POINTS, 0, 1);
-        glBindVertexArray(0);
+        VAO.unbind();
     } 
     
 }

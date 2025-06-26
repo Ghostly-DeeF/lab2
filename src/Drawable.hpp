@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "Rendering/RenderingFunctions.hpp"
+#include "Rendering/VertexArray.hpp"
 #include "sge/Logger.hpp"
 
 namespace sge
@@ -18,16 +19,16 @@ namespace sge
         Drawable &operator=(Drawable x) noexcept;
         ~Drawable();
 
-        friend unsigned int setup_(const Drawable&);
-        friend void draw_(const Drawable&, unsigned int);
+        friend void setup_( Drawable&);
+        friend void draw_(const Drawable&);
 
     private:
         struct IDrawable
         {
             virtual ~IDrawable() = default;
             virtual std::unique_ptr<IDrawable> copy_() const = 0;
-            virtual unsigned int setup_() const = 0;
-            virtual void draw_(unsigned int) const = 0;
+            virtual rendering::VertexArray setup_() const = 0;
+            virtual void draw_(const rendering::VertexArray &VAO) const = 0;
         };
 
         template<class T>
@@ -40,26 +41,28 @@ namespace sge
             {
                 return std::make_unique<DrawableObject>(*this);
             }
-            unsigned int setup_() const override;
-            void draw_(unsigned int) const override;
+
+            rendering::VertexArray setup_() const override;
+            void draw_(const rendering::VertexArray &VAO) const override;
             
         private:
             T& m_data;
         };
 
         std::unique_ptr<IDrawable> m_self;
+        rendering::VertexArray m_VAO;
     };
 
     template<typename T>
-    unsigned int Drawable::DrawableObject<T>::setup_() const
+    rendering::VertexArray Drawable::DrawableObject<T>::setup_() const
     {
         return ::sge::rendering::setup(m_data); 
     }
 
     template<typename T>
-    void Drawable::DrawableObject<T>::draw_(unsigned int id) const
+    void Drawable::DrawableObject<T>::draw_(const rendering::VertexArray &VAO) const
     {
-        ::sge::rendering::draw(m_data, id); 
+        ::sge::rendering::draw(m_data, VAO); 
     }
 
 }
