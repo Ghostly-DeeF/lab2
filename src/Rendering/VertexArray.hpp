@@ -23,6 +23,7 @@ namespace sge::rendering
 
         void bind() const;
         void unbind() const;
+        unsigned id() const;
 
     private:
         unsigned m_id = 0;

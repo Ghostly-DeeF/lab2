@@ -24,4 +24,9 @@ namespace sge
         }
     }
 
+    Renderer::~Renderer()
+    {
+        log::destructor("Renderer");
+    }
+
 }

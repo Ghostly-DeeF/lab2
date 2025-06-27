@@ -5,7 +5,7 @@
 #include "Rendering/RenderingFunctions.hpp"
 #include "Rendering/VertexArray.hpp"
 #include "sge/Logger.hpp"
-
+//Странный вызов деструкторов из за которых происходит отрисовка удаленного объекта?
 namespace sge
 {
 
@@ -13,7 +13,7 @@ namespace sge
     {
     public:
         template<typename T>
-        explicit Drawable(T& object) : m_self(std::make_unique<DrawableObject<T>>(object)) {log::constructor("Drawable"); }
+        explicit Drawable(T& object);
         Drawable(const Drawable& x);
         Drawable(Drawable&&) noexcept = default;
         Drawable &operator=(Drawable x) noexcept;
@@ -21,6 +21,8 @@ namespace sge
 
         friend void setup_( Drawable&);
         friend void draw_(const Drawable&);
+
+        unsigned id();
 
     private:
         struct IDrawable
@@ -52,6 +54,17 @@ namespace sge
         std::unique_ptr<IDrawable> m_self;
         rendering::VertexArray m_VAO;
     };
+
+    template<typename T>
+    Drawable::Drawable(T& object)
+    : m_self(std::make_unique<Drawable::DrawableObject<T>>(object))
+    {
+        log::constructor("Drawable");
+        log::lifeTime log("DRAWABLE", "Setup to constructor");
+        m_VAO = std::move(m_self->setup_());
+        log::info("VAO in Drawable %d", m_VAO.id());
+    }
+
 
     template<typename T>
     rendering::VertexArray Drawable::DrawableObject<T>::setup_() const

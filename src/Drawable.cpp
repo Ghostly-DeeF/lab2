@@ -6,8 +6,14 @@
 
 namespace sge
 {
+
+    
+
     Drawable::Drawable(const Drawable& x) :
-        m_self(x.m_self->copy_()) {}  
+        m_self(x.m_self->copy_())
+    {
+        log::constructor("Drawable copy");
+    }  
     
     Drawable &Drawable::operator=(Drawable x) noexcept
     {
@@ -16,7 +22,12 @@ namespace sge
     }
     Drawable::~Drawable()
     {
-        log::destructor("Drawable");
+        log::destructor("Drawable", "%d", m_VAO.id());
+    }
+
+    unsigned Drawable::id()
+    {
+        return m_VAO.id();
     }
 
 

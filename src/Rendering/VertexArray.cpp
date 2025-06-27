@@ -16,7 +16,7 @@ namespace sge::rendering
     VertexArray &VertexArray::operator=(VertexArray &&moved) noexcept
     {
         log::lifeTime log("Move", "VertexArray");
-        log::info("Move %d to %d", m_id, moved.m_id);
+        log::info("Move %d to %d", moved.m_id, m_id);
         if (&moved == this)
             return *this;
 
@@ -36,6 +36,11 @@ namespace sge::rendering
     {
         log::debug("unbind VAO %d", m_id);
         glBindVertexArray(0);
+    }
+    
+    unsigned VertexArray::id() const
+    {
+        return m_id;
     }
 
     void VertexArray::push(std::unique_ptr<IBuffer> buffer)

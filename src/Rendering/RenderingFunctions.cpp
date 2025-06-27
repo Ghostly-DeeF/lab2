@@ -21,6 +21,7 @@ namespace sge::rendering
         buffer->push(color_data);
 
         VertexArray vao;
+        log::info("VAO in Setup %d", vao.id());
         //GLuint VAO = 0;
         //glGenVertexArrays(1, &VAO);
         //log::info("VAO id: %d", VAO);
