@@ -17,7 +17,7 @@ namespace sge::rendering
         ShaderProgram &operator=(ShaderProgram &&) noexcept = default;
         ShaderProgram &operator=(const ShaderProgram &) = default;
     
-        ~ShaderProgram() = default;
+        ~ShaderProgram();
 
         void use() const;
     

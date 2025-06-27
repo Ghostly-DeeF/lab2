@@ -3,8 +3,9 @@
 
 #include <memory>
 #include "Rendering/RenderingFunctions.hpp"
+#include "Rendering/VertexArray.hpp"
 #include "sge/Logger.hpp"
-
+//Странный вызов деструкторов из за которых происходит отрисовка удаленного объекта?
 namespace sge
 {
 
@@ -12,54 +13,69 @@ namespace sge
     {
     public:
         template<typename T>
-        explicit Drawable(T& object) : m_self(std::make_unique<DrawableObject<T>>(object)) {log::info("Drawable"); }
+        explicit Drawable(T& object);
         Drawable(const Drawable& x);
         Drawable(Drawable&&) noexcept = default;
         Drawable &operator=(Drawable x) noexcept;
         ~Drawable();
 
-        friend unsigned int setup_(const Drawable&);
-        friend void draw_(const Drawable&, unsigned int);
+        friend void setup_( Drawable&);
+        friend void draw_(const Drawable&);
+
+        unsigned id();
 
     private:
         struct IDrawable
         {
             virtual ~IDrawable() = default;
             virtual std::unique_ptr<IDrawable> copy_() const = 0;
-            virtual unsigned int setup_() const = 0;
-            virtual void draw_(unsigned int) const = 0;
+            virtual rendering::VertexArray setup_() const = 0;
+            virtual void draw_(const rendering::VertexArray &VAO) const = 0;
         };
 
         template<class T>
         class DrawableObject final : public IDrawable
         {
         public:
-            explicit DrawableObject(T& x) : m_data(x) { log::info("DrawableObject"); }
-            ~DrawableObject() override { log::info("~DrawableObject"); }
+            explicit DrawableObject(T& x) : m_data(x) { log::constructor("DrawableObject"); }
+            ~DrawableObject() override { log::destructor("DrawableObject"); }
             std::unique_ptr<IDrawable> copy_() const override
             {
                 return std::make_unique<DrawableObject>(*this);
             }
-            unsigned int setup_() const override;
-            void draw_(unsigned int) const override;
+
+            rendering::VertexArray setup_() const override;
+            void draw_(const rendering::VertexArray &VAO) const override;
             
         private:
             T& m_data;
         };
 
         std::unique_ptr<IDrawable> m_self;
+        rendering::VertexArray m_VAO;
     };
 
     template<typename T>
-    unsigned int Drawable::DrawableObject<T>::setup_() const
+    Drawable::Drawable(T& object)
+    : m_self(std::make_unique<Drawable::DrawableObject<T>>(object))
+    {
+        log::constructor("Drawable");
+        log::lifeTime log("DRAWABLE", "Setup to constructor");
+        m_VAO = std::move(m_self->setup_());
+        log::info("VAO in Drawable %d", m_VAO.id());
+    }
+
+
+    template<typename T>
+    rendering::VertexArray Drawable::DrawableObject<T>::setup_() const
     {
         return ::sge::rendering::setup(m_data); 
     }
 
     template<typename T>
-    void Drawable::DrawableObject<T>::draw_(unsigned int id) const
+    void Drawable::DrawableObject<T>::draw_(const rendering::VertexArray &VAO) const
     {
-        ::sge::rendering::draw(m_data, id); 
+        ::sge::rendering::draw(m_data, VAO); 
     }
 
 }

@@ -3,28 +3,42 @@
 #include <glad/glad.h>
 #include "Buffers.hpp"
 
+
 #include "sge/Logger.hpp"
 
 namespace sge::rendering
 {
    
-    unsigned int setup(const objects::Point &point)
+    VertexArray setup(const objects::Point &point)
     {
-        log::debug("ObjectSetup");
+        log::lifeTime log("OBJECT", "Setup");
 
-        GLuint VAO = 0;
-        glGenVertexArrays(1, &VAO);
-        log::debug("VAO id: %d", VAO);
-	    //glGenBuffers(1, &VBO);
-        
-	    glBindVertexArray(VAO);
-        
         ElementData<objects::Vertex, 1> vert_data({point.vertex}, static_cast<unsigned char>(objects::ItemType::VERTEX));
         ElementData<glm::vec4, 1> color_data({point.color}, static_cast<unsigned char>(objects::ItemType::RGBA));
 
-        VertexBuffer buffer(vert_data.size() + color_data.size());
-        buffer.push(vert_data);
-        buffer.push(color_data);
+        auto buffer = std::make_unique<VertexBuffer>(vert_data.size() + color_data.size());
+        buffer->push(vert_data);
+        buffer->push(color_data);
+
+        VertexArray vao;
+        log::info("VAO in Setup %d", vao.id());
+        //GLuint VAO = 0;
+        //glGenVertexArrays(1, &VAO);
+        //log::info("VAO id: %d", VAO);
+	    //glGenBuffers(1, &VBO);
+        
+	    //glBindVertexArray(VAO);
+        
+        //vao.bind();
+
+        
+
+
+        //buffer->bind();
+        vao.push(std::move(buffer));
+        //vao.setAttributes(buffer.getAttributes(0), 0);
+        //vao.setAttributes(buffer.getAttributes(1), 1);
+        //buffer->unbind();
         
 	    //glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	    //glBufferData(GL_ARRAY_BUFFER, sizeof(objects::Point), &point, GL_STATIC_DRAW);
@@ -37,17 +51,18 @@ namespace sge::rendering
 	    //glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(objects::Point), (void*)offsetof(objects::Point, color));
     
         //glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
- 
-        return VAO;
+        //glBindVertexArray(0);
+        //vao.unbind();
+        return vao;
     }
 
-    void draw(const objects::Point &point, unsigned int VAO)
+    void draw(const objects::Point &point, const VertexArray &VAO)
     {
+        log::lifeTime log("OBJECT", "Draw");
         log::debug("%f", point.vertex.x);
-        glBindVertexArray(VAO);
+        VAO.bind();
         glDrawArrays(GL_POINTS, 0, 1);
-        glBindVertexArray(0);
+        VAO.unbind();
     } 
     
 }

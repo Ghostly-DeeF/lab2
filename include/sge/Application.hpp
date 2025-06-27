@@ -22,11 +22,16 @@ namespace sge
     
         void start();
 
-       Renderer drawableObjects; 
-        
     private:
         Window m_window;
         GlRender m_render;
+
+    public:
+
+       Renderer drawableObjects; 
+        
+    private:
+        
         virtual void onUpdate() = 0;
 
         virtual void userResizeCallback(size_t width, size_t height) {};

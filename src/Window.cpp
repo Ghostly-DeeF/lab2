@@ -10,7 +10,7 @@ namespace sge
 
     Window::Window(std::string title, size_t width, size_t height) : m_data( {std::move(title), width, height} )
     {
-        log::info("Window constructor: %s", m_data.title.c_str());
+        log::constructor("Window:", m_data.title.c_str());
  
         glfwSetErrorCallback(
             [](int code, const char* err_str) {
@@ -26,7 +26,7 @@ namespace sge
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); 
-        //glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
         try
         {
             m_pWindow = glfwCreateWindow(m_data.width, m_data.height, m_data.title.c_str(), NULL, NULL);
@@ -42,7 +42,7 @@ namespace sge
         {
             if (--m_glfwInitNum <= 0)
             {
-                log::info("GLFW Terminate");
+                log::warn("GLFW Terminate");
                 glfwTerminate();
             }
             throw;
@@ -181,7 +181,7 @@ namespace sge
 
     Window::~Window()
     {
-        log::info("Window destructor: %s", m_data.title.c_str());
+        log::destructor("Window:", m_data.title.c_str());
         shutdown();
         if (--m_glfwInitNum <= 0)
         {

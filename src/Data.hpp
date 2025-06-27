@@ -45,7 +45,7 @@ namespace sge
     template<typename T, size_t N>
     ElementData<T, N>::ElementData(std::array<T, N> data, unsigned char count_data_item) : m_data(data), m_dataItem(count_data_item)
     {
-        log::debug("ElementData");
+        log::constructor("ElementData");
     }
 
     template<typename T, size_t N>
@@ -76,7 +76,7 @@ namespace sge
     template<typename T, size_t N>
     ElementData<T, N>::~ElementData()
     {
-        log::debug("~ElementData");
+        log::destructor("ElementData");
     }
 
 }
