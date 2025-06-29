@@ -21,10 +21,12 @@ namespace sge
         virtual ~Application();
     
         void start();
-        size_t width();
-        size_t height();
-        double cursorX();
-        double cursorY();
+        size_t width() const noexcept;
+        size_t height() const noexcept;
+        double cursorX() const noexcept;
+        double cursorY() const noexcept;
+        bool keyPress(input::Keyboard key) const;
+        bool keyPress(input::Mouse key) const;
 
     private:
         Window m_window;

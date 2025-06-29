@@ -82,24 +82,34 @@ namespace sge
         );
     }
 
-    size_t Application::width()
+    size_t Application::width() const noexcept
     {
         return m_window.getWidth();
     }
 
-    size_t Application::height()
+    size_t Application::height() const noexcept
     {
         return m_window.getHeight();
     }
 
-    double Application::cursorX()
+    double Application::cursorX() const noexcept
     {
         return m_window.getCursorX();
     }
 
-    double Application::cursorY()
+    double Application::cursorY() const noexcept
     {
         return m_window.getCursorY();
+    }
+
+    bool Application::keyPress(input::Keyboard key) const
+    {
+        return m_window.keyPress(key);
+    }
+
+    bool Application::keyPress(input::Mouse key) const
+    {
+        return m_window.keyPress(key);
     }
 
     Application::~Application()

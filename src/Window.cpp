@@ -26,11 +26,11 @@ namespace sge
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 	    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); 
-        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE); 
         try
         {
             m_pWindow = glfwCreateWindow(m_data.width, m_data.height, m_data.title.c_str(), NULL, NULL);
-        
+            glfwSetInputMode(m_pWindow, GLFW_STICKY_KEYS, GLFW_TRUE); 
             glfwMakeContextCurrent(m_pWindow);
 
             glfwSetWindowUserPointer(m_pWindow, &m_data);
@@ -164,6 +164,16 @@ namespace sge
     double Window::getCursorY() const noexcept
     {
         return m_data.cursor.y;
+    }
+    
+    bool Window::keyPress(input::Keyboard key) const
+    {
+        return glfwGetKey(m_pWindow, static_cast<int>(key)) == GLFW_PRESS? true: false;
+    }
+
+    bool Window::keyPress(input::Mouse key) const
+    {
+        return glfwGetMouseButton(m_pWindow, static_cast<int>(key)) == GLFW_PRESS? true: false;
     }
 
     void Window::shutdown()

@@ -2,6 +2,7 @@
 #define SGE_WINDOW_HPP_
 
 #include "Events.hpp"
+#include "KeyMap.hpp"
 #include <string>
 
 struct GLFWwindow;
@@ -25,6 +26,8 @@ namespace sge
         int getHeight() const noexcept;
         double getCursorX() const noexcept;
         double getCursorY() const noexcept;
+        bool keyPress(input::Keyboard key) const;
+        bool keyPress(input::Mouse key) const;
         void shutdown();
         bool is_shutdown() const noexcept; 
         GLaddr getGlAddressFunc();
