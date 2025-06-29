@@ -10,7 +10,7 @@ namespace sge
 
     Window::Window(std::string title, size_t width, size_t height) : m_data( {std::move(title), width, height} )
     {
-        log::constructor("Window:", m_data.title.c_str());
+        log::constructor("Window: %s", m_data.title.c_str());
  
         glfwSetErrorCallback(
             [](int code, const char* err_str) {
@@ -18,7 +18,7 @@ namespace sge
             }
         );
 
-        glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
+        //glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
 
         glfwInit();
         ++m_glfwInitNum;
@@ -58,6 +58,7 @@ namespace sge
         m_data.title = std::move(moved.m_data.title);
         m_data.width = moved.m_data.width;
         m_data.height = moved.m_data.height;
+        m_data.cursor = moved.m_data.cursor;
         m_data.custom_resize_function = moved.m_data.custom_resize_function;
 
         ++m_glfwInitNum;
@@ -76,6 +77,7 @@ namespace sge
         m_data.title = std::move(moved.m_data.title);
         m_data.width = moved.m_data.width;
         m_data.height = moved.m_data.height;
+        m_data.cursor = moved.m_data.cursor;
         m_data.custom_resize_function = moved.m_data.custom_resize_function;
  
         ++m_glfwInitNum;
@@ -129,6 +131,9 @@ namespace sge
                 WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(pWindow));
                 if (data.custom_cursor_function)
                 {
+                    data.cursor.x = xpos;
+                    data.cursor.y = ypos;
+
                     cursorPos cursor_data{xpos, ypos};
                     data.custom_cursor_function(cursor_data);
                 }
@@ -149,6 +154,16 @@ namespace sge
     int Window::getHeight() const noexcept
     {
         return m_data.height;
+    }
+
+    double Window::getCursorX() const noexcept
+    {
+        return m_data.cursor.x;
+    }
+
+    double Window::getCursorY() const noexcept
+    {
+        return m_data.cursor.y;
     }
 
     void Window::shutdown()
@@ -181,7 +196,7 @@ namespace sge
 
     Window::~Window()
     {
-        log::destructor("Window:", m_data.title.c_str());
+        log::destructor("Window: %s", m_data.title.c_str());
         shutdown();
         if (--m_glfwInitNum <= 0)
         {

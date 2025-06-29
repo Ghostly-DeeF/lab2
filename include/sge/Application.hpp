@@ -21,6 +21,10 @@ namespace sge
         virtual ~Application();
     
         void start();
+        size_t width();
+        size_t height();
+        double cursorX();
+        double cursorY();
 
     private:
         Window m_window;

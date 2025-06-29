@@ -23,6 +23,8 @@ namespace sge
         bool is_active() const noexcept;
         int getWidth() const noexcept; 
         int getHeight() const noexcept;
+        double getCursorX() const noexcept;
+        double getCursorY() const noexcept;
         void shutdown();
         bool is_shutdown() const noexcept; 
         GLaddr getGlAddressFunc();
@@ -37,6 +39,12 @@ namespace sge
             std::string title = "";
             size_t width = 0;
             size_t height = 0;
+            struct cursorData
+            {
+                double x = .0;
+                double y = .0;
+            };
+            cursorData cursor = {.0, .0};
             resizeCallback custom_resize_function;
             cursorCallback custom_cursor_function;
         };

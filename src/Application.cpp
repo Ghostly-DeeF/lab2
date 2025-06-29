@@ -17,7 +17,7 @@ namespace sge
     }
     
     Application::Application(const char* title)
-        : m_window(title, 1024, 1024), m_render(m_window.getGlAddressFunc())
+        : m_window(title, 1024, 1024), m_render(m_window.getGlAddressFunc()) 
     {
         log::constructor("Application"); 
         setAllCallbacks();
@@ -82,6 +82,25 @@ namespace sge
         );
     }
 
+    size_t Application::width()
+    {
+        return m_window.getWidth();
+    }
+
+    size_t Application::height()
+    {
+        return m_window.getHeight();
+    }
+
+    double Application::cursorX()
+    {
+        return m_window.getCursorX();
+    }
+
+    double Application::cursorY()
+    {
+        return m_window.getCursorY();
+    }
 
     Application::~Application()
     {
