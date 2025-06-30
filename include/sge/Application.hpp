@@ -21,8 +21,10 @@ namespace sge
         virtual ~Application();
     
         void start();
+
         size_t width() const noexcept;
         size_t height() const noexcept;
+        bool isFocused() const noexcept;
 
         double cursorX() const noexcept;
         double cursorY() const noexcept;

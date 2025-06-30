@@ -92,6 +92,11 @@ namespace sge
         return m_window.getHeight();
     }
 
+    bool Application::isFocused() const noexcept
+    {
+        return m_window.isFocused();
+    }
+
     double Application::cursorX() const noexcept
     {
         return m_window.getCursorX();

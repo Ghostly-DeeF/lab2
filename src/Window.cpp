@@ -36,6 +36,8 @@ namespace sge
             glfwSetWindowUserPointer(m_pWindow, &m_data);
             setResizeCallback();
             setCursorCallback();
+            setScrollCallback();
+            setFocusCallback();
 
         }
         catch(...)
@@ -91,8 +93,17 @@ namespace sge
         if (m_isDestroy)
             throw errors::glfw_error("Window update failure. Window is shutdown");
 
-        glfwSwapBuffers(m_pWindow);
-        glfwPollEvents();
+        log::debug("Focus %d", glfwGetWindowAttrib(m_pWindow, GLFW_FOCUSED));
+        log::debug("Foc %d", m_data.focused);
+        if (m_data.focused)
+        { 
+            glfwSwapBuffers(m_pWindow);
+            glfwPollEvents();
+        }
+        else
+        {
+            glfwWaitEvents();
+        } 
     }
 
     void Window::setResizeCallback()
@@ -140,7 +151,10 @@ namespace sge
                 }
             }
         );
+    }
 
+    void Window::setScrollCallback()
+    {
         glfwSetScrollCallback(m_pWindow,
             [](GLFWwindow* pWindow, double xoffset, double yoffset)
             {
@@ -156,19 +170,43 @@ namespace sge
         );
     }
 
+    void Window::setFocusCallback()
+    {
+        glfwSetWindowFocusCallback(m_pWindow,
+            [](GLFWwindow* pWindow, int focused)
+            {
+                if (glfwGetWindowUserPointer(pWindow) == NULL)
+                return;
+                
+                WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(pWindow));
+
+                if (focused) {
+                    data.focused = true;
+                } else {
+                    data.focused = false;
+                }
+            }
+        );
+    }
+
     bool Window::is_active() const noexcept
     {
         return m_pWindow != nullptr? !glfwWindowShouldClose(m_pWindow) : false;
     }
 
-    int Window::getWidth() const noexcept
+    size_t Window::getWidth() const noexcept
     {
         return m_data.width;
     }
 
-    int Window::getHeight() const noexcept
+    size_t Window::getHeight() const noexcept
     {
         return m_data.height;
+    }
+
+    bool Window::isFocused() const noexcept
+    {
+        return m_data.focused;
     }
 
     double Window::getCursorX() const noexcept
