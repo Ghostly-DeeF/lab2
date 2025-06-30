@@ -28,6 +28,8 @@ namespace sge
         double getCursorY() const noexcept;
         bool keyPress(input::Keyboard key) const;
         bool keyPress(input::Mouse key) const;
+        double getScrollX() const noexcept;
+        double getScrollY() const noexcept;
         void shutdown();
         bool is_shutdown() const noexcept; 
         GLaddr getGlAddressFunc();
@@ -48,6 +50,12 @@ namespace sge
                 double y = .0;
             };
             cursorData cursor = {.0, .0};
+            struct scrollData
+            {
+                double x = .0;
+                double y = .0;
+            };
+            scrollData scroll = {.0, .0};
             resizeCallback custom_resize_function;
             cursorCallback custom_cursor_function;
         };

@@ -23,10 +23,13 @@ namespace sge
         void start();
         size_t width() const noexcept;
         size_t height() const noexcept;
+
         double cursorX() const noexcept;
         double cursorY() const noexcept;
         bool keyPress(input::Keyboard key) const;
         bool keyPress(input::Mouse key) const;
+        double scrollX() const noexcept;
+        double scrollY() const noexcept;
 
     private:
         Window m_window;

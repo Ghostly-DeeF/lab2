@@ -112,6 +112,16 @@ namespace sge
         return m_window.keyPress(key);
     }
 
+    double Application::scrollX() const noexcept
+    {
+        return m_window.getScrollX();
+    }
+
+    double Application::scrollY() const noexcept
+    {
+        return m_window.getScrollY();
+    }
+
     Application::~Application()
     {
         log::destructor("Application Destructor"); 

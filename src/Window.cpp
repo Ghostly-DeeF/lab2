@@ -129,15 +129,30 @@ namespace sge
                     return;
             
                 WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(pWindow));
+
+                data.cursor.x = xpos;
+                data.cursor.y = ypos;
+
                 if (data.custom_cursor_function)
                 {
-                    data.cursor.x = xpos;
-                    data.cursor.y = ypos;
-
                     cursorPos cursor_data{xpos, ypos};
                     data.custom_cursor_function(cursor_data);
                 }
             }
+        );
+
+        glfwSetScrollCallback(m_pWindow,
+            [](GLFWwindow* pWindow, double xoffset, double yoffset)
+            {
+                if (glfwGetWindowUserPointer(pWindow) == NULL)
+                return;
+                
+                WindowData& data = *static_cast<WindowData*>(glfwGetWindowUserPointer(pWindow));
+
+                data.scroll.x = xoffset;
+                data.scroll.y = yoffset;
+
+            }     
         );
     }
 
@@ -175,6 +190,17 @@ namespace sge
     {
         return glfwGetMouseButton(m_pWindow, static_cast<int>(key)) == GLFW_PRESS? true: false;
     }
+
+    double Window::getScrollX() const noexcept
+    {
+        return m_data.scroll.x;
+    }
+
+    double Window::getScrollY() const noexcept
+    {
+        return m_data.scroll.y;
+    }
+
 
     void Window::shutdown()
     {
