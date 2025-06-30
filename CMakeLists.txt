@@ -37,8 +37,8 @@ target_link_libraries(${PROJECT_NAME} glad)
 add_subdirectory(external/glm)
 target_link_libraries(${PROJECT_NAME} glm)
 
-add_subdirectory(external/assimp)
-target_link_libraries(${PROJECT_NAME} assimp)
-target_compile_options(assimp PRIVATE -Wno-error=implicit-fallthrough
-                                      -Wno-error=ignored-qualifiers
-                                      -Wno-error=calloc-transposed-args)
+#add_subdirectory(external/assimp)
+#target_link_libraries(${PROJECT_NAME} assimp)
+#target_compile_options(assimp PRIVATE -Wno-error=implicit-fallthrough
+#                                      -Wno-error=ignored-qualifiers
+#                                      -Wno-error=calloc-transposed-args)
