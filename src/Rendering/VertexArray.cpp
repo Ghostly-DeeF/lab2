@@ -47,7 +47,7 @@ namespace sge::rendering
     {
         log::lifeTime log("VERTEXARRAY", "Push buffer");
         buffer->bind();
-        for(int i = 0; i < 2; ++i)
+        for(int i = 0; i < buffer->getCountAttributes(); ++i)
             setAttributes(buffer->getAttributes(i), i);
         buffer->unbind();
 

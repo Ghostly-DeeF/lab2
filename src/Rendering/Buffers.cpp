@@ -24,6 +24,11 @@ namespace sge::rendering
         return m_attributes.at(it);
     }
 
+    unsigned IBuffer::getCountAttributes() const noexcept
+    {
+        return m_attributes.size();
+    }
+
 
     VertexBuffer::VertexBuffer(size_t size) : m_size(size)
     {

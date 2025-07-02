@@ -28,6 +28,7 @@ namespace sge::rendering
         void unbind() const;
 
         Layout getAttributes(size_t it) const;
+        unsigned getCountAttributes() const noexcept;
         
     protected:
         std::vector<Layout> m_attributes;

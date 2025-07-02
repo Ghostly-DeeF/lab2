@@ -83,6 +83,16 @@ namespace sge::rendering
         glUseProgram(m_program_id);
     }
 
+    void ShaderProgram::setVec3f(std::string_view name, float x, float y, float z) const
+    {
+        glUniform3f(glGetUniformLocation(m_program_id, std::string(name).c_str()), x, y, z);
+    }
+
+    void ShaderProgram::setVec4f(std::string_view name, float x, float y, float z, float w) const
+    {
+        glUniform4f(glGetUniformLocation(m_program_id, std::string(name).c_str()), x, y, z, w);
+    }
+
     ShaderProgram::~ShaderProgram()
     {
         log::destructor("ShaderProgram");

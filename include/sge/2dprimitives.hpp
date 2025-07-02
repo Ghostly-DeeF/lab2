@@ -24,6 +24,7 @@ namespace sge::objects
     struct Point
     {
         Vertex vertex;
+        unsigned size = 1;
         glm::vec4 color{.0f, .0f, .0f, .0f};
 
         glm::vec3 move(glm::vec3);

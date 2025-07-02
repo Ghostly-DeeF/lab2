@@ -14,12 +14,18 @@ namespace sge::rendering
     {
         log::lifeTime log("OBJECT", "Setup");
 
-        ElementData<objects::Vertex, 1> vert_data({point.vertex}, static_cast<unsigned char>(objects::ItemType::VERTEX));
-        ElementData<glm::vec4, 1> color_data({point.color}, static_cast<unsigned char>(objects::ItemType::RGBA));
+        std::array<float, 3> cord = {.0f, .0f, .0f};
+        //std::array<float, 4> color = {1.0f, 1.0f, 1.0f, 1.0f};
 
-        auto buffer = std::make_unique<VertexBuffer>(vert_data.size() + color_data.size());
+        ElementData<float, 3> vert_data(cord, static_cast<unsigned char>(objects::ItemType::VERTEX));
+        //ElementData<float, 4> color_data(color, static_cast<unsigned char>(objects::ItemType::RGBA));
+
+        //ElementData<objects::Vertex, 1> vert_data({point.vertex}, static_cast<unsigned char>(objects::ItemType::VERTEX));
+        //ElementData<glm::vec4, 1> color_data({point.color}, static_cast<unsigned char>(objects::ItemType::RGBA));
+
+        auto buffer = std::make_unique<VertexBuffer>(vert_data.size());// + color_data.size());
         buffer->push(vert_data);
-        buffer->push(color_data);
+        //buffer->push(color_data);
 
         VertexArray vao;
         log::info("VAO in Setup %d", vao.id());
@@ -61,7 +67,11 @@ namespace sge::rendering
     {
         log::lifeTime log("OBJECT", "Draw");
         log::debug("%f", point.vertex.x);
+
         shader.use();
+        shader.setVec3f("move", point.vertex.x, point.vertex.y, point.vertex.y);
+        shader.setVec4f("color", point.color.r, point.color.g, point.color.b, point.color.a);
+        glPointSize(point.size);
         VAO.bind();
         glDrawArrays(GL_POINTS, 0, 1);
         VAO.unbind();

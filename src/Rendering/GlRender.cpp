@@ -18,6 +18,7 @@ namespace sge::rendering
         setErrorCallback();
         glEnable(GL_DEPTH_TEST);
 	    glEnable(GL_CULL_FACE);
+        //glEnable(GL_PROGRAM_POINT_SIZE);
     }
 
     void GlRender::setWindowSize(size_t width, size_t height)

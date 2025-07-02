@@ -2,6 +2,7 @@
 #define SGE_RENDERING_SHADERPROGRAM_HPP_
 
 #include <glad/glad.h>
+#include <string_view>
 #include <string>
 
 namespace sge::rendering
@@ -20,6 +21,9 @@ namespace sge::rendering
         ~ShaderProgram();
 
         void use() const;
+        
+        void setVec3f(std::string_view name, float x, float y, float z) const;
+        void setVec4f(std::string_view name, float x, float y, float z, float w) const;
     
     private:
 
