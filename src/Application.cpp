@@ -51,14 +51,14 @@ namespace sge
     {
         log::lifeTime log("APP", "main loop");
 
-        rendering::ShaderProgram s("/home/jumbo/Projects/C_projects/Test_OpeGL_Engine/external/sge/res/shaders/2d/basic.vert", "/home/jumbo/Projects/C_projects/Test_OpeGL_Engine/external/sge/res/shaders/2d/basic.frag");
+        //rendering::ShaderProgram s("/home/jumbo/Projects/C_projects/Test_OpeGL_Engine/external/sge/res/shaders/2d/basic.vert", "/home/jumbo/Projects/C_projects/Test_OpeGL_Engine/external/sge/res/shaders/2d/basic.frag");
 
         while(m_window.is_active())
         {
             m_window.update();
             m_render.update();
             onUpdate();
-            s.use();
+            //shaderManager.at("basic 2d").use();
             drawableObjects.rendering(); 
         }
         m_window.shutdown();

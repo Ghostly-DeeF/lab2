@@ -16,8 +16,8 @@ namespace sge::rendering
         std::string vert_source = "";
         std::string frag_source = "";
 
-        vert_source = getStrFromFile("/home/jumbo/Projects/C_projects/Test_OpeGL_Engine/external/sge/res/shaders/2d/basic.vert");
-        frag_source = getStrFromFile("/home/jumbo/Projects/C_projects/Test_OpeGL_Engine/external/sge/res/shaders/2d/basic.frag");
+        vert_source = getStrFromFile(path_vert);
+        frag_source = getStrFromFile(path_frag);
 
         //log::info("%s", vert_source.c_str());
         //log::info("%s", frag_source.c_str());

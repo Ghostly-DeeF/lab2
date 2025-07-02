@@ -3,11 +3,12 @@
 
 #include "sge/2dprimitives.hpp"
 #include "VertexArray.hpp"
+#include "ShaderProgram.hpp"
 
 namespace sge::rendering
 {
     VertexArray setup(const objects::Point&);
-    void draw(const objects::Point&, const VertexArray & VAO);
+    void draw(const objects::Point&, const VertexArray &VAO, const ShaderProgram &shader);
 
 
 }

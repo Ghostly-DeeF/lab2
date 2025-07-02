@@ -4,6 +4,7 @@
 #include "Buffers.hpp"
 
 
+
 #include "sge/Logger.hpp"
 
 namespace sge::rendering
@@ -56,10 +57,11 @@ namespace sge::rendering
         return vao;
     }
 
-    void draw(const objects::Point &point, const VertexArray &VAO)
+    void draw(const objects::Point &point, const VertexArray &VAO, const ShaderProgram &shader)
     {
         log::lifeTime log("OBJECT", "Draw");
         log::debug("%f", point.vertex.x);
+        shader.use();
         VAO.bind();
         glDrawArrays(GL_POINTS, 0, 1);
         VAO.unbind();

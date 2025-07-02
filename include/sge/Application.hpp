@@ -4,6 +4,7 @@
 #include "../../src/Window.hpp"
 #include "../../src/Renderer.hpp"
 #include "../../src/GlRender.hpp"
+#include "../../src/ShaderManager.hpp"
 
 namespace sge
 {
@@ -39,7 +40,8 @@ namespace sge
 
     public:
 
-       Renderer drawableObjects; 
+        Renderer drawableObjects;
+        
         
     private:
         
