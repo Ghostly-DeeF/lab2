@@ -4,6 +4,7 @@
 #include <glm/ext/vector_float3.hpp>
 #include <glm/ext/vector_float4.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace sge::math
 {
@@ -15,6 +16,11 @@ namespace sge::math
     inline mat4 translate(const mat4& m, const vec3& v)
     {
         return glm::translate(m, v);
+    }
+
+    template<typename genType>
+    inline const typename genType::value_type* value_ptr(const genType& v) {
+        return glm::value_ptr(v);
     }
 
 }

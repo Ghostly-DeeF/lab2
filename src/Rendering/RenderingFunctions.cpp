@@ -2,13 +2,22 @@
 
 #include <glad/glad.h>
 #include "Buffers.hpp"
-
 #include "../math/Linear.hpp"
 
 #include "sge/Logger.hpp"
 
 namespace sge::rendering
 {
+
+    float toWinCord(float num, size_t win_size)
+    {
+        return (num-(win_size/2))/(win_size/2);
+    }
+
+    bool isInBounds(float value, float low, float high)
+    {
+        return  !(value < low) && (value <= high);
+    }
    
     VertexArray setup(const objects::Point &point)
     {
@@ -29,57 +38,38 @@ namespace sge::rendering
 
         VertexArray vao;
         log::info("VAO in Setup %d", vao.id());
-        //GLuint VAO = 0;
-        //glGenVertexArrays(1, &VAO);
-        //log::info("VAO id: %d", VAO);
-	    //glGenBuffers(1, &VBO);
-        
-	    //glBindVertexArray(VAO);
-        
-        //vao.bind();
 
-        math::vec3(.0f, .0f, .0f); 
-
-
-        //buffer->bind();
         vao.push(std::move(buffer));
-        //vao.setAttributes(buffer.getAttributes(0), 0);
-        //vao.setAttributes(buffer.getAttributes(1), 1);
-        //buffer->unbind();
-        
-	    //glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	    //glBufferData(GL_ARRAY_BUFFER, sizeof(objects::Point), &point, GL_STATIC_DRAW);
 
-
-
-	    //glEnableVertexAttribArray(0);
-	    //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(objects::Point), (void*)0);
-	    //glEnableVertexAttribArray(1);
-	    //glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(objects::Point), (void*)offsetof(objects::Point, color));
-    
-        //glBindBuffer(GL_ARRAY_BUFFER, 0);
-        //glBindVertexArray(0);
-        //vao.unbind();
         return vao;
     }
 
-    void draw(const objects::Point &point, const VertexArray &VAO, const ShaderProgram &shader)
+    void draw(const objects::Point &point, const VertexArray &VAO, const ShaderProgram &shader, size_t window_width, size_t window_height)
     {
         log::lifeTime log("OBJECT", "Draw");
-        log::debug("%f", point.vertex.x);
+        log::debug("Win width %d", window_width);
+        log::debug("Win height %d", window_height);
+        log::debug("Pos x %f", point.vertex.x);
+        log::debug("Pos y %f", point.vertex.y);
+        
+        log::debug("isInBounds %d", isInBounds(point.vertex.x, 0, window_width) && isInBounds(point.vertex.y, 0, window_height));
 
+        if (isInBounds(point.vertex.x, 0, window_width) && isInBounds(point.vertex.y, 0, window_height))
+        {
 
-        math::vec4 vec(0.0f, 0.0f, 0.0f, 1.0f);
-        math::mat4 trans;
-        trans = math::translate(trans, math::vec3(1.0f, 1.0f, 0.0f));
+            math::mat4 transform = 1.0f;
+            transform = math::translate(transform, math::vec3(toWinCord(point.vertex.x, window_width), toWinCord(point.vertex.y, window_height), point.vertex.z));
+        
+            shader.use();
+            shader.setMat4f("transform", transform);
+            shader.setVec4f("color", point.color);
 
-        shader.use();
-        shader.setVec3f("move", point.vertex.x, point.vertex.y, point.vertex.y);
-        shader.setVec4f("color", point.color);
-        glPointSize(point.size);
-        VAO.bind();
-        glDrawArrays(GL_POINTS, 0, 1);
-        VAO.unbind();
+            glPointSize(point.size);
+            VAO.bind();
+            glDrawArrays(GL_POINTS, 0, 1);
+            VAO.unbind();
+
+        }
     } 
     
 }

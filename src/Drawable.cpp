@@ -39,8 +39,8 @@ namespace sge
         x.m_VAO = std::move(x.m_self->setup_());
     }
 
-    void draw_(const Drawable &x)
+    void draw_(const Drawable &x, size_t window_width, size_t window_height)
     {
-        x.m_self->draw_(x.m_VAO, x.m_shader);
+        x.m_self->draw_(x.m_VAO, x.m_shader, window_width, window_height);
     }
 }

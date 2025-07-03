@@ -1,10 +1,11 @@
 #ifndef SGE_DRAWABLE_HPP_
 #define SGE_DRAWABLE_HPP_
 
-#include <memory>
 #include "Rendering/RenderingFunctions.hpp"
 #include "Rendering/VertexArray.hpp"
 #include "Rendering/ShaderProgram.hpp"
+
+#include <memory>
 
 #include "sge/Logger.hpp"
 
@@ -23,7 +24,7 @@ namespace sge
         ~Drawable();
 
         friend void setup_( Drawable&);
-        friend void draw_(const Drawable&);
+        friend void draw_(const Drawable&, size_t window_width, size_t window_height);
 
         unsigned id();
 
@@ -33,7 +34,7 @@ namespace sge
             virtual ~IDrawable() = default;
             //virtual std::unique_ptr<IDrawable> copy_() const = 0;
             virtual rendering::VertexArray setup_() const = 0;
-            virtual void draw_(const rendering::VertexArray &VAO, const rendering::ShaderProgram &shader) const = 0;
+            virtual void draw_(const rendering::VertexArray &VAO, const rendering::ShaderProgram &shader, size_t window_width, size_t window_height) const = 0;
         };
 
         template<class T>
@@ -49,7 +50,7 @@ namespace sge
             //}
 
             rendering::VertexArray setup_() const override;
-            void draw_(const rendering::VertexArray &VAO, const rendering::ShaderProgram &shader) const override;
+            void draw_(const rendering::VertexArray &VAO, const rendering::ShaderProgram &shader, size_t window_width, size_t window_height) const override;
             
         private:
             T& m_data; 
@@ -79,9 +80,9 @@ namespace sge
     }
 
     template<typename T>
-    void Drawable::DrawableObject<T>::draw_(const rendering::VertexArray &VAO, const rendering::ShaderProgram &shader) const
+    void Drawable::DrawableObject<T>::draw_(const rendering::VertexArray &VAO, const rendering::ShaderProgram &shader, size_t window_width, size_t window_height) const
     {
-        ::sge::rendering::draw(m_data, VAO, shader); 
+        ::sge::rendering::draw(m_data, VAO, shader, window_width, window_height); 
     }
 
 }

@@ -10,14 +10,14 @@ namespace sge
 {
 
     Application::Application()
-        : m_window("Sge app", 1024, 1024), m_render(m_window.getGlAddressFunc())
+        : m_window("Sge app", 1024, 1024), m_render(m_window.getGlAddressFunc()), drawableObjects(m_window)
     {
         log::constructor("Application");
         setAllCallbacks();
     }
     
     Application::Application(const char* title)
-        : m_window(title, 1024, 1024), m_render(m_window.getGlAddressFunc()) 
+        : m_window(title, 1024, 1024), m_render(m_window.getGlAddressFunc()), drawableObjects(m_window) 
     {
         log::constructor("Application"); 
         setAllCallbacks();
@@ -25,7 +25,7 @@ namespace sge
     }
     
     Application::Application(const char* title, size_t width, size_t height)
-        : m_window(title, width, height), m_render(m_window.getGlAddressFunc())
+        : m_window(title, width, height), m_render(m_window.getGlAddressFunc()), drawableObjects(m_window) 
     {
         log::constructor("Application");
         setAllCallbacks();
@@ -33,7 +33,7 @@ namespace sge
 
 
     Application::Application(Application &&moved) noexcept
-        : m_window(std::move(moved.m_window)), m_render(m_window.getGlAddressFunc())
+        : m_window(std::move(moved.m_window)), m_render(m_window.getGlAddressFunc()), drawableObjects(m_window) 
     {}
     
     Application &Application::operator=(Application &&moved) noexcept
@@ -42,6 +42,8 @@ namespace sge
             return *this;
 
         m_window = std::move(moved.m_window);
+        m_render = std::move(moved.m_render);
+        drawableObjects = std::move(moved.drawableObjects);
     
         return *this;
     }

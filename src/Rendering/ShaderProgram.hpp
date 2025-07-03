@@ -25,10 +25,12 @@ namespace sge::rendering
         void use() const;
         
         void setVec3f(std::string_view name, float x, float y, float z) const;
-        void setVec3f(std::string_view name, math::vec3 data) const;
+        void setVec3f(std::string_view name, const math::vec3 &data) const;
     
         void setVec4f(std::string_view name, float x, float y, float z, float w) const;
-        void setVec4f(std::string_view name, math::vec4 data) const;
+        void setVec4f(std::string_view name, const math::vec4 &data) const;
+
+        void setMat4f(std::string_view name, const math::mat4 &data) const;
 
     
     private:
