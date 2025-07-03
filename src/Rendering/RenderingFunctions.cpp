@@ -58,7 +58,7 @@ namespace sge::rendering
         {
 
             math::mat4 transform = 1.0f;
-            transform = math::translate(transform, math::vec3(toWinCord(point.vertex.x, window_width), toWinCord(point.vertex.y, window_height), point.vertex.z));
+            transform = math::translate(transform, math::vec3(toWinCord(point.vertex.x, window_width), -toWinCord(point.vertex.y, window_height), 1 - point.vertex.z));
         
             shader.use();
             shader.setMat4f("transform", transform);
