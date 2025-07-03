@@ -189,6 +189,11 @@ namespace sge
         );
     }
 
+    void Window::setVSync(bool status) const
+    {
+        glfwSwapInterval(status);
+    }
+
     bool Window::is_active() const noexcept
     {
         return m_pWindow != nullptr? !glfwWindowShouldClose(m_pWindow) : false;

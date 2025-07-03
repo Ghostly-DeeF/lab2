@@ -2,9 +2,12 @@
 #include "sge/Application.hpp"
 
 #include "sge/2dprimitives.hpp"
+#include "sge/SGEexception.hpp"
+
+#include <chrono>
 
 #include "sge/Logger.hpp"
-#include "sge/SGEexception.hpp"
+
 
 namespace sge
 {
@@ -44,6 +47,8 @@ namespace sge
         m_window = std::move(moved.m_window);
         m_render = std::move(moved.m_render);
         drawableObjects = std::move(moved.drawableObjects);
+        m_frameTime = moved.m_frameTime;
+        moved.m_frameTime = .0;
     
         return *this;
     }
@@ -52,17 +57,22 @@ namespace sge
     void Application::start()
     {
         log::lifeTime log("APP", "main loop");
-
-        //rendering::ShaderProgram s("/home/jumbo/Projects/C_projects/Test_OpeGL_Engine/external/sge/res/shaders/2d/basic.vert", "/home/jumbo/Projects/C_projects/Test_OpeGL_Engine/external/sge/res/shaders/2d/basic.frag");
-
+        
+    
         while(m_window.is_active())
         {
+            auto start_time = std::chrono::high_resolution_clock::now();
+
             m_window.update();
             m_render.update();
             onUpdate();
             //shaderManager.at("basic 2d").use();
             drawableObjects.rendering(); 
+
+            m_frameTime = (std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - start_time)).count();
         }
+
+        
         m_window.shutdown();
     }
 
@@ -84,6 +94,11 @@ namespace sge
         );
     }
 
+    void Application::setVSync(bool status) const
+    {
+        m_window.setVSync(status);
+    }
+
     size_t Application::width() const noexcept
     {
         return m_window.getWidth();
@@ -97,6 +112,16 @@ namespace sge
     bool Application::isFocused() const noexcept
     {
         return m_window.isFocused();
+    }
+
+    double Application::getFrameTime() const noexcept
+    {
+        return m_frameTime;
+    }
+
+    double Application::getFrameRate() const noexcept
+    {
+        return 1000.0 / m_frameTime;
     }
 
     double Application::cursorX() const noexcept

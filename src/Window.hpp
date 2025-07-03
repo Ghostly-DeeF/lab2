@@ -22,6 +22,8 @@ namespace sge
 
         void update();
 
+        void setVSync(bool status) const;
+
         bool is_active() const noexcept;
         size_t getWidth() const noexcept; 
         size_t getHeight() const noexcept;

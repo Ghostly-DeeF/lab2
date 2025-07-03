@@ -22,9 +22,13 @@ namespace sge
     
         void start();
 
+        void setVSync(bool status) const;
+
         size_t width() const noexcept;
         size_t height() const noexcept;
         bool isFocused() const noexcept;
+        double getFrameTime() const noexcept;
+        double getFrameRate() const noexcept;
 
         double cursorX() const noexcept;
         double cursorY() const noexcept;
@@ -43,6 +47,8 @@ namespace sge
         
         
     private:
+
+        double m_frameTime = .0;
         
         virtual void onUpdate() = 0;
 
