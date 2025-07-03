@@ -3,7 +3,7 @@
 #include <glad/glad.h>
 #include "Buffers.hpp"
 
-
+#include "../math/Linear.hpp"
 
 #include "sge/Logger.hpp"
 
@@ -38,7 +38,7 @@ namespace sge::rendering
         
         //vao.bind();
 
-        
+        math::vec3(.0f, .0f, .0f); 
 
 
         //buffer->bind();
@@ -68,9 +68,14 @@ namespace sge::rendering
         log::lifeTime log("OBJECT", "Draw");
         log::debug("%f", point.vertex.x);
 
+
+        math::vec4 vec(0.0f, 0.0f, 0.0f, 1.0f);
+        math::mat4 trans;
+        trans = math::translate(trans, math::vec3(1.0f, 1.0f, 0.0f));
+
         shader.use();
         shader.setVec3f("move", point.vertex.x, point.vertex.y, point.vertex.y);
-        shader.setVec4f("color", point.color.r, point.color.g, point.color.b, point.color.a);
+        shader.setVec4f("color", point.color);
         glPointSize(point.size);
         VAO.bind();
         glDrawArrays(GL_POINTS, 0, 1);

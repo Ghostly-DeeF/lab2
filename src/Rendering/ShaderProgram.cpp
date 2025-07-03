@@ -88,10 +88,21 @@ namespace sge::rendering
         glUniform3f(glGetUniformLocation(m_program_id, std::string(name).c_str()), x, y, z);
     }
 
+    void ShaderProgram::setVec3f(std::string_view name, math::vec3 data) const
+    {
+        glUniform3f(glGetUniformLocation(m_program_id, std::string(name).c_str()), data.x, data.y, data.z);
+    }
+
     void ShaderProgram::setVec4f(std::string_view name, float x, float y, float z, float w) const
     {
         glUniform4f(glGetUniformLocation(m_program_id, std::string(name).c_str()), x, y, z, w);
     }
+
+    void ShaderProgram::setVec4f(std::string_view name, math::vec4 data) const
+    {
+        glUniform4f(glGetUniformLocation(m_program_id, std::string(name).c_str()), data.x, data.y, data.z, data.w);
+    }
+
 
     ShaderProgram::~ShaderProgram()
     {

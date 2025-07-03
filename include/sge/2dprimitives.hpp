@@ -1,7 +1,7 @@
 #ifndef SGE_INCLUDE_2DPRIMITIVES_HPP_
 #define SGE_INCLUDE_2DPRIMITIVES_HPP_
 
-#include <glm/glm.hpp>
+#include <../src/math/Linear.hpp>
 
 namespace sge::objects
 {
@@ -25,9 +25,9 @@ namespace sge::objects
     {
         Vertex vertex;
         unsigned size = 1;
-        glm::vec4 color{.0f, .0f, .0f, .0f};
+        math::vec4 color{.0f, .0f, .0f, .0f};
 
-        glm::vec3 move(glm::vec3);
+        math::vec3 move(math::vec3);
 
     };
 
@@ -38,8 +38,8 @@ namespace sge::objects
 
         float m_thickness = .0f;
 
-        glm::vec3 move(glm::vec3);
-        void setPos(glm::vec3);
+        math::vec3 move(math::vec3);
+        void setPos(math::vec3);
 
     };
 
