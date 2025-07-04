@@ -21,7 +21,7 @@ namespace sge
 
         m_objects = std::move(moved.m_objects);
         return *this;
-    }
+    } 
 
     void Renderer::rendering()
     {
@@ -31,6 +31,8 @@ namespace sge
         { 
             draw_(object, m_window.getWidth(), m_window.getHeight());    
         }
+
+        log::trace("Count %d", m_objects.size());
     }
 
     Renderer::~Renderer()

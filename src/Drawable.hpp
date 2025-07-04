@@ -16,7 +16,7 @@ namespace sge
     {
     public:
         template<typename T>
-        Drawable(T& object, const rendering::ShaderProgram& shader);
+        Drawable(T object, const rendering::ShaderProgram& shader);
         Drawable (Drawable &&) = default;
         Drawable(const Drawable& x) = delete;
         Drawable &operator=(Drawable &&) = default;
@@ -26,13 +26,16 @@ namespace sge
         friend void setup_( Drawable&);
         friend void draw_(const Drawable&, size_t window_width, size_t window_height);
 
-        unsigned id();
+        unsigned id() const noexcept;
+
+        template<typename T>
+        T* getData() const noexcept;
 
     private:
         struct IDrawable
         {
             virtual ~IDrawable() = default;
-            //virtual std::unique_ptr<IDrawable> copy_() const = 0;
+
             virtual rendering::VertexArray setup_() const = 0;
             virtual void draw_(const rendering::VertexArray &VAO, const rendering::ShaderProgram &shader, size_t window_width, size_t window_height) const = 0;
         };
@@ -41,28 +44,23 @@ namespace sge
         class DrawableObject final : public IDrawable
         {
         public:
-            DrawableObject(T& x) : m_data(x) { log::constructor("DrawableObject"); }
+            DrawableObject(T x) : m_data(x) { log::constructor("DrawableObject"); }
             ~DrawableObject() override { log::destructor("DrawableObject"); }
-
-            //std::unique_ptr<IDrawable> copy_() const override
-            //{
-            //    return std::make_unique<DrawableObject>(*this);
-            //}
 
             rendering::VertexArray setup_() const override;
             void draw_(const rendering::VertexArray &VAO, const rendering::ShaderProgram &shader, size_t window_width, size_t window_height) const override;
             
-        private:
-            T& m_data; 
+        //private:
+            T m_data; 
         };
-
+        
         std::unique_ptr<IDrawable> m_self;
         rendering::VertexArray m_VAO;
         const rendering::ShaderProgram& m_shader;
     };
 
     template<typename T>
-    Drawable::Drawable(T& object, const rendering::ShaderProgram& shader)
+    Drawable::Drawable(T object, const rendering::ShaderProgram& shader)
     : m_self(std::make_unique<Drawable::DrawableObject<T>>(object)), m_shader(shader)
     {
         log::constructor("Drawable");
@@ -71,6 +69,16 @@ namespace sge
         m_VAO = std::move(m_self->setup_());
         
         log::info("VAO in Drawable %d", m_VAO.id());
+    }
+
+    template<typename T>
+    T* Drawable::getData() const noexcept
+    {
+        auto* derived = static_cast<DrawableObject<T>*>(m_self.get());
+        if (!derived) {
+            //throw std::runtime_error("Wrong type requested");
+        }
+        return &derived->m_data;
     }
 
     template<typename T>
