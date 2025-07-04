@@ -10,9 +10,9 @@ namespace sge::rendering
     {
     public:
         IBuffer() = default;
-        IBuffer(IBuffer &&) = default;
+        IBuffer(IBuffer &&) noexcept;
         IBuffer(const IBuffer &) = delete;
-        IBuffer &operator=(IBuffer &&) = default;
+        IBuffer &operator=(IBuffer &&) noexcept;
         IBuffer &operator=(const IBuffer &) = delete;
 
         virtual void push(const IData&) = 0;

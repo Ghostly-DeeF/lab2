@@ -7,6 +7,26 @@
 namespace sge::rendering
 {
 
+    IBuffer::IBuffer(IBuffer &&moved) noexcept
+    {
+        log::constructor("Move IBuffer");
+        m_attributes = std::move(moved.m_attributes);
+        m_id = moved.m_id;
+        moved.m_id = 0;
+    }
+
+    IBuffer &IBuffer::operator=(IBuffer &&moved) noexcept
+    {
+        log::opertor("IBuffer", "Move");
+        if (&moved == this)
+            return *this;
+
+        std::swap(m_attributes, moved.m_attributes);
+        std::swap(m_id, moved.m_id);
+
+        return *this;
+    }
+
     void IBuffer::bind() const
     {
         log::debug("bind VBO %d", m_id);
@@ -48,8 +68,6 @@ namespace sge::rendering
         
         bind();
         glBufferSubData(GL_ARRAY_BUFFER, m_dataOffset, data.size(), data.data());
-        //glEnableVertexAttribArray(m_numAttrib);
-        //glVertexAttribPointer(m_numAttrib, data.countElements(), GL_FLOAT, GL_FALSE, 3 * sizeof(float), reinterpret_cast<void*>(m_dataOffset));
 
         m_attributes.push_back({data.countElements(), m_dataOffset});
 

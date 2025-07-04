@@ -32,7 +32,9 @@ namespace sge::log {
 
     void destructor(const char* class_name, const char* format, ...) noexcept;
     void destructor(const char* class_name) noexcept;
-     
+
+    void opertor(const char* class_name, const char* operator_name, const char* format, ...) noexcept;
+    void opertor(const char* class_name, const char* operator_name) noexcept; 
     
     class lifeTime {
     public:

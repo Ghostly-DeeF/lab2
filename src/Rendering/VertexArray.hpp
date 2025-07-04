@@ -12,7 +12,7 @@ namespace sge::rendering
     {
     public:
         VertexArray();
-        VertexArray(VertexArray &&) = default;
+        VertexArray(VertexArray &&) noexcept;
         VertexArray(const VertexArray &) = delete;
         VertexArray &operator=(VertexArray &&) noexcept;
         VertexArray &operator=(VertexArray &) = delete;

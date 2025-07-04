@@ -144,6 +144,28 @@ namespace sge::log {
         print(MsgTypeColor::CLASS, "DESTRUCTOR", class_name, lifeTime::getCount());
     }
 
+    void opertor(const char* class_name, const char* operator_name, const char* format, ...) noexcept
+    {
+        std::va_list args;
+        va_start(args, format);
+
+        char format_buff[2048] = {0};
+        std::snprintf(format_buff, sizeof(format_buff), "[\033[1;%dm%s\033[0m]: %s %s", static_cast<int>(MsgTypeColor::CLASS), operator_name, class_name, format);
+
+        print(MsgTypeColor::CLASS, "OPERATOR", format_buff, args, lifeTime::getCount());
+    
+        va_end(args);
+    }
+
+    void opertor(const char* class_name, const char* operator_name) noexcept
+    {
+        
+        char format_buff[1028] = {0};
+        std::snprintf(format_buff, sizeof(format_buff), "[\033[1;%dm%s\033[0m]: %s", static_cast<int>(MsgTypeColor::CLASS), operator_name, class_name);
+        
+        print(MsgTypeColor::CLASS, "OPERATOR", format_buff, lifeTime::getCount());
+    }
+
 
 
 

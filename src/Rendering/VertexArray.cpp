@@ -13,16 +13,26 @@ namespace sge::rendering
         log::info("VAO id: %d", m_id);
     }
 
+    VertexArray::VertexArray(VertexArray &&moved) noexcept
+    {
+        log::constructor("Move VertexArray");
+        
+        m_id = moved.m_id;
+        m_buffers = std::move(moved.m_buffers);
+
+        moved.m_id = 0;
+    }
+
     VertexArray &VertexArray::operator=(VertexArray &&moved) noexcept
     {
-        log::lifeTime log("Move", "VertexArray");
+        log::opertor("VertexArray", "Move");
         log::info("Move %d to %d", moved.m_id, m_id);
         if (&moved == this)
             return *this;
 
         std::swap(m_id, moved.m_id);
         std::swap(m_buffers, moved.m_buffers);
-        
+
         return *this;
     }
 
