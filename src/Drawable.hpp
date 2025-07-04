@@ -23,13 +23,11 @@ namespace sge
         Drawable &operator=(const Drawable x) = delete;
         ~Drawable();
 
-        friend void setup_( Drawable&);
+        friend void setup_(Drawable&);
         friend void draw_(const Drawable&, size_t window_width, size_t window_height);
 
-        unsigned id() const noexcept;
-
         template<typename T>
-        T* getData() const noexcept;
+        T* getGeometry() const;
 
     private:
         struct IDrawable
@@ -44,53 +42,48 @@ namespace sge
         class DrawableObject final : public IDrawable
         {
         public:
-            DrawableObject(T x) : m_data(x) { log::constructor("DrawableObject"); }
+            DrawableObject(T geometry) : m_geometry(geometry) { log::constructor("DrawableObject"); }
             ~DrawableObject() override { log::destructor("DrawableObject"); }
 
             rendering::VertexArray setup_() const override;
             void draw_(const rendering::VertexArray &VAO, const rendering::ShaderProgram &shader, size_t window_width, size_t window_height) const override;
             
-        //private:
-            T m_data; 
+            T m_geometry; 
         };
         
-        std::unique_ptr<IDrawable> m_self;
+        std::unique_ptr<IDrawable> m_object;
         rendering::VertexArray m_VAO;
         const rendering::ShaderProgram& m_shader;
     };
 
     template<typename T>
-    Drawable::Drawable(T object, const rendering::ShaderProgram& shader)
-    : m_self(std::make_unique<Drawable::DrawableObject<T>>(object)), m_shader(shader)
+    Drawable::Drawable(T geometry, const rendering::ShaderProgram& shader)
+    : m_object(std::make_unique<Drawable::DrawableObject<T>>(geometry)), m_shader(shader)
     {
         log::constructor("Drawable");
         log::lifeTime log("DRAWABLE", "Setup to constructor");
 
-        m_VAO = std::move(m_self->setup_());
+        m_VAO = std::move(m_object->setup_());
         
         log::info("VAO in Drawable %d", m_VAO.id());
     }
 
     template<typename T>
-    T* Drawable::getData() const noexcept
+    T* Drawable::getGeometry() const
     {
-        auto* derived = static_cast<DrawableObject<T>*>(m_self.get());
-        if (!derived) {
-            //throw std::runtime_error("Wrong type requested");
-        }
-        return &derived->m_data;
+        return &(static_cast<DrawableObject<T>*>(m_object.get())->m_geometry);
     }
 
     template<typename T>
     rendering::VertexArray Drawable::DrawableObject<T>::setup_() const
     {
-        return ::sge::rendering::setup(m_data); 
+        return ::sge::rendering::setup(m_geometry); 
     }
 
     template<typename T>
     void Drawable::DrawableObject<T>::draw_(const rendering::VertexArray &VAO, const rendering::ShaderProgram &shader, size_t window_width, size_t window_height) const
     {
-        ::sge::rendering::draw(m_data, VAO, shader, window_width, window_height); 
+        ::sge::rendering::draw(m_geometry, VAO, shader, window_width, window_height); 
     }
 
 }

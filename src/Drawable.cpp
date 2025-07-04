@@ -12,19 +12,14 @@ namespace sge
         log::destructor("Drawable", "%d", m_VAO.id());
     }
 
-    unsigned Drawable::id() const noexcept
-    {
-        return m_VAO.id();
-    }
-
-    void setup_(Drawable &x)
+    void setup_(Drawable &obj)
     {
         log::lifeTime log("DRAWABLE", "Setup_");
-        x.m_VAO = std::move(x.m_self->setup_());
+        obj.m_VAO = std::move(obj.m_object->setup_());
     }
 
-    void draw_(const Drawable &x, size_t window_width, size_t window_height)
+    void draw_(const Drawable &obj, size_t window_width, size_t window_height)
     {
-        x.m_self->draw_(x.m_VAO, x.m_shader, window_width, window_height);
+        obj.m_object->draw_(obj.m_VAO, obj.m_shader, window_width, window_height);
     }
 }

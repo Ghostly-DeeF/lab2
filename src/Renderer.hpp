@@ -43,18 +43,13 @@ namespace sge
         log::lifeTime log("OBJECT", "Add");
         log::trace("Renderer add %d", m_window.getWidth());
         m_objects.emplace_back(object, shaderManager.at(shader_name));
-        log::trace("Renderer add %d", m_window.getWidth());
-        return m_objects.back().getData<T>();
-        //log::info("Objects count %d", m_objects.size());
-        //log::trace("First Object VAO %d", m_objects.front().id());
-        //setup_(m_objects.back());
-        //log::info("Objects count after %d", m_objects.size());
+        return m_objects.back().getGeometry<T>();
     }
 
     template<typename T>
     T* Renderer::get(size_t pos)
     {
-        return m_objects.at(pos).getData<T>();
+        return m_objects.at(pos).getGeometry<T>();
     }
 
     
