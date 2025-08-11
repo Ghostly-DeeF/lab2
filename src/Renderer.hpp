@@ -30,9 +30,12 @@ namespace sge
 
         void rendering();
 
+        void addShadersSearchPath(std::string_view path);
+        void addShadersSearchPath(std::string_view path, bool recursive);
+
     private:
         const Window &m_window;
-        ShaderManager shaderManager;
+        ShaderManager m_shaderManager;
         std::vector<Drawable> m_objects;
     };
 
@@ -42,7 +45,7 @@ namespace sge
     {
         log::lifeTime log("OBJECT", "Add");
         log::trace("Renderer add %d", m_window.getWidth());
-        m_objects.emplace_back(object, shaderManager.at(shader_name));
+        m_objects.emplace_back(object, m_shaderManager.at(shader_name));
         return m_objects.back().getGeometry<T>();
     }
 

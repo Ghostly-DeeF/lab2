@@ -10,7 +10,7 @@
 namespace sge::rendering
 {
 
-    ShaderProgram::ShaderProgram(const char* path_vert, const char* path_frag)
+    ShaderProgram::ShaderProgram(std::string_view path_vert, std::string_view path_frag)
     {
         log::constructor("ShaderProgram");
         std::string vert_source = "";
@@ -41,10 +41,10 @@ namespace sge::rendering
         glDeleteShader(m_fragment_id);
     }
     
-    std::string ShaderProgram::getStrFromFile(const char* path) const
+    std::string ShaderProgram::getStrFromFile(std::string_view path) const
     {
         std::ifstream file;
-        file.open(path);
+        file.open(path.data());
         if(!file.is_open())
         {
             log::error("Shader file open failture. path: %s", path);

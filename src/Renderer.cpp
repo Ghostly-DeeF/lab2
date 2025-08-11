@@ -8,7 +8,7 @@ namespace sge
         log::trace("Renderer const %d", m_window.getWidth());
     }
 
-    Renderer::Renderer(Renderer && moved) : m_objects(std::move(moved.m_objects)), m_window(moved.m_window)
+    Renderer::Renderer(Renderer && moved) : m_window(moved.m_window), m_objects(std::move(moved.m_objects)) 
     {
         log::constructor("Renderer move");
     }
@@ -33,6 +33,16 @@ namespace sge
         }
 
         log::trace("Count %d", m_objects.size());
+    }
+
+    void Renderer::addShadersSearchPath(std::string_view path)
+    {
+        m_shaderManager.addSearchPath(path, false);
+    }
+
+    void Renderer::addShadersSearchPath(std::string_view path, bool recursive)
+    {
+        m_shaderManager.addSearchPath(path, recursive);
     }
 
     Renderer::~Renderer()

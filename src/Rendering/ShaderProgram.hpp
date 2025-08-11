@@ -14,7 +14,7 @@ namespace sge::rendering
     {
     public:
     
-        ShaderProgram(const char* path_vert, const char* path_frag);
+        ShaderProgram(std::string_view path_vert, std::string_view path_frag);
         ShaderProgram(ShaderProgram &&) noexcept = default;
         ShaderProgram(const ShaderProgram &) = default;
         ShaderProgram &operator=(ShaderProgram &&) noexcept = default;
@@ -39,7 +39,7 @@ namespace sge::rendering
         GLuint m_fragment_id = 0;
         GLuint m_program_id = 0;
 
-        std::string getStrFromFile(const char* path) const;
+        std::string getStrFromFile(std::string_view path) const;
         GLuint createShader(GLenum shader_type, const char* source);
     };
 }
