@@ -1,5 +1,6 @@
 #include "sge/SGEexception.hpp"
 #include <glad/glad.h>
+#include <cstring>
 
 namespace sge::errors
 {
@@ -98,5 +99,30 @@ namespace sge::errors
             default: return "";
         }
     }
+
+
+    shader_error::shader_error(const std::string& msg) : exception(msg) {}
+    shader_error::shader_error(const char* msg) : exception(msg) {}
+
+        shader_not_loaded::shader_not_loaded(const std::string& msg, std::string_view name) : shader_error(msg), m_name(name) {}
+    shader_not_loaded::shader_not_loaded(const char* msg, std::string_view name) : shader_error(msg), m_name(name) {}
+    const char* shader_not_loaded::name() const noexcept
+    {
+        return m_name.data();
+    }
+
+    shader_not_found::shader_not_found(const std::string& msg, const std::string_view path) : shader_error(msg)
+    {
+        std::strcpy(m_path, path.data());
+    }
+    shader_not_found::shader_not_found(const char* msg, const std::string_view path) : shader_error(msg)
+    {
+        std::strcpy(m_path, path.data());
+    }
+    const char* shader_not_found::path() const noexcept
+    {
+        return m_path;
+    }
+
 
 }

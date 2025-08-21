@@ -2,7 +2,7 @@
 #define SGE_INCLUDE_APPLICATION_HPP_
 
 #include "../../src/Window.hpp"
-#include "../../src/Renderer.hpp"
+#include "../../src/Scene.hpp"
 #include "../../src/GlRender.hpp"
 
 namespace sge
@@ -43,7 +43,7 @@ namespace sge
 
     public:
 
-        Renderer drawableObjects;
+        Scene scene;
         
         
     private:

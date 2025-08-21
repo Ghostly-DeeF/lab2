@@ -1,5 +1,5 @@
-#ifndef SGE_RENDERER_HPP_
-#define SGE_RENDERER_HPP_
+#ifndef SGE_SCENE_HPP_
+#define SGE_SCENE_HPP_
 
 #include "Drawable.hpp"
 #include "ShaderManager.hpp"
@@ -13,14 +13,14 @@
 namespace sge
 {
 
-    class Renderer {
+    class Scene {
     public:
-        Renderer(const Window &window);
-        Renderer(Renderer &&);
-        Renderer(const Renderer &) = default;
-        Renderer &operator=(Renderer &&);
-        Renderer &operator=(const Renderer &) = default;
-        ~Renderer();
+        Scene(const Window &window);
+        Scene(Scene &&);
+        Scene(const Scene &) = default;
+        Scene &operator=(Scene &&);
+        Scene &operator=(const Scene &) = default;
+        ~Scene();
 
         template<typename T>
         T* add(const T& object, std::string_view shader_name);
@@ -30,7 +30,6 @@ namespace sge
 
         void rendering();
 
-        void addShadersSearchPath(std::string_view path);
         void addShadersSearchPath(std::string_view path, bool recursive);
 
     private:
@@ -41,16 +40,16 @@ namespace sge
 
 
     template<typename T>
-    T* Renderer::add(const T& object, std::string_view shader_name)
+    T* Scene::add(const T& object, std::string_view shader_name)
     {
         log::lifeTime log("OBJECT", "Add");
-        log::trace("Renderer add %d", m_window.getWidth());
+        log::trace("Scene add %d", m_window.getWidth());
         m_objects.emplace_back(object, m_shaderManager.at(shader_name));
         return m_objects.back().getGeometry<T>();
     }
 
     template<typename T>
-    T* Renderer::get(size_t pos)
+    T* Scene::get(size_t pos)
     {
         return m_objects.at(pos).getGeometry<T>();
     }

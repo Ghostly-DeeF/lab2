@@ -17,7 +17,7 @@ namespace sge
 
         void push();
         rendering::ShaderProgram& at(std::string_view name);
-        void add(std::string_view name, std::string_view vertex_path, std::string_view frag_path);
+        std::map<std::string_view, rendering::ShaderProgram>::iterator add(std::string_view name, std::string_view vertex_path, std::string_view frag_path);
 
         void addSearchPath(std::string_view path, bool recursive);
         
@@ -26,13 +26,21 @@ namespace sge
 
         std::string foundPath(std::string_view rel_path) const;
 
+        struct ShaderInfo
+        {
+            const char* name = "";
+            const char* vert = "";
+            const char* frag = "";
+        };
+
         struct Path
         {
             const char* path = nullptr;
             bool recursive = false;
         };
 
-        std::vector<Path> paths;
+        std::vector<ShaderInfo> m_baseShadersInfo;
+        std::vector<Path> m_paths;
         std::map<std::string_view, rendering::ShaderProgram> m_shaders;
     };
 

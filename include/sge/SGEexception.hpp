@@ -2,6 +2,7 @@
 #define SGE_INCLUDE_SGEEXCEPTION_HPP_
 
 #include <stdexcept>
+#include <string_view>
 
 namespace sge::errors
 {
@@ -85,6 +86,34 @@ namespace sge::errors
         unsigned m_type = 0;
         unsigned m_source = 0;
 
+    };
+
+    class shader_error : public exception
+    {
+    public:
+        shader_error(const std::string& msg);
+        shader_error(const char* msg);
+    };
+
+    class shader_not_loaded : public shader_error
+    {
+    public:
+        shader_not_loaded(const std::string& msg, std::string_view name);
+        shader_not_loaded(const char* msg, std::string_view name);
+        const char* name() const noexcept;
+    private:
+        std::string_view m_name;
+    };
+
+    class shader_not_found : public shader_error
+    {
+    public:
+        shader_not_found(const std::string& msg, const std::string_view path);
+        shader_not_found(const char* msg, const std::string_view path);
+
+        const char* path() const noexcept;
+    private:
+        char m_path[1024];
     };
 
 
