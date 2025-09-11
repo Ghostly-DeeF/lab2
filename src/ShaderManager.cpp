@@ -2,6 +2,7 @@
 
 #include "sge/SGEexception.hpp"
 #include <fstream>
+#include <filesystem>
 #include <algorithm>
 
 #include "sge/Logger.hpp"
@@ -13,7 +14,7 @@ namespace sge
     {
         log::lifeTime log("ShaderManager", "Constructor");
 
-        m_baseShadersInfo.emplace_back(ShaderInfo{"basic 2d", "/2d/basic.vert", "2d/basic.frag"} );
+        m_baseShadersInfo.emplace_back(ShaderInfo{"basic 2d", "basic.vert", "basic.frag"} );
 
     }
 
@@ -31,7 +32,6 @@ namespace sge
 
         sge::errors::shader_not_loaded("The shader was not found in the list of loaded shaders", name);
 
-        return;
     }
 
     std::map<std::string_view, rendering::ShaderProgram>::iterator ShaderManager::add(std::string_view name, std::string_view vertex_path, std::string_view frag_path)
@@ -48,24 +48,36 @@ namespace sge
     {
         for(auto path : m_paths)
         {
-            std::string full_path = path.path;
 
-            if ((full_path[full_path.length()-1] == '/' || full_path[full_path.length()-1] == '\\') && (rel_path[0] == '/' || rel_path[0] == '\\'))
+            if(path.recursive)
             {
-                full_path.erase(full_path.length()-1, 1);
-            } else
-            if (!(full_path[full_path.length()-1] == '/' || full_path[full_path.length()-1] == '\\' || rel_path[0] == '/' || rel_path[0] == '\\') )
-            {
-                full_path += '/';
+                for (const auto& entry : std::filesystem::recursive_directory_iterator(path.path))
+                {
+                    log::info("%s  %s", entry.path().c_str(), rel_path.data());
+                    if (entry.is_regular_file() &&
+                        !entry.is_directory() &&
+                        !entry.is_symlink() &&
+                        entry.path().filename() == rel_path)
+                    { 
+                        return entry.path();
+                    }
+                }
             }
-            
-            full_path += rel_path;
+            else
+            {
+                for (const auto& entry : std::filesystem::directory_iterator(path.path))
+                {
+                    log::info("%s  %s", entry.path().c_str(), rel_path.data());
+                    if (entry.is_regular_file() &&
+                        !entry.is_directory() &&
+                        !entry.is_symlink() &&
+                        entry.path().filename() == rel_path)
+                    { 
+                        return entry.path();
+                    }
+                }
+            }
 
-            std::ifstream file(full_path);
-            if(file.good())
-                return full_path; 
-
-            full_path.clear();
         }
 
         throw errors::shader_not_found("The shader file was not found", rel_path);

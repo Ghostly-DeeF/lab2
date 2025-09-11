@@ -38,7 +38,7 @@ namespace sge
             const char* path = nullptr;
             bool recursive = false;
         };
-
+        
         std::vector<ShaderInfo> m_baseShadersInfo;
         std::vector<Path> m_paths;
         std::map<std::string_view, rendering::ShaderProgram> m_shaders;
