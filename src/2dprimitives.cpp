@@ -4,12 +4,30 @@
 
 namespace sge::objects
 {
-    math::vec3 Point::move(math::vec3 delta_pos)
+    Vertex Point::move(math::vec3 delta_pos)
     {
-        vertex.x += delta_pos.x;
-        vertex.y += delta_pos.y;
-        vertex.z += delta_pos.z;
-        return {vertex.x, vertex.y, vertex.z};
+        vertex += delta_pos;
+        return vertex;
     }
+
+    std::pair<Vertex, Vertex> Line::move(math::vec3 delta_pos)
+    {
+        start.vertex += delta_pos;
+        end.vertex += delta_pos;
+        return std::pair{start.vertex, end.vertex};
+    }
+
+    Vertex Line::moveStart(math::vec3 delta_pos)
+    {
+        start.vertex += delta_pos;
+        return start.vertex;
+    }
+
+    Vertex Line::moveEnd(math::vec3 delta_pos)
+    {
+        end.vertex += delta_pos;
+        return end.vertex;
+    }
+
 
 }

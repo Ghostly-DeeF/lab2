@@ -3,6 +3,8 @@
 
 #include <../src/math/Linear.hpp>
 
+#include <utility>
+
 namespace sge::objects
 {
 
@@ -14,12 +16,7 @@ namespace sge::objects
         RGB = 3
     };
 
-    struct Vertex
-    {
-        float x = .0f;
-        float y = .0f;
-        float z = .0f; 
-    };
+    using Vertex = math::vec3;
 
     struct Point
     {
@@ -27,7 +24,7 @@ namespace sge::objects
         unsigned size = 1;
         math::vec4 color{.0f, .0f, .0f, .0f};
 
-        math::vec3 move(math::vec3);
+        Vertex move(math::vec3);
 
     };
 
@@ -39,9 +36,9 @@ namespace sge::objects
 
         float thickness = .0f;
 
-        math::vec3 move(math::vec3);
-        void setPos(math::vec3);
-
+        std::pair<Vertex, Vertex> move(math::vec3);
+        Vertex moveStart(math::vec3);
+        Vertex moveEnd(math::vec3);
     };
 
 }
