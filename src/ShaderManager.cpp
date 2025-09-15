@@ -14,7 +14,9 @@ namespace sge
     {
         log::lifeTime log("ShaderManager", "Constructor");
 
-        m_baseShadersInfo.emplace_back(ShaderInfo{"basic 2d", "basic.vert", "basic.frag"} );
+        m_baseShadersInfo.emplace_back(ShaderInfo{"point basic 2d", "2d_point_basic.vert", "2d_basic.frag"} );
+        m_baseShadersInfo.emplace_back(ShaderInfo{"line basic 2d", "2d_line_basic.vert", "2d_basic.frag"} );
+
 
     }
 

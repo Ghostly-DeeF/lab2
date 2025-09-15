@@ -10,6 +10,9 @@ namespace sge::rendering
     VertexArray setup(const objects::Point&);
     void draw(const objects::Point&, const VertexArray &VAO, const ShaderProgram &shader, size_t window_width, size_t window_height);
 
+    VertexArray setup(const objects::Line&);
+    void draw(const objects::Line&, const VertexArray &VAO, const ShaderProgram &shader, size_t window_width, size_t window_height);
+
 
 }
 

@@ -9,7 +9,7 @@ namespace sge::objects
     enum class ItemType
     {
         VERTEX = 3,
-        NORMAL = 3,
+        LINE = 6,
         RGBA = 4,
         RGB = 3
     };
@@ -35,8 +35,9 @@ namespace sge::objects
     {
         Point start;
         Point end;
+        math::vec4 color{.0f, .0f, .0f, .0f};
 
-        float m_thickness = .0f;
+        float thickness = .0f;
 
         math::vec3 move(math::vec3);
         void setPos(math::vec3);
