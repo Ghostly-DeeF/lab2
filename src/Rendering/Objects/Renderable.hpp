@@ -1,0 +1,6 @@
+#ifndef SGE_SRC_RENDERING_OBJECTS_RENDERABLE_HPP_
+#define SGE_SRC_RENDERING_OBJECTS_RENDERABLE_HPP_
+
+#include "RPoint.hpp"
+
+#endif

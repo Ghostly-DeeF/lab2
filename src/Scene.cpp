@@ -26,13 +26,15 @@ namespace sge
     void Scene::rendering()
     {
         log::lifeTime log("SCENE", "Render");
-
+        
+        auto callBuildHTML = [&](auto& label) { return label.rendering(m_window.getWidth(), m_window.getHeight()); };
         for(const auto &object : m_objects)
-        { 
-            draw_(object, m_window.getWidth(), m_window.getHeight());    
+        {
+            std::visit(callBuildHTML, object);
+            //draw_(object, m_window.getWidth(), m_window.getHeight());    
         }
 
-        log::trace("Count %d", m_objects.size());
+        //log::trace("Count %d", m_objects.size());
     }
 
     void Scene::addShadersSearchPath(std::string_view path, bool recursive = false)

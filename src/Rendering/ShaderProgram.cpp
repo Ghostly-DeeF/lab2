@@ -12,7 +12,7 @@ namespace sge::rendering
 
     ShaderProgram::ShaderProgram(std::string_view path_vert, std::string_view path_frag)
     {
-        log::constructor("ShaderProgram");
+        log::lifeTime log("SHADERPROGRAM", "Constructor");
         std::string vert_source = "";
         std::string frag_source = "";
 

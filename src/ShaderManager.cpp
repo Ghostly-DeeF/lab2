@@ -41,8 +41,8 @@ namespace sge
         std::string vert = foundPath(vertex_path);
         std::string frag = foundPath(frag_path);
         rendering::ShaderProgram shader(vert, frag);
-        log::info("%s", vert.c_str());
-        log::info("%s", frag.c_str());
+        //log::info("%s", vert.c_str());
+        //log::info("%s", frag.c_str());
         return m_shaders.insert({name, shader}).first;
     }
 
@@ -55,7 +55,7 @@ namespace sge
             {
                 for (const auto& entry : std::filesystem::recursive_directory_iterator(path.path))
                 {
-                    log::info("%s  %s", entry.path().c_str(), rel_path.data());
+                    //log::info("%s  %s", entry.path().c_str(), rel_path.data());
                     if (entry.is_regular_file() &&
                         !entry.is_directory() &&
                         !entry.is_symlink() &&
@@ -69,7 +69,7 @@ namespace sge
             {
                 for (const auto& entry : std::filesystem::directory_iterator(path.path))
                 {
-                    log::info("%s  %s", entry.path().c_str(), rel_path.data());
+                    //log::info("%s  %s", entry.path().c_str(), rel_path.data());
                     if (entry.is_regular_file() &&
                         !entry.is_directory() &&
                         !entry.is_symlink() &&

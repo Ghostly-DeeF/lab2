@@ -28,13 +28,14 @@ namespace sge
 
         template<typename T>
         T* getGeometry() const;
+        const rendering::VertexArray& getVAO() const;
 
     private:
         struct IDrawable
         {
             virtual ~IDrawable() = default;
 
-            virtual rendering::VertexArray setup_() const = 0;
+            virtual void setup_() const = 0;
             virtual void draw_(const rendering::VertexArray &VAO, const rendering::ShaderProgram &shader, size_t window_width, size_t window_height) const = 0;
         };
 
@@ -45,14 +46,15 @@ namespace sge
             DrawableObject(T geometry) : m_geometry(geometry) { log::constructor("DrawableObject"); }
             ~DrawableObject() override { log::destructor("DrawableObject"); }
 
-            rendering::VertexArray setup_() const override;
+            void setup_() const override;
             void draw_(const rendering::VertexArray &VAO, const rendering::ShaderProgram &shader, size_t window_width, size_t window_height) const override;
             
-            T m_geometry; 
+            T m_geometry;
+            rendering::VertexArray m_VAO;
         };
         
         std::unique_ptr<IDrawable> m_object;
-        rendering::VertexArray m_VAO;
+        //rendering::VertexArray m_VAO;
         const rendering::ShaderProgram& m_shader;
     };
 
@@ -63,9 +65,10 @@ namespace sge
         log::constructor("Drawable");
         log::lifeTime log("DRAWABLE", "Setup to constructor");
 
-        m_VAO = std::move(m_object->setup_());
+        //m_object.m_VAO = std::move(m_object->setup_());
+        m_object->setup_();
         
-        log::info("VAO in Drawable %d", m_VAO.id());
+        log::info("VAO in Drawable %d", m_object.m_VAO.id());
     }
 
     template<typename T>
@@ -77,7 +80,7 @@ namespace sge
     template<typename T>
     rendering::VertexArray Drawable::DrawableObject<T>::setup_() const
     {
-        return ::sge::rendering::setup(m_geometry); 
+        m_VAO = ::sge::rendering::setup(m_geometry); 
     }
 
     template<typename T>
