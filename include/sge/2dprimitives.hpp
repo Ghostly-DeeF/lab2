@@ -5,7 +5,7 @@
 
 #include <utility>
 
-namespace sge::objects
+namespace sge::geometry::objects2D
 {
 
     enum class ItemType

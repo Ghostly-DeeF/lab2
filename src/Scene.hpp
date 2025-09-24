@@ -15,9 +15,6 @@
 namespace sge
 {
 
-    template<typename T> struct corresponding_type;
-    template<> struct corresponding_type<sge::objects::Point> { using type = sge::rendering::object::RPoint; };
-
     class Scene {
     public:
         Scene(const Window &window);

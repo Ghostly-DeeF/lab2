@@ -9,7 +9,7 @@ namespace sge::rendering::object
 {
     class RPoint {
     public:
-        RPoint(sge::objects::Point, const ShaderProgram&);
+        RPoint(sge::geometry::objects2D::Point, const ShaderProgram&);
         RPoint(RPoint &&) = default;
         RPoint(const RPoint &) = delete;
         RPoint &operator=(RPoint &&) = default;
@@ -17,12 +17,14 @@ namespace sge::rendering::object
         ~RPoint() = default;
 
         void rendering(size_t, size_t) const;
-        sge::objects::Point* getGeometry();
+        sge::geometry::objects2D::Point* getGeometry();
 
     private:
-        sge::objects::Point m_geometry;
+        sge::geometry::objects2D::Point m_geometry;
         VertexArray m_VAO;
         const ShaderProgram &m_shader;
+
+        
     };    
 }
 #endif

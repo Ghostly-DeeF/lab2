@@ -6,18 +6,17 @@
 namespace sge::rendering::object
 {
 
-    RPoint::RPoint(sge::objects::Point geometry, const ShaderProgram &shader) : m_geometry(geometry), m_shader(shader)
+    RPoint::RPoint(sge::geometry::objects2D::Point geometry, const ShaderProgram &shader) : m_geometry(geometry), m_shader(shader)
     {
         log::constructor("RPoint");
         log::lifeTime log("OBJECT", "Setup");
         log::debug("Object geometry %f", m_geometry.vertex.x);
-        //log::debug("Object geometry ptr %f", getGeometry()->vertex.x);
         
         std::array<float, 3> cord = {.0f, .0f, .0f};
 
-        ElementData<float, 3> vert_data(cord, static_cast<unsigned char>(objects::ItemType::VERTEX));
+        ElementData<float, 3> vert_data(cord, static_cast<unsigned char>(geometry::objects2D::ItemType::VERTEX));
 
-        auto buffer = std::make_unique<VertexBuffer>(vert_data.size());// + color_data.size());
+        auto buffer = std::make_unique<VertexBuffer>(vert_data.size());
         buffer->push(vert_data);
 
         log::info("VAO in Setup %d", m_VAO.id());
@@ -32,8 +31,12 @@ namespace sge::rendering::object
         log::debug("Pos x %f", m_geometry.vertex.x);
         log::debug("Pos y %f", m_geometry.vertex.y);
         
-        if (math::isInBounds(m_geometry.vertex.x, 0, window_width) && math::isInBounds(m_geometry.vertex.y, 0, window_height))
+        if (math::isInBounds(m_geometry.vertex.x, 0, window_width) && 
+            math::isInBounds(m_geometry.vertex.y, 0, window_height))
         {
+            //static Vertex old_pos = {.0f, .0f, .0f};
+            //if(m_geometry.vertex == old_pos)
+            //    break;
 
             math::mat4 transform = 1.0f;
             transform = math::translate(transform, math::vec3(math::toOtherCord(m_geometry.vertex.x, window_width), -math::toOtherCord(m_geometry.vertex.y, window_height), 1 - m_geometry.vertex.z));
@@ -51,7 +54,7 @@ namespace sge::rendering::object
         
     }
 
-    sge::objects::Point* RPoint::getGeometry()
+    sge::geometry::objects2D::Point* RPoint::getGeometry()
     {
         return &m_geometry;
     }

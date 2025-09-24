@@ -2,7 +2,7 @@
 
 #include "sge/Logger.hpp"
 
-namespace sge::objects
+namespace sge::geometry::objects2D
 {
     Vertex Point::move(math::vec3 delta_pos)
     {
