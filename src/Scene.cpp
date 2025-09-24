@@ -8,7 +8,7 @@ namespace sge
         log::trace("Scene const %d", m_window.getWidth());
     }
 
-    Scene::Scene(Scene && moved) : m_window(moved.m_window), m_objects(std::move(moved.m_objects)) 
+    Scene::Scene(Scene && moved) : m_window(moved.m_window), m_shaderManager(std::move(moved.m_shaderManager)), m_objects(std::move(moved.m_objects))
     {
         log::constructor("Scene move");
     }
@@ -19,6 +19,7 @@ namespace sge
         if(&moved == this)
             return *this;
 
+        m_shaderManager = std::move(moved.m_shaderManager);
         m_objects = std::move(moved.m_objects);
         return *this;
     } 
@@ -27,14 +28,13 @@ namespace sge
     {
         log::lifeTime log("SCENE", "Render");
         
-        auto callBuildHTML = [&](auto& label) { return label.rendering(m_window.getWidth(), m_window.getHeight()); };
+        auto callRenderingObject = [&](auto& object) { return object->rendering(m_window.getWidth(), m_window.getHeight()); };
         for(const auto &object : m_objects)
         {
-            std::visit(callBuildHTML, object);
-            //draw_(object, m_window.getWidth(), m_window.getHeight());    
+            std::visit(callRenderingObject, object);  
         }
 
-        //log::trace("Count %d", m_objects.size());
+        log::trace("Count %d", m_objects.size());
     }
 
     void Scene::addShadersSearchPath(std::string_view path, bool recursive = false)
