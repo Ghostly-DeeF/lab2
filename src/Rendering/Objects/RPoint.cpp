@@ -1,20 +1,10 @@
 #include "RPoint.hpp"
 
+#include "../../math/Base.hpp"
 #include "sge/Logger.hpp"
 
 namespace sge::rendering::object
 {
-
-float toWinCord(float num, size_t win_size)
-    {
-        return (num-(win_size/2))/(win_size/2);
-    }
-
-    bool isInBounds(float value, float low, float high)
-    {
-        return  !(value < low) && (value <= high);
-    }
-
 
     RPoint::RPoint(sge::objects::Point geometry, const ShaderProgram &shader) : m_geometry(geometry), m_shader(shader)
     {
@@ -42,11 +32,11 @@ float toWinCord(float num, size_t win_size)
         log::debug("Pos x %f", m_geometry.vertex.x);
         log::debug("Pos y %f", m_geometry.vertex.y);
         
-        if (isInBounds(m_geometry.vertex.x, 0, window_width) && isInBounds(m_geometry.vertex.y, 0, window_height))
+        if (math::isInBounds(m_geometry.vertex.x, 0, window_width) && math::isInBounds(m_geometry.vertex.y, 0, window_height))
         {
 
             math::mat4 transform = 1.0f;
-            transform = math::translate(transform, math::vec3(toWinCord(m_geometry.vertex.x, window_width), -toWinCord(m_geometry.vertex.y, window_height), 1 - m_geometry.vertex.z));
+            transform = math::translate(transform, math::vec3(math::toOtherCord(m_geometry.vertex.x, window_width), -math::toOtherCord(m_geometry.vertex.y, window_height), 1 - m_geometry.vertex.z));
         
             m_shader.use();
             m_shader.setMat4f("transform", transform);
