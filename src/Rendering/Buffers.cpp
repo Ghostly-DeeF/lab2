@@ -1,6 +1,8 @@
-#include <glad/glad.h>
 #include "Buffers.hpp"
+
+#include <glad/glad.h>
 #include "sge/SGEexception.hpp"
+#include "../Data.hpp"
 
 #include "sge/Logger.hpp"
 
@@ -39,7 +41,7 @@ namespace sge::rendering
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
-    IBuffer::Layout IBuffer::getAttributes(size_t it) const
+    Layout IBuffer::getAttributes(size_t it) const
     {
         return m_attributes.at(it);
     }

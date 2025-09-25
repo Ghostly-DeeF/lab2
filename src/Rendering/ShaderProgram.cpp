@@ -1,7 +1,10 @@
 #include "ShaderProgram.hpp"
 
+#include <glad/glad.h>
+
 #include "sge/Logger.hpp"
 #include "sge/SGEexception.hpp"
+#include "../math/Linear.hpp"
 
 #include <fstream>
 

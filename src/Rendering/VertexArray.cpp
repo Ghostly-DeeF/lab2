@@ -1,5 +1,7 @@
 #include <glad/glad.h>
+
 #include "VertexArray.hpp"
+#include "Buffers.hpp"
 
 #include "sge/Logger.hpp"
 
@@ -64,7 +66,7 @@ namespace sge::rendering
         m_buffers.push_back(std::move(buffer));
     }
 
-    void VertexArray::setAttributes(IBuffer::Layout layout, unsigned id) const
+    void VertexArray::setAttributes(Layout layout, unsigned id) const
     {
         log::debug("SetAttrib");
         bind();

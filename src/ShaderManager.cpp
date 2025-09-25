@@ -1,7 +1,7 @@
 #include "ShaderManager.hpp"
 
+#include "Rendering/ShaderProgram.hpp"
 #include "sge/SGEexception.hpp"
-#include <fstream>
 #include <filesystem>
 #include <algorithm>
 

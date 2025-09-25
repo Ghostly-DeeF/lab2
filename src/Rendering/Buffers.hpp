@@ -1,11 +1,25 @@
 #ifndef SGE_RENDERING_BUFFERS_HPP_
 #define SGE_RENDERING_BUFFERS_HPP_
 
-#include "../Data.hpp"
+#include <cstddef> 
+
+namespace sge
+{
+    class IData;
+    template<typename T, size_t N>
+    class ElementData;
+}
+
 #include <vector>
 
 namespace sge::rendering
 {
+    struct Layout
+    {
+        unsigned char count_elements = 0;
+        size_t offset = 0;
+    };
+    
     class IBuffer
     {
     public:
@@ -17,12 +31,6 @@ namespace sge::rendering
 
         virtual void push(const IData&) = 0;
         virtual ~IBuffer() = default;
-
-        struct Layout
-        {
-            unsigned char count_elements = 0;
-            size_t offset = 0;
-        };
 
         void bind() const;
         void unbind() const;
@@ -46,7 +54,6 @@ namespace sge::rendering
         ~VertexBuffer() override; 
 
         void push(const IData&) override;
-        //Layout getAttributes(size_t it);
  
 
     private: 

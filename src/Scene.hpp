@@ -3,7 +3,11 @@
 
 #include "Rendering/Objects/Renderable.hpp"
 #include "ShaderManager.hpp"
-#include "Window.hpp"
+
+namespace sge
+{
+    class Window;
+}
 
 #include <string_view>
 #include <vector>
@@ -45,10 +49,8 @@ namespace sge
     T* Scene::add(T object, std::string_view shader_name)
     {
         log::lifeTime log("OBJECT", "Add to scene");
-        log::trace("Scene add %d", m_window.getWidth());
         using ObjectType = typename corresponding_type<T>::type;
         m_objects.emplace_back(std::make_unique<ObjectType>(object, m_shaderManager.at(shader_name)) );
-        
         auto callGetGeometry = [](auto& object) { return object->getGeometry(); };
         return std::visit(callGetGeometry, m_objects.back());
     }

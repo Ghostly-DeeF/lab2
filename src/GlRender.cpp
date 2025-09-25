@@ -20,7 +20,7 @@ namespace sge
 	    glEnable(GL_CULL_FACE);
     }
 
-    void GlRender::setWindowSize(size_t width, size_t height)
+    void GlRender::setWindowSize(std::size_t width, std::size_t height)
     {
         glViewport(0, 0, width, height);
     }

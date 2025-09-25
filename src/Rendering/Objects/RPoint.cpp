@@ -1,6 +1,11 @@
 #include "RPoint.hpp"
 
+#include <glad/glad.h>
+
 #include "../../math/Base.hpp"
+#include "../Buffers.hpp"
+#include "../../Data.hpp"
+
 #include "sge/Logger.hpp"
 
 namespace sge::rendering::object

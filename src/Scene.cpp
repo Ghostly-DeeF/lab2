@@ -1,5 +1,7 @@
 #include "Scene.hpp"
 
+#include "Window.hpp"
+
 namespace sge
 {
     Scene::Scene(const Window &window) : m_window(window)

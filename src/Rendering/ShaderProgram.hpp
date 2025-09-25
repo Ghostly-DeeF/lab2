@@ -1,11 +1,11 @@
 #ifndef SGE_RENDERING_SHADERPROGRAM_HPP_
 #define SGE_RENDERING_SHADERPROGRAM_HPP_
 
-#include <glad/glad.h>
 #include "../math/Linear.hpp"
-
 #include <string_view>
 #include <string>
+
+typedef unsigned int GLenum;
 
 namespace sge::rendering
 {
@@ -35,12 +35,12 @@ namespace sge::rendering
     
     private:
 
-        GLuint m_vertex_id = 0;
-        GLuint m_fragment_id = 0;
-        GLuint m_program_id = 0;
+        unsigned m_vertex_id = 0;
+        unsigned m_fragment_id = 0;
+        unsigned m_program_id = 0;
 
         std::string getStrFromFile(std::string_view path) const;
-        GLuint createShader(GLenum shader_type, const char* source);
+        unsigned createShader(GLenum shader_type, const char* source);
     };
 }
 

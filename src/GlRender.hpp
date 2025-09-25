@@ -12,7 +12,7 @@ namespace sge
     public:
         GlRender(Gladdr gl_address_function);
 
-        void setWindowSize(size_t width, size_t height);
+        void setWindowSize(std::size_t width, std::size_t height);
         void update();
 
     private:

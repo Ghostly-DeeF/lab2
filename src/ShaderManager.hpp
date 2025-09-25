@@ -1,7 +1,10 @@
 #ifndef SGE_SRC_SHADERMANAGER_HPP_
 #define SGE_SRC_SHADERMANAGER_HPP_
 
-#include "Rendering/ShaderProgram.hpp"
+namespace sge::rendering
+{
+    class ShaderProgram;
+}
 #include <string_view>
 #include <map>
 #include <vector>

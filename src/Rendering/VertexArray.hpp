@@ -1,7 +1,12 @@
 #ifndef SGE_RENDERING_VERTEXARRAY_HPP_
 #define SGE_RENDERING_VERTEXARRAY_HPP_
 
-#include "Buffers.hpp"
+
+namespace sge::rendering
+{
+    struct Layout;
+    class IBuffer;
+}
 
 #include <vector>
 #include <memory>
@@ -19,7 +24,7 @@ namespace sge::rendering
         ~VertexArray();
  
         void push(std::unique_ptr<IBuffer> buffer);
-        void setAttributes(IBuffer::Layout layout, unsigned id) const;
+        void setAttributes(Layout layout, unsigned id) const;
 
         void bind() const;
         void unbind() const;
