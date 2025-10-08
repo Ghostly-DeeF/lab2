@@ -41,7 +41,8 @@ namespace sge
     private:
         const Window &m_window;
         ShaderManager m_shaderManager;
-        std::vector<std::variant<std::unique_ptr<rendering::object::RPoint> >> m_objects;
+        std::vector<std::variant< std::unique_ptr<rendering::object::RPoint>,
+                                  std::unique_ptr<rendering::object::RLine> >> m_objects;
     };
 
 
@@ -51,15 +52,15 @@ namespace sge
         log::lifeTime log("OBJECT", "Add to scene");
         using ObjectType = typename corresponding_type<T>::type;
         m_objects.emplace_back(std::make_unique<ObjectType>(object, m_shaderManager.at(shader_name)) );
-        auto callGetGeometry = [](auto& object) { return object->getGeometry(); };
-        return std::visit(callGetGeometry, m_objects.back());
+        auto callGetGeometry = [](auto& object)->void* { return static_cast<void*>(object->getGeometry()); };
+        return static_cast<T*>(std::visit(callGetGeometry, m_objects.back()));
     }
 
     template<typename T>
     T* Scene::get(size_t pos)
     {
-        auto callGetGeometry = [](auto& object) { return object->getGeometry(); };
-        return std::visit(callGetGeometry, m_objects.at(pos));
+        auto callGetGeometry = [](auto& object)->void* { return static_cast<void*>(object->getGeometry()); };
+        return static_cast<T*>(std::visit(callGetGeometry, m_objects.at(pos)));
     }
 
     
