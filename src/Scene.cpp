@@ -2,6 +2,8 @@
 
 #include "Window.hpp"
 
+#include <stdexcept>
+
 namespace sge
 {
     Scene::Scene(const Window &window) : m_window(window)
@@ -26,7 +28,7 @@ namespace sge
         return *this;
     } 
 
-    void Scene::rendering()
+    void Scene::rendering() const
     {
         log::lifeTime log("SCENE", "Render");
         
@@ -37,6 +39,18 @@ namespace sge
         }
 
         log::trace("Count %d", m_objects.size());
+    }
+
+    void Scene::removeObject(size_t index)
+    {
+        if(index >= m_objects.size())
+            throw errors::out_of_range("Attempt to delete a non-existent object", index, 0, m_objects.size());
+        m_objects.erase(m_objects.begin() + index);
+    }
+
+    size_t Scene::countObjects() const
+    {
+        return m_objects.size();
     }
 
     void Scene::addShadersSearchPath(std::string_view path, bool recursive = false)

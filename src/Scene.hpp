@@ -3,6 +3,7 @@
 
 #include "Rendering/Objects/Renderable.hpp"
 #include "ShaderManager.hpp"
+#include "sge/SGEexception.hpp"
 
 namespace sge
 {
@@ -13,6 +14,7 @@ namespace sge
 #include <vector>
 #include <variant>
 #include <memory>
+#include <typeinfo>
 
 #include "sge/Logger.hpp"
 
@@ -28,13 +30,14 @@ namespace sge
         Scene &operator=(const Scene &) = delete;
         ~Scene();
 
-        template<typename T>
-        T* add(T object, std::string_view shader_name);
-        
-        template<typename T>
-        T* get(size_t pos);
+        void rendering() const;
 
-        void rendering();
+        template<typename T>
+        T* addObject(T object, std::string_view shader_name);
+        template<typename T>
+        T* getObject(size_t index);
+        void removeObject(size_t index);
+        size_t countObjects() const;
 
         void addShadersSearchPath(std::string_view path, bool recursive);
 
@@ -47,20 +50,28 @@ namespace sge
 
 
     template<typename T>
-    T* Scene::add(T object, std::string_view shader_name)
+    T* Scene::addObject(T object, std::string_view shader_name)
     {
         log::lifeTime log("OBJECT", "Add to scene");
         using ObjectType = typename corresponding_type<T>::type;
         m_objects.emplace_back(std::make_unique<ObjectType>(object, m_shaderManager.at(shader_name)) );
+
         auto callGetGeometry = [](auto& object)->void* { return static_cast<void*>(object->getGeometry()); };
         return static_cast<T*>(std::visit(callGetGeometry, m_objects.back()));
     }
 
     template<typename T>
-    T* Scene::get(size_t pos)
+    T* Scene::getObject(size_t index)
     {
-        auto callGetGeometry = [](auto& object)->void* { return static_cast<void*>(object->getGeometry()); };
-        return static_cast<T*>(std::visit(callGetGeometry, m_objects.at(pos)));
+        if(index >= m_objects.size())
+            throw errors::out_of_range("Trying to get an object", index, 0, m_objects.size());
+
+        auto callGetGeometry = [](auto& object)->void* { 
+                return static_cast<void*>(object->getGeometry());
+        };
+
+
+        return static_cast<T*>(std::visit(callGetGeometry, m_objects.at(index)));
     }
 
     

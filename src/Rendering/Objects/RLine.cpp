@@ -40,7 +40,7 @@ namespace sge::rendering::object
 
     void RLine::rendering(size_t window_width, size_t window_height)
     {
-        log::lifeTime log("OBJECT", "Draw");
+        log::lifeTime log("LINE OBJECT", "Draw");
         
         if ((math::isInBounds(m_geometry.start.vertex.x, 0, window_width) &&
              math::isInBounds(m_geometry.start.vertex.y, 0, window_height)) ||

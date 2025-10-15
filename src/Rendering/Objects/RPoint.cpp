@@ -32,9 +32,10 @@ namespace sge::rendering::object
 
     void RPoint::rendering(size_t window_width, size_t window_height) const
     {
-        log::lifeTime log("OBJECT", "Draw");
+        log::lifeTime log("POINT OBJECT", "Draw");
         log::debug("Pos x %f", m_geometry.vertex.x);
         log::debug("Pos y %f", m_geometry.vertex.y);
+        //log::debug("VAO %d", m_VAO);
         
         if (math::isInBounds(m_geometry.vertex.x, 0, window_width) && 
             math::isInBounds(m_geometry.vertex.y, 0, window_height))

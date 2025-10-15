@@ -125,4 +125,24 @@ namespace sge::errors
     }
 
 
+    out_of_range::out_of_range(const std::string& msg, int index, int lower, int upper) : exception(msg), m_index(index), m_lower(lower), m_upper(upper) {}
+
+    out_of_range::out_of_range(const char* msg, int index, int lower, int upper) : exception(msg), m_index(index), m_lower(lower), m_upper(upper) {}  
+
+    int out_of_range::index() const noexcept
+    {
+        return m_index;
+    }
+
+    int out_of_range::lower() const noexcept
+    {
+        return m_lower;
+    }
+
+    int out_of_range::upper() const noexcept
+    {
+        return m_upper;
+    }
+
+
 }

@@ -116,6 +116,22 @@ namespace sge::errors
         char m_path[1024];
     };
 
+    class out_of_range : public exception
+    {
+    public:
+        out_of_range(const std::string& msg, int index, int lower, int upper);
+        out_of_range(const char *msg, int index, int lower, int upper);
+
+        int index() const noexcept;
+        int lower() const noexcept;
+        int upper() const noexcept;
+
+    private:
+        int m_index = 0;
+        int m_lower = 0;
+        int m_upper = 0;
+    };
+
 
 }
 
