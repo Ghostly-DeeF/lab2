@@ -79,7 +79,7 @@ namespace sge
     void Application::setAllCallbacks()
     {
         m_window.setResizeCallback(
-            [&](const windowSizeData& size_data)
+            [&](const events::windowSizeData& size_data)
             {
                 m_render.setWindowSize(size_data.width, size_data.height);
                 userResizeCallback(size_data.width, size_data.height);
@@ -87,7 +87,7 @@ namespace sge
         );
 
         m_window.setCursorCallback(
-            [&](const cursorPos& cursor_pos)
+            [&](const events::cursorPos& cursor_pos)
             {
                 userCursorCallback(cursor_pos.x, cursor_pos.y);
             }

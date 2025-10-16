@@ -3,19 +3,22 @@
 
 #include <functional>
 
-struct windowSizeData
+namespace sge::events
 {
-    size_t width = 0;
-    size_t height = 0;
-};
+    struct windowSizeData
+    {
+        size_t width = 0;
+        size_t height = 0;
+    };
 
-struct cursorPos
-{
-    double x = 0;
-    double y = 0;
-};
+    struct cursorPos
+    {
+        double x = 0;
+        double y = 0;
+    };
 
-using resizeCallback = std::function<void(const windowSizeData&)>; 
-using cursorCallback = std::function<void(const cursorPos&)>; 
+    using resizeCallback = std::function<void(const windowSizeData&)>; 
+    using cursorCallback = std::function<void(const cursorPos&)>; 
+}
 
 #endif

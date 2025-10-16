@@ -53,7 +53,7 @@ namespace sge
     T* Scene::addObject(T object, std::string_view shader_name)
     {
         log::lifeTime log("OBJECT", "Add to scene");
-        using ObjectType = typename corresponding_type<T>::type;
+        using ObjectType = typename rendering::objects::corresponding_type<T>::type;
         m_objects.emplace_back(std::make_unique<ObjectType>(object, m_shaderManager.at(shader_name)) );
 
         auto callGetGeometry = [](auto& object)->void* { return static_cast<void*>(object->getGeometry()); };

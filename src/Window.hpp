@@ -40,8 +40,8 @@ namespace sge
         bool is_shutdown() const noexcept; 
         GLaddr getGlAddressFunc();
 
-        void setResizeCallback(const resizeCallback& resize_function);
-        void setCursorCallback(const cursorCallback& cursor_function);
+        void setResizeCallback(const events::resizeCallback& resize_function);
+        void setCursorCallback(const events::cursorCallback& cursor_function);
 
     
     private:
@@ -63,8 +63,8 @@ namespace sge
             };
             scrollData scroll = {.0, .0};
             bool focused = true;
-            resizeCallback custom_resize_function;
-            cursorCallback custom_cursor_function;
+            events::resizeCallback custom_resize_function;
+            events::cursorCallback custom_cursor_function;
         };
 
         GLFWwindow* m_pWindow = nullptr;

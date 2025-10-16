@@ -120,7 +120,7 @@ namespace sge
             
                 if (data.custom_resize_function)
                 {
-                    windowSizeData size_data{
+                    events::windowSizeData size_data{
                               static_cast<size_t>(width),
                               static_cast<size_t>(height)};
 
@@ -146,7 +146,7 @@ namespace sge
 
                 if (data.custom_cursor_function)
                 {
-                    cursorPos cursor_data{xpos, ypos};
+                    events::cursorPos cursor_data{xpos, ypos};
                     data.custom_cursor_function(cursor_data);
                 }
             }
@@ -257,12 +257,12 @@ namespace sge
         return m_isDestroy;
     }
 
-    void Window::setResizeCallback(const resizeCallback& resizeFunction)
+    void Window::setResizeCallback(const events::resizeCallback& resizeFunction)
     {
         m_data.custom_resize_function = resizeFunction;
     }
 
-    void Window::setCursorCallback(const cursorCallback& cursorFunction)
+    void Window::setCursorCallback(const events::cursorCallback& cursorFunction)
     {
         m_data.custom_cursor_function = cursorFunction;
     }
