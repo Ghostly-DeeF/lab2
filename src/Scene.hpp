@@ -66,8 +66,12 @@ namespace sge
         if(index >= m_objects.size())
             throw errors::out_of_range("Trying to get an object", index, 0, m_objects.size());
 
-        auto callGetGeometry = [](auto& object)->void* { 
-                return static_cast<void*>(object->getGeometry());
+        auto callGetGeometry = [](auto& object)->void* {
+                auto geometry = object->getGeometry();
+
+                if(typeid(T*) != typeid(geometry))
+                    throw errors::type_mismatch_error("Mismatch between the expected type and the actual type", typeid(T*), typeid(geometry));
+                return static_cast<void*>(geometry);
         };
 
 

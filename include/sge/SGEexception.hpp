@@ -1,3 +1,14 @@
+/**
+ * @file SGEexception.hpp
+ * @author Ghostly-DeeF (you@domain.com)
+ * @brief Файл содержит описание классов исключений библиотеки
+ * @version 0.0.1
+ * @date 2025-10-17
+ * 
+ * @copyright Copyright (c) 2025
+ * 
+ * Файл содержит описание всех классов исключений, которые может генерировать библиотека
+ */
 #ifndef SGE_INCLUDE_SGEEXCEPTION_HPP_
 #define SGE_INCLUDE_SGEEXCEPTION_HPP_
 
@@ -130,6 +141,54 @@ namespace sge::errors
         int m_index = 0;
         int m_lower = 0;
         int m_upper = 0;
+    };
+
+
+    /**
+     * @brief Класс исключения при несоответствии типов
+     * 
+     * Библиотека выбрасывает данное исключение при несоответствии двух типов
+     */
+    class type_mismatch_error : public exception
+    {
+    public:
+        /**
+         * @brief Конструирует новый объект type mismatch error
+         * 
+         * @param[in] msg Сообщение об ошибке
+         * @param[in] first_type Первый тип данных
+         * @param[in] second_type Второй тип данных
+         */
+        type_mismatch_error(const std::string& msg, const std::type_info& first_type, const std::type_info& second_type);
+
+        /**
+         * @brief Конструирует новый объект type mismatch error
+         * 
+         * @param[in] msg Сообщение об ошибке
+         * @param[in] first_type Первый тип данных
+         * @param[in] second_type Второй тип данных
+         */
+        type_mismatch_error(const char *msg, const std::type_info& first_type, const std::type_info& second_type);
+
+        /**
+         * @brief Возвращает объект First Type
+         * 
+         * Возвращает информацию о динамическом типе первого объекта
+         * @return const std::type_info& Информация о динамическом типе объекта
+         */
+        const std::type_info& getFirstType() const noexcept;
+
+        /**
+         * @brief Возвращает объект Second Type
+         * 
+         * Возвращает информацию о динамическом типе второго объекта
+         * @return const std::type_info& Информация о динамическом типе объекта
+         */
+        const std::type_info& getSecondType() const noexcept;
+
+    private:
+        const std::type_info& m_first_type;
+        const std::type_info& m_second_type;
     };
 
 

@@ -144,5 +144,21 @@ namespace sge::errors
         return m_upper;
     }
 
+    
+    type_mismatch_error::type_mismatch_error(const std::string& msg, const std::type_info& first_type, const std::type_info& second_type) : exception(msg), m_first_type(first_type), m_second_type(second_type) {}
+
+    type_mismatch_error::type_mismatch_error(const char *msg, const std::type_info& first_type, const std::type_info& second_type) : exception(msg), m_first_type(first_type), m_second_type(second_type) {}
+
+    const std::type_info& type_mismatch_error::getFirstType() const noexcept
+    {
+        return m_first_type;
+    }
+
+    const std::type_info& type_mismatch_error::getSecondType() const noexcept
+    {
+        return m_second_type;
+    }
+
+
 
 }
