@@ -4,30 +4,26 @@
 
 namespace sge::geometry::objects2D
 {
-    Vertex Point::move(math::vec3 delta_pos)
+    math::vec3 Vertex::move(math::vec3 delta_pos)
     {
-        vertex += delta_pos;
-        return vertex;
+        x += delta_pos.x;
+        y += delta_pos.y;
+        z += delta_pos.z;
+        return {x, y, z};
     }
 
-    std::pair<Vertex, Vertex> Line::move(math::vec3 delta_pos)
+    math::vec3 VertexColorable::move(math::vec3 delta_pos)
     {
-        start.vertex += delta_pos;
-        end.vertex += delta_pos;
-        return std::pair{start.vertex, end.vertex};
+        x += delta_pos.x;
+        y += delta_pos.y;
+        z += delta_pos.z;
+        return {x, y, z};
     }
 
-    Vertex Line::moveStart(math::vec3 delta_pos)
+    std::pair<math::vec3, math::vec3> Line::move(math::vec3 delta_pos)
     {
-        start.vertex += delta_pos;
-        return start.vertex;
+        start.move(delta_pos);
+        end.move(delta_pos);
+        return std::pair{math::vec3{start.x, start.y, start.z}, math::vec3{end.x, end.y, end.z}};
     }
-
-    Vertex Line::moveEnd(math::vec3 delta_pos)
-    {
-        end.vertex += delta_pos;
-        return end.vertex;
-    }
-
-
 }

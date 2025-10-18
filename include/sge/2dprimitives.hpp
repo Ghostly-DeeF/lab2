@@ -16,29 +16,38 @@ namespace sge::geometry::objects2D
         RGB = 3
     };
 
-    using Vertex = math::vec3;
+    struct Vertex
+    {
+        float x;
+        float y;
+        float z;
+        math::vec3 move(math::vec3 delta_pos);
+    };
+
+    struct VertexColorable
+    {
+        float x;
+        float y;
+        float z;
+        math::vec4 color{.0f, .0f, .0f, .0f};
+        math::vec3 move(math::vec3);
+    };
 
     struct Point
     {
-        Vertex vertex;
+        VertexColorable vertex;
         unsigned size = 1;
-        math::vec4 color{.0f, .0f, .0f, .0f};
-
-        Vertex move(math::vec3);
-
     };
 
     struct Line
     {
-        Point start;
-        Point end;
+        VertexColorable start;
+        VertexColorable end;
         math::vec4 color{.0f, .0f, .0f, .0f};
 
-        float thickness = .0f;
+        float thickness = 1.0f;
 
-        std::pair<Vertex, Vertex> move(math::vec3);
-        Vertex moveStart(math::vec3);
-        Vertex moveEnd(math::vec3);
+        std::pair<math::vec3, math::vec3> move(math::vec3);
     };
 
 }

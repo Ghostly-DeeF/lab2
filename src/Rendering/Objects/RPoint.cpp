@@ -49,7 +49,7 @@ namespace sge::rendering::object
         
             m_shader.use();
             m_shader.setMat4f("transform", transform);
-            m_shader.setVec4f("color", m_geometry.color);
+            m_shader.setVec4f("color", m_geometry.vertex.color);
 
             glPointSize(m_geometry.size);
             m_VAO.bind();
