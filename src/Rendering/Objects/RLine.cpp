@@ -42,12 +42,19 @@ namespace sge::rendering::object
     {
         log::lifeTime log("LINE OBJECT", "Draw");
         
-        if ((math::isInBounds(m_geometry.start.x, 0, window_width) &&
-             math::isInBounds(m_geometry.start.y, 0, window_height)) ||
-            (math::isInBounds(m_geometry.end.x, 0, window_width) &&
-             math::isInBounds(m_geometry.end.y, 0, window_height)))
-        {
+        if ((!math::isInBounds(m_geometry.start.x, 0, window_width) ||
+             !math::isInBounds(m_geometry.start.y, 0, window_height)) &&
+            (!math::isInBounds(m_geometry.end.x, 0, window_width) ||
+             !math::isInBounds(m_geometry.end.y, 0, window_height)))
+        return;
 
+        if( m_geometry.start.x != m_oldPosStart.x ||
+            m_geometry.start.y != m_oldPosStart.y ||
+            m_geometry.start.z != m_oldPosStart.z ||
+            m_geometry.end.x != m_oldPosEnd.x ||
+            m_geometry.end.y != m_oldPosEnd.y ||
+            m_geometry.end.z != m_oldPosEnd.z)
+        {
             float start_x_win = math::toOtherCord(m_geometry.start.x, window_width);
             float start_y_win = math::toOtherCord(m_geometry.start.y, window_height);
             float end_x_win = math::toOtherCord(m_geometry.end.x, window_width);
@@ -57,22 +64,21 @@ namespace sge::rendering::object
             float scale_x = sqrt(pow(end_x_win - start_x_win, 2) + pow(end_y_win - start_y_win, 2));
             float z_angle = atan2( (end_x_win - start_x_win), (end_y_win - start_y_win)) - M_PI/2;
 
-            math::mat4 transform = 1.0f;
-            transform = math::translate(transform, math::vec3(start_x_win, -start_y_win, 1 - m_geometry.start.z));
+            m_transform = 1.0f;
+            m_transform = math::translate(m_transform, math::vec3(start_x_win, -start_y_win, 1 - m_geometry.start.z));
 
-            transform = glm::rotate(transform, z_angle, glm::vec3(.0f, .0f, 1.0f));
-            transform = glm::scale(transform, glm::vec3(scale_x, .0f, .0f));  
-        
-            m_shader.use();
-            m_shader.setMat4f("transform", transform);
-            m_shader.setVec4f("color", m_geometry.color);
-
-            glLineWidth(m_geometry.thickness);
-            m_VAO.bind();
-            glDrawArrays(GL_LINE_STRIP, 0, 2);
-            m_VAO.unbind();
-
+            m_transform = glm::rotate(m_transform, z_angle, glm::vec3(.0f, .0f, 1.0f));
+            m_transform = glm::scale(m_transform, glm::vec3(scale_x, .0f, .0f));
         }
+        
+        m_shader.use();
+        m_shader.setMat4f("transform", m_transform);
+        m_shader.setVec4f("color", m_geometry.color);
+
+        glLineWidth(m_geometry.thickness);
+        m_VAO.bind();
+        glDrawArrays(GL_LINE_STRIP, 0, 2);
+        m_VAO.unbind();
     }
 
     sge::geometry::objects2D::Line* RLine::getGeometry()

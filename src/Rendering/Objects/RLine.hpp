@@ -24,8 +24,9 @@ namespace sge::rendering::object
         VertexArray m_VAO;
         const ShaderProgram &m_shader;
 
-        sge::geometry::objects2D::Vertex m_oldPos{0, 0, 0};
         math::mat4 m_transform = 1.0f;
+        math::vec3 m_oldPosStart{-1.0f, -1.0f, -1.0f};
+        math::vec3 m_oldPosEnd{-1.0f, -1.0f, -1.0f};
     };    
 }
 #endif
