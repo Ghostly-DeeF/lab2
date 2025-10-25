@@ -27,6 +27,7 @@ namespace sge::rendering::object
 
         math::mat4 m_transform = 1.0f;
         math::vec3 m_oldPos{-1.0f, -1.0f, -1.0f};
+        math::vec2 m_oldWindowData{-1.0f, -1.0f};
         
     };    
 }

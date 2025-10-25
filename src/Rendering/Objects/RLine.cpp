@@ -53,7 +53,9 @@ namespace sge::rendering::object
             m_geometry.start.z != m_oldPosStart.z ||
             m_geometry.end.x != m_oldPosEnd.x ||
             m_geometry.end.y != m_oldPosEnd.y ||
-            m_geometry.end.z != m_oldPosEnd.z)
+            m_geometry.end.z != m_oldPosEnd.z ||
+            window_width != m_oldWindowData.x ||
+            window_height != m_oldWindowData.y)
         {
             float start_x_win = math::toOtherCord(m_geometry.start.x, window_width);
             float start_y_win = math::toOtherCord(m_geometry.start.y, window_height);
@@ -69,6 +71,10 @@ namespace sge::rendering::object
 
             m_transform = glm::rotate(m_transform, z_angle, glm::vec3(.0f, .0f, 1.0f));
             m_transform = glm::scale(m_transform, glm::vec3(scale_x, .0f, .0f));
+
+            m_oldPosStart = {m_geometry.start.x, m_geometry.start.y, m_geometry.start.z};
+            m_oldPosEnd = {m_geometry.end.x, m_geometry.end.y, m_geometry.end.z};
+            m_oldWindowData = {window_width, window_height};
         }
         
         m_shader.use();

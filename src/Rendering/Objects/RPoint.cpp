@@ -42,11 +42,14 @@ namespace sge::rendering::object
 
         if( m_geometry.vertex.x != m_oldPos.x ||
             m_geometry.vertex.y != m_oldPos.y ||
-            m_geometry.vertex.z != m_oldPos.z)
+            m_geometry.vertex.z != m_oldPos.z ||
+            window_width != m_oldWindowData.x ||
+            window_height != m_oldWindowData.y)
         {
             m_transform = 1.0f;
             m_transform = math::translate(m_transform, math::vec3(math::toOtherCord(m_geometry.vertex.x, window_width), -math::toOtherCord(m_geometry.vertex.y, window_height), 1 - m_geometry.vertex.z));
             m_oldPos = {m_geometry.vertex.x, m_geometry.vertex.y, m_geometry.vertex.z};
+            m_oldWindowData = {window_width, window_height};
         }
 
         m_shader.use();
