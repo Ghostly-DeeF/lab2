@@ -6,13 +6,12 @@
 
 namespace sge
 {
-    Scene::Scene(const Window &window) : m_window(window)
+    Scene::Scene()
     {
         log::constructor("Scene");
-        log::trace("Scene const %d", m_window.getWidth());
     }
 
-    Scene::Scene(Scene && moved) : m_window(moved.m_window), m_shaderManager(std::move(moved.m_shaderManager)), m_objects(std::move(moved.m_objects))
+    Scene::Scene(Scene && moved) : m_shaderManager(std::move(moved.m_shaderManager)), m_objects(std::move(moved.m_objects))
     {
         log::constructor("Scene move");
     }
@@ -28,11 +27,11 @@ namespace sge
         return *this;
     } 
 
-    void Scene::rendering() const
+    void Scene::rendering(std::size_t windows_width, std::size_t window_height) const
     {
         log::lifeTime log("SCENE", "Render");
         
-        auto callRenderingObject = [&](auto& object) { return object->rendering(m_window.getWidth(), m_window.getHeight()); };
+        auto callRenderingObject = [&](auto& object) { return object->rendering(windows_width, window_height); };
         for(const auto &object : m_objects)
         {
             std::visit(callRenderingObject, object);  

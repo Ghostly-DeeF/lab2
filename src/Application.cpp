@@ -13,14 +13,14 @@ namespace sge
 {
 
     Application::Application()
-        : m_window("Sge app", 1024, 1024), m_render(m_window.getGlAddressFunc()), scene(m_window)
+        : m_window("Sge app", 1024, 1024), m_render(m_window.getGlAddressFunc())
     {
         log::constructor("Application");
         setAllCallbacks();
     }
     
     Application::Application(const char* title)
-        : m_window(title, 1024, 1024), m_render(m_window.getGlAddressFunc()), scene(m_window) 
+        : m_window(title, 1024, 1024), m_render(m_window.getGlAddressFunc())
     {
         log::constructor("Application"); 
         setAllCallbacks();
@@ -28,7 +28,7 @@ namespace sge
     }
     
     Application::Application(const char* title, size_t width, size_t height)
-        : m_window(title, width, height), m_render(m_window.getGlAddressFunc()), scene(m_window) 
+        : m_window(title, width, height), m_render(m_window.getGlAddressFunc())
     {
         log::constructor("Application");
         setAllCallbacks();
@@ -36,7 +36,7 @@ namespace sge
 
 
     Application::Application(Application &&moved) noexcept
-        : m_window(std::move(moved.m_window)), m_render(m_window.getGlAddressFunc()), scene(m_window) 
+        : m_window(std::move(moved.m_window)), m_render(m_window.getGlAddressFunc())
     {}
     
     Application &Application::operator=(Application &&moved) noexcept
@@ -67,7 +67,7 @@ namespace sge
             m_render.update();
             onUpdate();
             //shaderManager.at("basic 2d").use();
-            scene.rendering(); 
+            scene.rendering(m_window.getWidth(), m_window.getHeight()); 
 
             m_frameTime = (std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - start_time)).count();
         }

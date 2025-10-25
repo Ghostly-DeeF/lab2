@@ -96,7 +96,7 @@ namespace sge
          *  @li обновление окна @ref Window::update();
          *  @li обновление рендера @ref GlRender::update;
          *  @li выполнение пользовательской функции @ref Application::onUpdate();
-         *  @li рендеринг объектов на сцене @ref Scene::rendering();
+         *  @li рендеринг объектов на сцене @ref Scene::rendering(std::size_t windows_width, std::size_t window_height);
          */
         void start();
 

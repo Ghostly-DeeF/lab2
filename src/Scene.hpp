@@ -23,14 +23,14 @@ namespace sge
 
     class Scene {
     public:
-        Scene(const Window &window);
+        Scene();
         Scene(Scene &&);
         Scene(const Scene &) = delete;
         Scene &operator=(Scene &&);
         Scene &operator=(const Scene &) = delete;
         ~Scene();
 
-        void rendering() const;
+        void rendering(std::size_t windows_width, std::size_t window_height) const;
 
         template<typename T>
         T* addObject(T object, std::string_view shader_name);
@@ -42,7 +42,6 @@ namespace sge
         void addShadersSearchPath(std::string_view path, bool recursive);
 
     private:
-        const Window &m_window;
         ShaderManager m_shaderManager;
         std::vector<std::variant< std::unique_ptr<rendering::object::RPoint>,
                                   std::unique_ptr<rendering::object::RLine> >> m_objects;
