@@ -66,8 +66,7 @@ namespace sge
             m_window.update();
             m_render.update();
             onUpdate();
-            //shaderManager.at("basic 2d").use();
-            scene.rendering(m_window.getWidth(), m_window.getHeight()); 
+            scene.rendering(); 
 
             m_frameTime = (std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now() - start_time)).count();
         }
@@ -82,6 +81,7 @@ namespace sge
             [&](const events::windowSizeData& size_data)
             {
                 m_render.setWindowSize(size_data.width, size_data.height);
+                scene.setWindowSize(size_data.width, size_data.height);
                 userResizeCallback(size_data.width, size_data.height);
             }
         );

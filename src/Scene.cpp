@@ -27,17 +27,23 @@ namespace sge
         return *this;
     } 
 
-    void Scene::rendering(std::size_t windows_width, std::size_t window_height) const
+    void Scene::rendering() const
     {
         log::lifeTime log("SCENE", "Render");
         
-        auto callRenderingObject = [&](auto& object) { return object->rendering(windows_width, window_height); };
+        auto callRenderingObject = [this](auto& object) { return object->rendering(m_windowsWidth, m_windowHeight); };
         for(const auto &object : m_objects)
         {
             std::visit(callRenderingObject, object);  
         }
 
         log::trace("Count %d", m_objects.size());
+    }
+
+    void Scene::setWindowSize(std::size_t windows_width, std::size_t window_height)
+    {
+        m_windowsWidth = windows_width;
+        m_windowHeight = window_height;
     }
 
     void Scene::removeObject(size_t index)

@@ -30,7 +30,8 @@ namespace sge
         Scene &operator=(const Scene &) = delete;
         ~Scene();
 
-        void rendering(std::size_t windows_width, std::size_t window_height) const;
+        void rendering() const;
+        void setWindowSize(std::size_t windows_width, std::size_t window_height);
 
         template<typename T>
         T* addObject(T object, std::string_view shader_name);
@@ -45,6 +46,9 @@ namespace sge
         ShaderManager m_shaderManager;
         std::vector<std::variant< std::unique_ptr<rendering::object::RPoint>,
                                   std::unique_ptr<rendering::object::RLine> >> m_objects;
+
+        std::size_t m_windowsWidth = 0;
+        std::size_t m_windowHeight = 0;
     };
 
 
