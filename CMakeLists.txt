@@ -6,6 +6,13 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_definitions("-g -Wall -Wextra")
 
+macro(sge_set_option var default type docstring)
+    if(NOT DEFINED ${var})
+        set(${var} ${default})
+    endif()
+    set(${var} ${${var}} CACHE ${type} ${docstring} FORCE)
+endmacro()
+
 file(GLOB_RECURSE CPP_SOURCES
 "./src/*.cpp")
 file(GLOB_RECURSE PRIVATE_HEADERS
@@ -36,6 +43,12 @@ target_link_libraries(${PROJECT_NAME} glad)
 
 add_subdirectory(external/glm)
 target_link_libraries(${PROJECT_NAME} glm)
+
+# Examples
+sge_set_option(SGE_BUILD_EXAMPLES ON BOOL "ON to build the SGE examples, OFF to ignore them")
+if(SGE_BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif()
 
 #add_subdirectory(external/assimp)
 #target_link_libraries(${PROJECT_NAME} assimp)
