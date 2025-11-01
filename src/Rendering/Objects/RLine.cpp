@@ -12,7 +12,7 @@
 namespace sge::rendering::object
 {
 
-    RLine::RLine(sge::geometry::objects2D::Line geometry, const ShaderProgram &shader) : m_geometry(geometry), m_shader(shader)
+    RLine::RLine(sge::geometry::objects2D::Line geometry, const std::shared_ptr<ShaderProgram> &shader) : m_geometry(geometry), m_shader(shader)
     {
         std::array<float, 6> cord = {.0f, .0f, .0f, 1.f, .0f, .0f};
         std::array<float, 8> colors = { m_geometry.start.color.r,
@@ -77,9 +77,9 @@ namespace sge::rendering::object
             m_oldWindowData = {window_width, window_height};
         }
         
-        m_shader.use();
-        m_shader.setMat4f("transform", m_transform);
-        m_shader.setVec4f("color", m_geometry.color);
+        m_shader->use();
+        m_shader->setMat4f("transform", m_transform);
+        m_shader->setVec4f("color", m_geometry.color);
 
         glLineWidth(m_geometry.thickness);
         m_VAO.bind();

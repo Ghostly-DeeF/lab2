@@ -11,7 +11,7 @@
 namespace sge::rendering::object
 {
 
-    RPoint::RPoint(sge::geometry::objects2D::Point geometry, const ShaderProgram &shader) : m_geometry(geometry), m_shader(shader)
+    RPoint::RPoint(sge::geometry::objects2D::Point geometry, const std::shared_ptr<ShaderProgram>&shader) : m_geometry(geometry), m_shader(shader)
     {
         log::constructor("RPoint");
         log::lifeTime log("OBJECT", "Setup");
@@ -52,9 +52,9 @@ namespace sge::rendering::object
             m_oldWindowData = {window_width, window_height};
         }
 
-        m_shader.use();
-        m_shader.setMat4f("transform", m_transform);
-        m_shader.setVec4f("color", m_geometry.vertex.color);
+        m_shader->use();
+        m_shader->setMat4f("transform", m_transform);
+        m_shader->setVec4f("color", m_geometry.vertex.color);
         glPointSize(m_geometry.size);
         m_VAO.bind();
         glDrawArrays(GL_POINTS, 0, 1);

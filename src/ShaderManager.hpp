@@ -8,6 +8,7 @@ namespace sge::rendering
 #include <string_view>
 #include <map>
 #include <vector>
+#include <memory>
 
 namespace sge
 {
@@ -19,8 +20,8 @@ namespace sge
         
 
         void push();
-        rendering::ShaderProgram& at(std::string_view name);
-        std::map<std::string_view, rendering::ShaderProgram>::iterator add(std::string_view name, std::string_view vertex_path, std::string_view frag_path);
+        std::shared_ptr<rendering::ShaderProgram>& at(std::string_view name);
+        std::map<std::string_view, std::shared_ptr<rendering::ShaderProgram>>::iterator add(std::string_view name, std::string_view vertex_path, std::string_view frag_path);
 
         void addSearchPath(std::string_view path, bool recursive);
         
@@ -44,7 +45,7 @@ namespace sge
         
         std::vector<ShaderInfo> m_baseShadersInfo;
         std::vector<Path> m_paths;
-        std::map<std::string_view, rendering::ShaderProgram> m_shaders;
+        std::map<std::string_view, std::shared_ptr<rendering::ShaderProgram>> m_shaders;
     };
 
 }

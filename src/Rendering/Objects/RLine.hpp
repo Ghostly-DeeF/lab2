@@ -9,7 +9,7 @@ namespace sge::rendering::object
 {
     class RLine {
     public:
-        RLine(sge::geometry::objects2D::Line, const ShaderProgram&);
+        RLine(sge::geometry::objects2D::Line, const std::shared_ptr<ShaderProgram>&);
         RLine(RLine &&) = default;
         RLine(const RLine &) = delete;
         RLine &operator=(RLine &&) = default;
@@ -22,7 +22,7 @@ namespace sge::rendering::object
     private:
         sge::geometry::objects2D::Line m_geometry;
         VertexArray m_VAO;
-        const ShaderProgram &m_shader;
+        const std::shared_ptr<ShaderProgram> m_shader;
 
         math::mat4 m_transform = 1.0f;
         math::vec3 m_oldPosStart{-1.0f, -1.0f, -1.0f};

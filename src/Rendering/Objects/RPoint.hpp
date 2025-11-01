@@ -10,7 +10,7 @@ namespace sge::rendering::object
 {
     class RPoint {
     public:
-        RPoint(sge::geometry::objects2D::Point, const ShaderProgram&);
+        RPoint(sge::geometry::objects2D::Point, const std::shared_ptr<ShaderProgram>&);
         RPoint(RPoint &&) = default;
         RPoint(const RPoint &) = delete;
         RPoint &operator=(RPoint &&) = default;
@@ -23,7 +23,7 @@ namespace sge::rendering::object
     private:
         sge::geometry::objects2D::Point m_geometry;
         VertexArray m_VAO;
-        const ShaderProgram &m_shader;
+        const std::shared_ptr<ShaderProgram> m_shader;
 
         math::mat4 m_transform = 1.0f;
         math::vec3 m_oldPos{-1.0f, -1.0f, -1.0f};

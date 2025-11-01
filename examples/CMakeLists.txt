@@ -13,3 +13,4 @@ macro(sge_add_example target)
 endmacro()
 
 add_subdirectory(SimpleApp)
+add_subdirectory(DevTestApp)

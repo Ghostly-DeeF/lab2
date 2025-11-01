@@ -20,7 +20,7 @@ namespace sge
 
     }
 
-    rendering::ShaderProgram& ShaderManager::at(std::string_view name)
+    std::shared_ptr<rendering::ShaderProgram>& ShaderManager::at(std::string_view name)
     {
         auto it_loaded = m_shaders.find(name);
         if(it_loaded != m_shaders.end())
@@ -36,14 +36,13 @@ namespace sge
 
     }
 
-    std::map<std::string_view, rendering::ShaderProgram>::iterator ShaderManager::add(std::string_view name, std::string_view vertex_path, std::string_view frag_path)
+    std::map<std::string_view, std::shared_ptr<rendering::ShaderProgram>>::iterator ShaderManager::add(std::string_view name, std::string_view vertex_path, std::string_view frag_path)
     {
         std::string vert = foundPath(vertex_path);
         std::string frag = foundPath(frag_path);
-        rendering::ShaderProgram shader(vert, frag);
         //log::info("%s", vert.c_str());
         //log::info("%s", frag.c_str());
-        return m_shaders.insert({name, shader}).first;
+        return m_shaders.insert({name, std::make_shared<rendering::ShaderProgram>(vert, frag)}).first;
     }
 
     std::string ShaderManager::foundPath(std::string_view rel_path) const
