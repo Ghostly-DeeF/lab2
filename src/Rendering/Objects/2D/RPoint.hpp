@@ -9,15 +9,15 @@
  * 
  * Класс почки, подготовленный для отрисовки
  */
-#ifndef SGE_SRC_RENDERING_OBJECT_RPOINT_HPP_
-#define SGE_SRC_RENDERING_OBJECT_RPOINT_HPP_
+#ifndef SGE_SRC_RENDERING_OBJECTS_2D_RPOINT_HPP_
+#define SGE_SRC_RENDERING_OBJECTS_2D_RPOINT_HPP_
 
-#include "../ShaderProgram.hpp"
+#include "../../ShaderProgram.hpp"
 #include "sge/2dprimitives.hpp"
-#include "../VertexArray.hpp"
-#include "../../math/Linear.hpp"
+#include "../../VertexArray.hpp"
+#include "../../../math/Linear.hpp"
 
-namespace sge::rendering::object
+namespace sge::rendering::objects2D
 {
     /**
      * @brief Класс точки

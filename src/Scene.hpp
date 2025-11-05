@@ -44,8 +44,8 @@ namespace sge
 
     private:
         ShaderManager m_shaderManager;
-        std::vector<std::variant< std::unique_ptr<rendering::object::RPoint>,
-                                  std::unique_ptr<rendering::object::RLine> >> m_objects;
+        std::vector<std::variant< std::unique_ptr<rendering::objects2D::RPoint>,
+                                  std::unique_ptr<rendering::objects2D::RLine> >> m_objects;
 
         std::size_t m_windowsWidth = 0;
         std::size_t m_windowHeight = 0;

@@ -2,13 +2,13 @@
 
 #include <glad/glad.h>
 
-#include "../../math/Base.hpp"
-#include "../Buffers.hpp"
-#include "../../Data.hpp"
+#include "../../../math/Base.hpp"
+#include "../../Buffers.hpp"
+#include "../../../Data.hpp"
 
 #include "sge/Logger.hpp"
 
-namespace sge::rendering::object
+namespace sge::rendering::objects2D
 {
 
     RPoint::RPoint(sge::geometry::objects2D::Point geometry, const std::shared_ptr<ShaderProgram>&shader) : m_geometry(geometry), m_shader(shader)
