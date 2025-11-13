@@ -37,6 +37,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC include)
 
 add_subdirectory(external/glfw)
 target_link_libraries(${PROJECT_NAME} glfw)
+target_compile_options(glfw PRIVATE -w)
 
 add_subdirectory(external/glad)
 target_link_libraries(${PROJECT_NAME} glad)
