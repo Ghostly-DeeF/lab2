@@ -20,7 +20,7 @@ namespace sge
 
     }
 
-    std::shared_ptr<rendering::ShaderProgram>& ShaderManager::at(std::string_view name)
+    std::shared_ptr<rendering::ShaderProgram> ShaderManager::at(std::string_view name)
     {
         auto it_loaded = m_shaders.find(name);
         if(it_loaded != m_shaders.end())
@@ -33,7 +33,7 @@ namespace sge
             return ( *add( (*it_unloaded).name, (*it_unloaded).vert, (*it_unloaded).frag) ).second;
 
         sge::errors::shader_not_loaded("The shader was not found in the list of loaded shaders", name);
-        //return nullptr;
+        return nullptr;
     }
 
     std::map<std::string_view, std::shared_ptr<rendering::ShaderProgram>>::iterator ShaderManager::add(std::string_view name, std::string_view vertex_path, std::string_view frag_path)

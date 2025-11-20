@@ -20,7 +20,7 @@ namespace sge
         
 
         void push();
-        std::shared_ptr<rendering::ShaderProgram>& at(std::string_view name);
+        std::shared_ptr<rendering::ShaderProgram> at(std::string_view name);
         std::map<std::string_view, std::shared_ptr<rendering::ShaderProgram>>::iterator add(std::string_view name, std::string_view vertex_path, std::string_view frag_path);
 
         void addSearchPath(std::string_view path, bool recursive);
