@@ -51,6 +51,13 @@ if(SGE_BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
 
+# Tests
+sge_set_option(SGE_BUILD_TESTS ON BOOL "ON to build the SGE tests, OFF to ignore them")
+if(SGE_BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
+
 #add_subdirectory(external/assimp)
 #target_link_libraries(${PROJECT_NAME} assimp)
 #target_compile_options(assimp PRIVATE -Wno-error=implicit-fallthrough
