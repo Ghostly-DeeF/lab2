@@ -32,7 +32,9 @@ jobs:
             libxinerama-dev \
             libxcursor-dev \
             libxi-dev \
-            libxext-dev
+            libxext-dev \
+            libglu1-mesa-dev \
+            libgl1-mesa-dev
 
       - name: Configure
         run: |
