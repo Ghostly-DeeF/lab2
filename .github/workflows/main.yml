@@ -26,7 +26,8 @@ jobs:
             libwayland-dev \
             libwayland-bin \
             wayland-protocols \
-            libxkbcommon-dev
+            libxkbcommon-dev \
+            libxrandr-dev
 
       - name: Configure
         run: |
