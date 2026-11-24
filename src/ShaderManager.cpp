@@ -4,6 +4,7 @@
 #include "sge/SGEexception.hpp"
 #include <filesystem>
 #include <algorithm>
+#include <stdexcept>
 
 #include "sge/Logger.hpp"
 
@@ -36,13 +37,14 @@ namespace sge
         return nullptr;
     }
 
-    std::map<std::string_view, std::shared_ptr<rendering::ShaderProgram>>::iterator ShaderManager::add(std::string_view name, std::string_view vertex_path, std::string_view frag_path)
+    ShaderManager::ShaderMap::iterator ShaderManager::add(std::string_view name, std::string_view vertex_path, std::string_view frag_path)
     {
-        std::string vert = foundPath(vertex_path);
-        std::string frag = foundPath(frag_path);
-        //log::info("%s", vert.c_str());
-        //log::info("%s", frag.c_str());
-        return m_shaders.insert({name, std::make_shared<rendering::ShaderProgram>(vert, frag)}).first;
+        if (auto it = m_shaders.find(name); it != m_shaders.end())
+            return it;
+
+        const std::string vert = foundPath(vertex_path);
+        const std::string frag = foundPath(frag_path);
+        return m_shaders.emplace(std::string(name), std::make_shared<rendering::ShaderProgram>(vert, frag)).first;
     }
 
     std::string ShaderManager::foundPath(std::string_view rel_path) const
@@ -86,7 +88,37 @@ namespace sge
 
     void ShaderManager::addSearchPath(std::string_view path, bool recursive)
     {
-        m_paths.push_back( {path.data(), recursive} );
+        m_paths.push_back({std::string(path), recursive});
+    }
+
+    bool ShaderManager::registerShader(std::string_view name, std::string_view vertex_path, std::string_view frag_path)
+    {
+        if (name.empty())
+            throw std::invalid_argument("Shader name must not be empty");
+
+        m_shaders.erase(std::string(name));
+
+        auto it = std::find_if(m_baseShadersInfo.begin(), m_baseShadersInfo.end(),
+                                [&](const auto& data){ return data.name == name; });
+
+        if (it != m_baseShadersInfo.end())
+        {
+            it->vert = std::string(vertex_path);
+            it->frag = std::string(frag_path);
+            return false;
+        }
+
+        m_baseShadersInfo.push_back({std::string(name), std::string(vertex_path), std::string(frag_path)});
+        return true;
+    }
+
+    std::vector<std::string> ShaderManager::availableShaders() const
+    {
+        std::vector<std::string> result;
+        result.reserve(m_baseShadersInfo.size());
+        for (const auto& info : m_baseShadersInfo)
+            result.emplace_back(info.name);
+        return result;
     }
 
 }

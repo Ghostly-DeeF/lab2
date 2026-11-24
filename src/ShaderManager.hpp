@@ -9,6 +9,8 @@ namespace sge::rendering
 #include <map>
 #include <vector>
 #include <memory>
+#include <string>
+#include <functional>
 
 namespace sge
 {
@@ -21,9 +23,12 @@ namespace sge
 
         void push();
         std::shared_ptr<rendering::ShaderProgram> at(std::string_view name);
-        std::map<std::string_view, std::shared_ptr<rendering::ShaderProgram>>::iterator add(std::string_view name, std::string_view vertex_path, std::string_view frag_path);
+        using ShaderMap = std::map<std::string, std::shared_ptr<rendering::ShaderProgram>, std::less<>>;
+        ShaderMap::iterator add(std::string_view name, std::string_view vertex_path, std::string_view frag_path);
 
         void addSearchPath(std::string_view path, bool recursive);
+        bool registerShader(std::string_view name, std::string_view vertex_path, std::string_view frag_path);
+        std::vector<std::string> availableShaders() const;
         
     
     private:
@@ -32,20 +37,20 @@ namespace sge
 
         struct ShaderInfo
         {
-            const char* name = "";
-            const char* vert = "";
-            const char* frag = "";
+            std::string name;
+            std::string vert;
+            std::string frag;
         };
 
         struct Path
         {
-            const char* path = nullptr;
+            std::string path;
             bool recursive = false;
         };
         
         std::vector<ShaderInfo> m_baseShadersInfo;
         std::vector<Path> m_paths;
-        std::map<std::string_view, std::shared_ptr<rendering::ShaderProgram>> m_shaders;
+        ShaderMap m_shaders;
     };
 
 }

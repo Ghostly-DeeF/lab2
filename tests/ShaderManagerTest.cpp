@@ -12,6 +12,9 @@
 #include <fstream>
 #include <string>
 #include <string_view>
+#include <algorithm>
+#include <stdexcept>
+#include <vector>
 
 namespace
 {
@@ -300,5 +303,88 @@ namespace
         m_manager.addSearchPath(kFlatShadersDir, false);
 
         EXPECT_NE(m_manager.at(kPointBaseShader), nullptr);
+    }
+
+
+    TEST_F(ShaderManagerTest, AvailableShadersListsBuiltInShaders)
+    {
+        const auto shaders = m_manager.availableShaders();
+
+        EXPECT_NE(std::find(shaders.begin(), shaders.end(), kPointBaseShader), shaders.end());
+        EXPECT_NE(std::find(shaders.begin(), shaders.end(), kLineBaseShader),  shaders.end());
+    }
+
+    TEST_F(ShaderManagerTest, AvailableShadersDoesNotRequireFiles)
+    {
+        EXPECT_FALSE(m_manager.availableShaders().empty());
+    }
+
+    TEST_F(ShaderManagerTest, RegisterShaderAddsToRegistry)
+    {
+        const std::string name = "custom shader";
+        const auto before = m_manager.availableShaders().size();
+
+        EXPECT_TRUE(m_manager.registerShader(name, "custom.vert", "custom.frag"));
+
+        const auto shaders = m_manager.availableShaders();
+        EXPECT_EQ(shaders.size(), before + 1);
+        EXPECT_NE(std::find(shaders.begin(), shaders.end(), name), shaders.end());
+    }
+
+    TEST_F(ShaderManagerTest, RegisterShaderSupportsMultipleNewShaders)
+    {
+        ASSERT_TRUE(m_manager.registerShader("A", "a.vert", "a.frag"));
+        ASSERT_TRUE(m_manager.registerShader("B", "b.vert", "b.frag"));
+        ASSERT_TRUE(m_manager.registerShader("C", "c.vert", "c.frag"));
+
+        const auto shaders = m_manager.availableShaders();
+        EXPECT_NE(std::find(shaders.begin(), shaders.end(), "A"), shaders.end());
+        EXPECT_NE(std::find(shaders.begin(), shaders.end(), "B"), shaders.end());
+        EXPECT_NE(std::find(shaders.begin(), shaders.end(), "C"), shaders.end());
+    }
+
+    TEST_F(ShaderManagerTest, RegisterShaderUpdatesExistingEntry)
+    {
+        const auto before = m_manager.availableShaders().size();
+
+        EXPECT_FALSE(m_manager.registerShader(kPointBaseShader, "other.vert", "other.frag"));
+
+        EXPECT_EQ(m_manager.availableShaders().size(), before);
+    }
+
+    TEST_F(ShaderManagerTest, RegisterShaderDoesNotDuplicateNames)
+    {
+        m_manager.registerShader(kPointBaseShader, "a.vert", "a.frag");
+        m_manager.registerShader(kPointBaseShader, "b.vert", "b.frag");
+
+        const auto shaders = m_manager.availableShaders();
+        EXPECT_EQ(std::count(shaders.begin(), shaders.end(), kPointBaseShader), 1);
+    }
+
+    TEST_F(ShaderManagerTest, RegisterShaderEmptyNameDoesNotMutateRegistry)
+    {
+        const auto before = m_manager.availableShaders();
+
+        EXPECT_THROW(m_manager.registerShader("", "x.vert", "x.frag"), std::invalid_argument);
+
+        EXPECT_EQ(m_manager.availableShaders(), before);
+    }
+
+    TEST_F(ShaderManagerTest, RegisterShaderIsCaseSensitive)
+    {
+        EXPECT_TRUE(m_manager.registerShader("Shader", "s.vert", "s.frag"));
+        EXPECT_TRUE(m_manager.registerShader("shader", "s.vert", "s.frag"));
+
+        const auto shaders = m_manager.availableShaders();
+        EXPECT_NE(std::find(shaders.begin(), shaders.end(), "Shader"), shaders.end());
+        EXPECT_NE(std::find(shaders.begin(), shaders.end(), "shader"), shaders.end());
+    }
+
+    TEST_F(ShaderManagerTest, RegisteredShaderStillFailsToLoadWithoutFiles)
+    {
+        ASSERT_TRUE(m_manager.registerShader("ghost", "ghost.vert", "ghost.frag"));
+
+        // Регистрация ≠ загрузка: при отсутствии search path загрузка падает.
+        EXPECT_THROW(m_manager.at("ghost"), shader_not_found);
     }
 }
