@@ -3,6 +3,9 @@ name: Generate Docs
 on:
   push:
     branches: [ main, release ]
+  pull_request:
+    types: [closed]
+    branches: [ main, release ]
   workflow_dispatch:
 
 permissions:
@@ -12,10 +15,13 @@ permissions:
 
 jobs:
   build-docs:
+    if: github.event_name != 'pull_request' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.ref || github.ref }}
 
       - name: Install Doxygen and Graphviz
         run: sudo apt-get update && sudo apt-get install -y doxygen graphviz
