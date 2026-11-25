@@ -1,8 +1,7 @@
 name: Generate Docs
 
 on:
-  pull_request_target:
-    types: [closed]
+  push:
     branches: [ main, release ]
   workflow_dispatch:
 
@@ -13,13 +12,10 @@ permissions:
 
 jobs:
   build-docs:
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.base.ref || github.ref }}
 
       - name: Install Doxygen and Graphviz
         run: sudo apt-get update && sudo apt-get install -y doxygen graphviz
@@ -28,10 +24,10 @@ jobs:
         working-directory: doc
         run: doxygen
 
-      - name: artifact
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: doc/doxygen/html
+          path: doc/doxygen/html 
 
   deploy-docs:
     needs: build-docs
